@@ -20,7 +20,7 @@ The user can set watches and price alerts
 
 .. note::
 
-   Please note that our website does not try to bypass the **Due Diligence** required before commiting to purchase a company and does not offer financial advice. We recommed users to get informed about the company, their business model and try to come up with their own projections for each company.
+   Please note that our website does not try to bypass the **Due Diligence** required before commiting to purchase a company and does not offer financial advice. We recommed users to get informed about the company and its business model and try to come up with their own projections for each company.
 
 Model Code Editor
 ---------------------
