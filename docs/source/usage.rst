@@ -8,53 +8,53 @@ Make sure you have an active account, or make one to access the `Code Editor <ht
 Base Code for a Model
 ---------------------
 
-Start a new model by going to the Code Editor.
-Here, we will be writing our valuation model.
+Start a new model by going to the Code Editor where we will be writing our valuation model.
+
 Copy the following base code into the editor:
 
 .. code-block:: console
 
-  var INPUT = Input({NUMBER: 5,
-                    _RATE: ''}); 
-  $.when(
-    get_profile()).done(
-    function(_profile){
-      // The context array is used to hold charts, tables and prints information.
-      var context = [];
-      
-      // We need to make sure we don't edit the _profile variable
-      // Editing it could cause caching problems in the Watchlist page
-      var profile = JSON.parse(JSON.stringify(_profile));
-      profile = profile[0];
-      
-      // Use console.log() to inspect the data
-      console.log(profile);
+var INPUT = Input({NUMBER: 5,
+                   _RATE: ''}); 
+$.when(
+  get_profile()).done(
+  function(_profile){
+    // The context array is used to hold charts, tables and prints information.
+    var context = [];
 
-      
-      // Prints "Message: Hello World!"
-      print('Hello World!', 'First Message');
-      
-      // Call this at the end of the model
-      monitor(context);
-  });
+    // We need to make sure we don't edit the _profile variable
+    // Editing it could cause caching problems in the Watchlist page
+    var profile = JSON.parse(JSON.stringify(_profile));
+    profile = profile[0];
 
-Creating recipes
-----------------
+    // Use console.log() to inspect the data
+    console.log(profile);
 
-To retrieve a list of random ingredients,
-you can use the ``lumache.get_random_ingredients()`` function:
+    // Print messages to the screen
+    print('Hello World!', 'First Message');
+    print(profile.companyName, "Company's Name");
+    print(profile.price, "Stock Price", profile.currency);
+    print(profile.website, "Company's Website");
 
-.. autofunction:: lumache.get_random_ingredients
+    // Call this at the end of the model
+    monitor(context);
+});
 
-The ``kind`` parameter should be either ``"meat"``, ``"fish"``,
-or ``"veggies"``. Otherwise, :py:func:`lumache.get_random_ingredients`
-will raise an exception.
+Running & Saving the Code
+-------------------------
 
-.. autoexception:: lumache.InvalidKindError
+To run your code, you need to fill in a Ticker (Example: ``AAPL`` for Apple Inc.) and press Run. You can also name your model and save it.
 
-For example:
+This retrieves the company's profile data and prints out a ``Hello World`` message, the company's name, the last stock price and the company's website.
 
->>> import lumache
->>> lumache.get_random_ingredients()
-['shells', 'gorgonzola', 'parsley']
+Press F12 or right-click and Inspect the page, and you will see an expandable object. This is the profile object that we have logged using ``console.log(profile);``.
+If you expand it, you will see all the properties the object has. These properties are information about the company such as the company's full name. We printed it using ``profile.companyName``.
+
+The following will be printed in the Terminal:
+
+>>> First Message: Hello World! 
+>>> Company's Name: Apple Inc. 
+>>> Stock Price: 148.79 
+>>> Company's Website: https://www.apple.com 
+
 
