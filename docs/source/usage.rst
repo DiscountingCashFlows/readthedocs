@@ -14,24 +14,29 @@ Copy the following base code into the editor:
 
 .. code-block:: console
 
-var INPUT = Input({NUMBER: 5,
-                  _RATE: ''}); 
-$.when(
-  get_profile()).done(
-  function(_profile){
-    // The context array is used to hold charts, tables and prints information.
-    var context = [];
-    // We need to make sure we don't edit the _profile variable
-    // Editing it could cause caching problems in the Watchlist page
-    var profile = JSON.parse(JSON.stringify(_profile));
-    profile = profile[0];
-    // Use console.log() to inspect the data
-    // Example: console.log(profile);
-    
-    
-    
-    monitor(context);
-});
+  var INPUT = Input({NUMBER: 5,
+                    _RATE: ''}); 
+  $.when(
+    get_profile()).done(
+    function(_profile){
+      // The context array is used to hold charts, tables and prints information.
+      var context = [];
+      
+      // We need to make sure we don't edit the _profile variable
+      // Editing it could cause caching problems in the Watchlist page
+      var profile = JSON.parse(JSON.stringify(_profile));
+      profile = profile[0];
+      
+      // Use console.log() to inspect the data
+      console.log(profile);
+
+      
+      // Prints "Message: Hello World!"
+      print('Hello World!', 'First Message');
+      
+      // Call this at the end of the model
+      monitor(context);
+  });
 
 Creating recipes
 ----------------
