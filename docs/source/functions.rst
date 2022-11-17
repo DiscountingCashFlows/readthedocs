@@ -10,7 +10,7 @@ The following functions are found in `DiscountingCashFlows/Documentation/source-
 
 The ``print()`` function prints values and messages to the screen. Below are examples of usage types:
 
-.. code-block:: console
+.. code-block:: javascript
 
   // Prints a message with a label
   print('Hello World!', 'First Message');
