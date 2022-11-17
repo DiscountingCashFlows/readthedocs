@@ -2,6 +2,7 @@ API Functions
 =============
 
 The following functions retrieve financial data from the API in JSON format, and can be used inside the Code Editor.
+
 +-----------------------------------------+---------------------------------------------------+
 | Function                                | Link to API                                       |
 +-----------------------------------------+---------------------------------------------------+
