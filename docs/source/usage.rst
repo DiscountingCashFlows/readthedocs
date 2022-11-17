@@ -14,31 +14,31 @@ Copy the following base code into the editor:
 
 .. code-block:: console
 
-var INPUT = Input({NUMBER: 5,
-                   _RATE: ''}); 
-$.when(
-  get_profile()).done(
-  function(_profile){
-    // The context array is used to hold charts, tables and prints information.
-    var context = [];
+  var INPUT = Input({NUMBER: 5,
+                     _RATE: ''}); 
+  $.when(
+    get_profile()).done(
+    function(_profile){
+      // The context array is used to hold charts, tables and prints information.
+      var context = [];
 
-    // We need to make sure we don't edit the _profile variable
-    // Editing it could cause caching problems in the Watchlist page
-    var profile = JSON.parse(JSON.stringify(_profile));
-    profile = profile[0];
+      // We need to make sure we don't edit the _profile variable
+      // Editing it could cause caching problems in the Watchlist page
+      var profile = JSON.parse(JSON.stringify(_profile));
+      profile = profile[0];
 
-    // Use console.log() to inspect the data
-    console.log(profile);
+      // Use console.log() to inspect the data
+      console.log(profile);
 
-    // Print messages to the screen
-    print('Hello World!', 'First Message');
-    print(profile.companyName, "Company's Name");
-    print(profile.price, "Stock Price", profile.currency);
-    print(profile.website, "Company's Website");
+      // Print messages to the screen
+      print('Hello World!', 'First Message');
+      print(profile.companyName, "Company's Name");
+      print(profile.price, "Stock Price", profile.currency);
+      print(profile.website, "Company's Website");
 
-    // Call this at the end of the model
-    monitor(context);
-});
+      // Call this at the end of the model
+      monitor(context);
+  });
 
 Running & Saving the Code
 -------------------------
