@@ -31,9 +31,9 @@ Copy the following base code into the editor:
       console.log(profile);
 
       // Print messages to the screen
-      print('Hello World!', 'First Message');
+      print("Hello World!", "First Message");
       print(profile.companyName, "Company's Name");
-      print(profile.price, "Stock Price", profile.currency);
+      print(profile.price, "Stock Price", "#", profile.currency);
       print(profile.website, "Company's Website");
 
       // Call this at the end of the model
