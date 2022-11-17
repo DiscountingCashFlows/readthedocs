@@ -14,18 +14,38 @@ The ``print()`` function prints to the screen. Below are examples of usage types
 
   // Prints "Message: Hello World!"
   print('Hello World!', 'First Message');
+  >>> First Message: Hello World! 
   
   // This is how you would display an error
   print('This is how you display an error', 'Error');
+  >>> Error: This is how you display an error
   
-  // This is a plain number
-  print(1.23, 'INPUT.NUMBER', '#');
+  // Displaying a warning
+  warning('You have been warned!');
+  >>> Warning: You have been warned! 
   
-  // When dealing with values, specify '#' for number and currency
-  print(1.23, 'Value', '#', currency);  // 1.23 USD
+  // This is a plain value
+  print(1.23456, 'Plain value');
+  >>> Plain value: 1.23456 
   
-  // When dealing with rates, specify '%' for rates
-  print(1.23, 'Rate', '%');  // 123% 
+  // This is a value formatted as number (3 decimals maximum)
+  print(1.23456, 'Number ', '#');
+  >>> Number : 1.235 
+  
+  // These are values formatted as thousands(K) and millions(M)
+  print(1000, '1 Thousand', '#');
+  >>> 1 Thousand: 1 K 
+  print(1000000, '1 Million', '#');
+  >>> 1 Million: 1 Mil. 
+  
+  // Add a 4th argument for currency
+  print(12.34, 'Value', '#', 'USD');
+  >>> Value: 12.34 USD
+  
+  // When dealing with rates, specify '%' for rate formatting
+  print(1.23, 'Rate', '%');
+  >>> Rate: 123.00% 
+  
   
 .. note::
 
