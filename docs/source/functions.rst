@@ -8,11 +8,11 @@ The following functions are found in `DiscountingCashFlows/Documentation/source-
 ``print()`` function:
 ---------------------
 
-The ``print()`` function prints to the screen. Below are examples of usage types:
+The ``print()`` function prints values and messages to the screen. Below are examples of usage types:
 
 .. code-block:: console
 
-  // Prints "Message: Hello World!"
+  // Prints a message with a label
   print('Hello World!', 'First Message');
   >>> First Message: Hello World! 
   
@@ -28,19 +28,19 @@ The ``print()`` function prints to the screen. Below are examples of usage types
   print(1.23456, 'Plain value');
   >>> Plain value: 1.23456 
   
-  // This is a value formatted as number (3 decimals maximum)
-  print(1.23456, 'Number ', '#');
-  >>> Number : 1.235 
+  // This is a value with numeric format (3 decimals maximum)
+  print(1.23456, 'Formatted Value', '#');
+  >>> Formatted Value: 1.235 
   
-  // These are values formatted as thousands(K) and millions(M)
+  // Numeric format includes thousands(K) and millions(M)
   print(1000, '1 Thousand', '#');
   >>> 1 Thousand: 1 K 
   print(1000000, '1 Million', '#');
   >>> 1 Million: 1 Mil. 
   
   // Add a 4th argument for currency
-  print(12.34, 'Value', '#', 'USD');
-  >>> Value: 12.34 USD
+  print(12.34, 'Price', '#', 'USD');
+  >>> Price: 12.34 USD
   
   // When dealing with rates, specify '%' for rate formatting
   print(1.23, 'Rate', '%');
