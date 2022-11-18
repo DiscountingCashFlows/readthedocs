@@ -47,7 +47,7 @@ The ``print()`` function prints values and messages to the screen. Below are exa
   >>> Rate: 123.00% 
   
   
-``Input()`` function and ``setInputDefault()``:
+``Input()`` functions:
 -------------------------------------------------
   
 The ``Input()`` function holds the interactive assumptions data, which the user is able tweak and play around with.
