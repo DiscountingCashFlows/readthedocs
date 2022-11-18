@@ -8,7 +8,7 @@ The following functions are found in `DiscountingCashFlows/Documentation/source-
 
 The valuation engine is built on the popular JS Framework 'jQuery'. Don't worry if you've never used it before because the ``$.when().done()`` function is the only function that we will use from the framework in our valuations.
 
-To understand what the ``$.when().done()`` function does, we need to think about what is the workflow of valuing a company. 
+To understand what the ``$.when().done()`` function does, we need to think about what the workflow of valuing a company is. 
  
 Step 1. Gather financial data for the company (get the income statements, the balance sheets, the cashflow reports, dividends, etc. )
 
