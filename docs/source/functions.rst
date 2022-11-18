@@ -45,10 +45,19 @@ The ``print()`` function prints values and messages to the screen. Below are exa
   // When dealing with rates, specify '%' for rate formatting
   print(1.23, 'Rate', '%');
   >>> Rate: 123.00% 
-  
-  
-``Input()`` functions:
--------------------------------------------------
+ 
+ 
+Setting assumptions:
+--------------------
+
+Assumptions are set either static or dynamically.
+
+- ``static`` : We know what the assumption will be (Example: INPUT.GROWTH_YEARS: 5 - it will be 5 growth years by default)
+
+- ``dynamic``: We need to calculate or retrieve the data from the API (Example: INPUT._TREASURY_YIELD: '' - needs to be filled with the us 10 year treasury yield using ``setInputDefault()`` function down below)
+
+``Input()`` function:
+*********************
   
 The ``Input()`` function holds the interactive assumptions data, which the user is able tweak and play around with.
 
@@ -62,15 +71,20 @@ The variable name will be formatted like so:
   
   ``INPUT.number_three`` -> Number Three
 
-Use '_' to refer to a rate:
+Use '_' as the first character when referring to a rate:
 
   ``INPUT._RATE: 10`` -> Will translate to 10% or 0.1
  
-Use ``setInputDefault()`` to set an INPUT value:
+``setInputDefault()`` function:
+*******************************
 
-  ``INPUT.CALCULATED: ''``
+Use ``setInputDefault()`` to set a blank INPUT assumption dynamically. 
+
+For example, if we wanted to set an assumption (``INPUT._TREASURY_YIELD``) to the Yield of the US 10 Year Treasury Bond. Assume we've got the treasury data in object ``treasury``.
+
+  ``INPUT._TREASURY_YIELD: ''``
   
-  ``setInputDefault('CALCULATED', 10);``
+  ``setInputDefault('_TREASURY_YIELD', treasury['year10']);``
 
 .. code-block:: javascript
 
@@ -99,6 +113,75 @@ Use ``setInputDefault()`` to set an INPUT value:
         print(INPUT._CALCULATED_RATE, 'INPUT._CALCULATED_RATE');
         >>> INPUT._CALCULATED_RATE: 0.0123 
   });
+
+Displaying a Chart:
+-------------------
+
+``fillHistoricUsingReport()`` function:
+***************************************
+
+``fillHistoricUsingList()`` function:
+***************************************
+
+``forecast()`` function:
+************************
+
+``renderChart()`` function:
+***************************************
+
+Displaying a Table:
+-------------------
+
+``toColumn()`` function:
+***************************************
+
+Utility functions:
+-------------------
+
+``currencyRate()`` function:
+***************************************
+
+``newArrayFill()`` function:
+***************************************
+
+``arrayValuesToRates()`` function:
+***************************************
+
+``getArraySum()`` function:
+***************************************
+
+``getGrowthRateList()`` function:
+***************************************
+
+``addKey()`` function:
+***************************************
+
+``linearRegressionGrowthRate()`` function:
+***************************************
+
+``averageMargin()`` function:
+***************************************
+
+``averageGrowthRate()`` function:
+***************************************
+
+``applyMarginToList()`` function:
+***************************************
+
+``getGrowthList()`` function:
+***************************************
+
+``toM()`` function:
+***************************************
+
+``toK()`` function:
+***************************************
+
+``monitor()`` function:
+***************************************
+
+``Description()`` function:
+***************************************
 
 .. note::
 
