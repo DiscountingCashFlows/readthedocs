@@ -40,6 +40,7 @@ The advantage of using ``$.when().done()`` is that we submit all requests at onc
 You can think about it like going to the grocery:
 
  Method 1: You can purchase item1, return home, go back to the grocery, purchase item2, return home, go back to the grocery store, purchase the last item3 and return home and then start cooking.
+ 
  Method 2: You can also (and probably should) go to the grocery and purchase item1, item2 and item3 simultaneously and then return home with all the groceries and start cooking.
  
 So, you'd probably want to stick to method 2 because it saves a lot of time. And that's exactly what ``$.when().done()`` does. It retrieves all data at once and once it is ``done()``, it can begin processing the data.
