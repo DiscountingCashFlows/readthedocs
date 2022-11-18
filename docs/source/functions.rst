@@ -47,6 +47,55 @@ The ``print()`` function prints values and messages to the screen. Below are exa
   >>> Rate: 123.00% 
   
   
+  ``Input()`` function and ``setInputDefault()``:
+-------------------------------------------------
+  
+The ``Input()`` function holds the interactive assumptions data, which the user is able tweak and play around with.
+
+We usually use UPPERCASE when defining INPUT variables, so that we know it is referring to an input, but you can use whichever case you want.
+
+The variable name will be formatted like so:
+
+  ``INPUT.NUMBER_ONE`` -> Number One
+  ``INPUT.Number_Two`` -> Number Two
+  ``INPUT.number_three`` -> Number Three
+
+Use '_' to refer to a rate:
+  ``INPUT._RATE: 10`` -> Will translate to 10% or 0.1
+ 
+Use ``setInputDefault()`` to set an INPUT value:
+  ``INPUT.CALCULATED: ''``
+  
+  ``setInputDefault('CALCULATED', 10);``
+
+.. code-block:: javascript
+
+  var INPUT = Input({NUMBER: 5,  // Plain number 5
+                     CALCULATED_NUMBER: '',  // Number will be calculated later on
+                     _RATE: 5,  // Plain rate 5%
+                     _CALCULATED_RATE: '',  // Rate that will be calculated later on
+                    }); 
+  $.when().done(
+      function(){
+        // Set the INPUT.CALCULATED_NUMBER to 1.23
+        setInputDefault('CALCULATED_NUMBER', 1.23);
+
+        // Set the INPUT._CALCULATED_RATE to 1.23%
+        setInputDefault('_CALCULATED_RATE', 1.23);
+        
+        print(INPUT.NUMBER, 'INPUT.NUMBER');
+        >>> INPUT.NUMBER: 5 
+        
+        print(INPUT.CALCULATED_NUMBER, 'INPUT.CALCULATED_NUMBER');
+        >>> INPUT.CALCULATED_NUMBER: 1.23 
+        
+        print(INPUT._RATE, 'INPUT._RATE');
+        >>> INPUT._RATE: 0.05 
+        
+        print(INPUT._CALCULATED_RATE, 'INPUT._CALCULATED_RATE');
+        >>> INPUT._CALCULATED_RATE: 0.0123 
+  });
+
 .. note::
 
-   Please note that this is under active development.
+   Please note that this section is currently under active development.
