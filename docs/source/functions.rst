@@ -57,13 +57,17 @@ We usually use UPPERCASE when defining INPUT variables, so that we know it is re
 The variable name will be formatted like so:
 
   ``INPUT.NUMBER_ONE`` -> Number One
+  
   ``INPUT.Number_Two`` -> Number Two
+  
   ``INPUT.number_three`` -> Number Three
 
 Use '_' to refer to a rate:
+
   ``INPUT._RATE: 10`` -> Will translate to 10% or 0.1
  
 Use ``setInputDefault()`` to set an INPUT value:
+
   ``INPUT.CALCULATED: ''``
   
   ``setInputDefault('CALCULATED', 10);``
