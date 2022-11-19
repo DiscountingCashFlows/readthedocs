@@ -180,7 +180,12 @@ Arguments of ``fillHistoricUsingReport(report, key, measure)``
  
  * ``key`` - This is the historic data series key that you'll want to fill the chart with (for historic revenues use key 'revenue')
  
- * ``measure`` - Has 3 options: 'M', 'K' or left blank. Use 'M' when you want to format the numbers to millions (divide by 1,000,000). Use 'K'when you want to format the numbers to thosands (divide by 1,000) or leave blank when you don't want any number formatting.
+ * ``measure`` - Has 3 options: 'M', 'K' or left blank. 
+  Use 'M' when you want to format the numbers to millions (divide by 1,000,000). 
+  Use 'K'when you want to format the numbers to thosands (divide by 1,000).
+  Leave blank when you don't want any number formatting.
+
+Example:
 
 .. code-block:: javascript
  
@@ -195,18 +200,22 @@ Arguments of ``fillHistoricUsingReport(report, key, measure)``
 
 This function is used when we want to add a list to the chart.
 
-Arguments of ``fillHistoricUsingReport(report, key, measure)``
+Arguments of ``fillHistoricUsingList(list, key, endingYear)``
 
- * ``list`` - The actual list that will be added to the chart.
+ * ``list`` - The list of historic values that will be added to the chart (Example: [1, 2, 3, 4])
  
  * ``key`` - This is the historic data series key that you'll want to fill the chart with (for historic revenues use key 'revenue').
  
  * ``endingYear`` - This is the year when the list ends. Note: Specify only if ``fillHistoricUsingReport()`` was not used before. If ``fillHistoricUsingReport()`` has been used, then the ending year will be the report's ending year.
 
+Example with ``endingYear``:
+
 .. code-block:: javascript
  
  // Adds to the chart the data series [1, 2, 3, 4] labeled as 'My List' ending in year 2022
  fillHistoricUsingList([1, 2, 3, 4], 'myList', 2022);
+ 
+Example without ``endingYear``:
  
 .. code-block:: javascript
 
@@ -217,8 +226,33 @@ Arguments of ``fillHistoricUsingReport(report, key, measure)``
 ``forecast()`` function:
 ************************
 
+The forecast function adds forecasted points to the chart. These points can be considered as 'assumptions' on the chart. For example, we could project the next 10 years of free cash flow and, by using the forecast function, we can make each forecasted point draggable and editable in the forecast table.
+
+.. note::
+
+ The forecasted points on the chart also have a forecast table right underneath the chart, where each forecasted point of the chart is linked to a cell in the table.
+
+.. warning::
+ To use the ``forecast()`` function correctly, you need to have filled some historic data, either by using ``fillHistoricUsingReport()`` or ``fillHistoricUsingList()``. This is for the function to know the starting year of the forecast.
+
+Arguments of ``forecast(list, key, settings)``
+
+ * ``list`` - The list of forecasted points that will be added to the chart (Example: [1, 2, 3, 4]).
+ 
+ * ``key`` - This is the key of the data series you are trying to forecast (for forecasting revenues use key 'revenue').
+ 
+ * ``settings`` - Has 2 options: 'chartHidden' or left blank.
+  'chartHidden' is for hiding values from being displayed in the chart. This is useful when we need to forecast rates and ratios, that are too small to be displayed on the chart.
+  Leave blank if you want to display the forecasted list to the chart.
+
+Example:
+
+.. code-block:: javascript
+
+ // TODO...
+
 ``renderChart()`` function:
-***************************************
+***************************
 
 Some technical explanation for when the rendering happens: 
 
