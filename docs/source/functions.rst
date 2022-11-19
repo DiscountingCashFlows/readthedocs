@@ -128,6 +128,8 @@ For example, if we wanted to set an assumption (``INPUT._TREASURY_YIELD``) to th
   
   ``setInputDefault('_TREASURY_YIELD', treasury['year10']);``
 
+Here is a code example of defining and setting assumptions:
+
 .. code-block:: javascript
 
   var INPUT = Input({NUMBER: 5,  // Plain number 5
@@ -159,17 +161,75 @@ For example, if we wanted to set an assumption (``INPUT._TREASURY_YIELD``) to th
 Displaying a Chart:
 -------------------
 
+The following functions can be used to display a chart to the screen. The flow of creating a chart is:
+
+ #. Step 1. Fill the historic data (for example the company's historic revenues, net income, etc.) by using either ``fillHistoricUsingReport()`` or ``fillHistoricUsingList()``, whichever you find easier to setup.
+ 
+ #. Step 2. Fill the forecasted data by using ``forecast()``. This data represents the 'assumptions' for the chart (for example predicting future revenues).
+ 
+ #. Step 3. Be sure to render the chart or else it won't be shown on the screen.
+
 ``fillHistoricUsingReport()`` function:
 ***************************************
 
+This function makes things really quick and easy when you want to add historic financial data in the chart from an existing report(income statement, balance sheet, etc.).
+
+Arguments of ``fillHistoricUsingReport(report, key, measure)``
+
+ * ``report`` - The report object from the API. For example: income statement.
+ 
+ * ``key`` - This is the historic data series key that you'll want to fill the chart with (for historic revenues use key 'revenue')
+ 
+ * ``measure`` - Has 3 options: 'M', 'K' or left blank. Use 'M' when you want to format the numbers to millions (divide by 1,000,000). Use 'K'when you want to format the numbers to thosands (divide by 1,000) or leave blank when you don't want any number formatting.
+
+.. code-block:: javascript
+ 
+ // Adds the full history of eps from the income statements
+ fillHistoricUsingReport(income, 'eps');
+ 
+ // Adds the revenues, formatted to millions, of the last 10 years of income statements
+ fillHistoricUsingReport(income.slice(0,10), 'revenue', 'M');
+ 
 ``fillHistoricUsingList()`` function:
 ***************************************
 
+This function is used when we want to add a list to the chart.
+
+Arguments of ``fillHistoricUsingReport(report, key, measure)``
+
+ * ``list`` - The actual list that will be added to the chart.
+ 
+ * ``key`` - This is the historic data series key that you'll want to fill the chart with (for historic revenues use key 'revenue').
+ 
+ * ``endingYear`` - This is the year when the list ends. Note: Specify only if ``fillHistoricUsingReport()`` was not used before. If ``fillHistoricUsingReport()`` has been used, then the ending year will be the report's ending year.
+
+.. code-block:: javascript
+ 
+ // Adds to the chart the data series [1, 2, 3, 4] labeled as 'My List' ending in year 2022
+ fillHistoricUsingList([1, 2, 3, 4], 'myList', 2022);
+ 
+.. code-block:: javascript
+
+ // The ending year will be the report's ending year.
+ fillHistoricUsingReport(income.slice(0,10), 'revenue', 'M');
+ fillHistoricUsingList([1, 2, 3, 4], 'myList');
+ 
 ``forecast()`` function:
 ************************
 
 ``renderChart()`` function:
 ***************************************
+
+Some technical explanation for when the rendering happens: 
+
+ In  `valuation-functions.js <https://github.com/DiscountingCashFlows/Documentation/blob/main/source-code/valuation-functions.js>`__ there is a global object that stores all chart data called ``_chart_data`` which has the following members:
+  * ``x_historic`` - This is the X-Axis for the historic data, where we usually store years (for example 2012 - 2022, a historic period of 10 years).
+  * ``x_forecasted`` - This is the X-Axis for the forecasted data (for example 2022 - 2032, a future period of 10 years).
+  * ``y_historic`` - This is the Y-Axis for historic data, where we store historic revenue, net income, etc.
+  * ``y_forecasted`` - This is the Y-Axis for future data (future revenue, net income, etc.).
+  * ``y_forecasted_chart_hidden`` - This is not actually visible on the chart. It is a part of the forecast table. Please, refer to the ``forecast()`` section.
+  * ``name`` - This is the title of the chart.
+  * ``hidden_series`` - This controls the visibility of individual data series (when we hide revenues for example, it will be stored here).
 
 Displaying a Table:
 -------------------
