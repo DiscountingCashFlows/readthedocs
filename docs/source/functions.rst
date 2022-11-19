@@ -1,7 +1,7 @@
 Valuation functions
 ====================
 
-The following functions are found in `DiscountingCashFlows/Documentation/source-code/valuation-functions.js <https://github.com/DiscountingCashFlows/Documentation/blob/main/source-code/valuation-functions.js>`__. We will cover each function and its use cases.
+The following functions are found in `DiscountingCashFlows/Documentation/source-code/valuation-functions.js <https://github.com/DiscountingCashFlows/Documentation/blob/main/source-code/valuation-functions.js>`__ with the exception of ``$.when().done()`` function. We will cover each function and its use cases.
 
 ``$.when().done()`` function:
 ---------------------
@@ -39,7 +39,7 @@ The advantage of using ``$.when().done()`` is that we submit all requests at onc
 
 You can think about it like going to the grocery:
 
- Method 1: You can purchase item1, return home, go back to the grocery, purchase item2, return home, go back to the grocery store, purchase the last item3 and return home and then start cooking.
+ Method 1: You can go to the grocery, purchase item1, return home, go back to the grocery, purchase item2, return home, go back to the grocery store, purchase the last item3 and return home and then start cooking.
  
  Method 2: You can also (and probably should) go to the grocery and purchase item1, item2 and item3 simultaneously and then return home with all the groceries and start cooking.
  
@@ -92,11 +92,11 @@ The ``print()`` function prints values and messages to the screen. Below are exa
 Setting assumptions:
 --------------------
 
-Assumptions are set either static or dynamically.
+Assumptions are set either statically or dynamically.
 
-- ``static`` : We know what the assumption will be (Example: INPUT.GROWTH_YEARS: 5 - it will be 5 growth years by default)
+- ``static`` : We have a default value for the assumption (Example: INPUT.GROWTH_YEARS: 5 - it will be 5 growth years by default)
 
-- ``dynamic``: We need to calculate or retrieve the data from the API (Example: INPUT._TREASURY_YIELD: '' - needs to be filled with the us 10 year treasury yield using ``setInputDefault()`` function down below)
+- ``dynamic``: We can set the assumption by using ``setInputDefault()`` (Example: INPUT._TREASURY_YIELD: '' - needs to be filled dynamically with the us 10 year treasury yield)
 
 ``Input()`` function:
 *********************
