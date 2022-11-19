@@ -181,9 +181,12 @@ Arguments of ``fillHistoricUsingReport(report, key, measure)``
  * ``key`` - This is the historic data series key that you'll want to fill the chart with (for historic revenues use key 'revenue')
  
  * ``measure`` - Has 3 options: 'M', 'K' or left blank. 
-  Use 'M' when you want to format the numbers to millions (divide by 1,000,000). 
-  Use 'K'when you want to format the numbers to thosands (divide by 1,000).
-  Leave blank when you don't want any number formatting.
+ 
+  * Use 'M' when you want to format the numbers to millions (divide by 1,000,000). 
+  
+  * Use 'K'when you want to format the numbers to thosands (divide by 1,000).
+  
+  * Leave blank when you don't want any number formatting.
 
 Example:
 
@@ -206,7 +209,11 @@ Arguments of ``fillHistoricUsingList(list, key, endingYear)``
  
  * ``key`` - This is the historic data series key that you'll want to fill the chart with (for historic revenues use key 'revenue').
  
- * ``endingYear`` - This is the year when the list ends. Note: Specify only if ``fillHistoricUsingReport()`` was not used before. If ``fillHistoricUsingReport()`` has been used, then the ending year will be the report's ending year.
+ * ``endingYear`` - This is the year when the list ends. 
+ 
+.. note::
+ 
+ Specify only if ``fillHistoricUsingReport()`` was not used before. If ``fillHistoricUsingReport()`` has been used, then the ending year will be the report's ending year.
 
 Example with ``endingYear``:
 
@@ -242,8 +249,10 @@ Arguments of ``forecast(list, key, settings)``
  * ``key`` - This is the key of the data series you are trying to forecast (for forecasting revenues use key 'revenue').
  
  * ``settings`` - Has 2 options: 'chartHidden' or left blank.
-  'chartHidden' is for hiding values from being displayed in the chart. This is useful when we need to forecast rates and ratios, that are too small to be displayed on the chart.
-  Leave blank if you want to display the forecasted list to the chart.
+ 
+  * 'chartHidden' is for hiding values from being displayed in the chart. This is useful when we need to forecast rates and ratios, that are too small to be displayed on the chart.
+  
+  * Leave blank if you want to display the forecasted list to the chart.
 
 Example:
 
