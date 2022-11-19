@@ -182,11 +182,11 @@ Arguments of ``fillHistoricUsingReport(report, key, measure)``
  
  * ``measure`` - Has 3 options: 'M', 'K' or left blank. 
  
-  * Use 'M' when you want to format the numbers to millions (divide by 1,000,000). 
+  #. Use 'M' when you want to format the numbers to millions (divide by 1,000,000). 
   
-  * Use 'K'when you want to format the numbers to thosands (divide by 1,000).
+  #. Use 'K'when you want to format the numbers to thosands (divide by 1,000).
   
-  * Leave blank when you don't want any number formatting.
+  #. Leave blank when you don't want any number formatting.
 
 Example:
 
@@ -250,15 +250,28 @@ Arguments of ``forecast(list, key, settings)``
  
  * ``settings`` - Has 2 options: 'chartHidden' or left blank.
  
-  * 'chartHidden' is for hiding values from being displayed in the chart. This is useful when we need to forecast rates and ratios, that are too small to be displayed on the chart.
+  #. 'chartHidden' is for hiding values from being displayed in the chart. This is useful when we need to forecast rates and ratios, that are too small to be displayed on the chart.
   
-  * Leave blank if you want to display the forecasted list to the chart.
+  #. Leave blank if you want to display the forecasted list to the chart.
+
+The function returns the list with any user edits. For example, if we forecast array [1, 2, 3, 4] and the user changes value number 2 to 5, then the function will return array [1, 5, 3, 4].
 
 Example:
 
 .. code-block:: javascript
 
- // TODO...
+ // Fill the chart with the revenues in the last 10 years of income statements, formatted to millions
+ fillHistoricUsingReport(income.slice(0,10), 'revenue', 'M');
+
+ // We will build a revenue forecast based on the last annual revenue reported in the income statement
+ // We also need to convert the value to millions toM(), because the forecast function does not support number formatting
+ var lastRevenue = toM(income[0].revenue);  
+ 
+ // To make a forecast example, we will assume the revenue grows 5% each year for 3 years
+ var forecastedRevenue = [lastRevenue * 1.05, 
+                          lastRevenue * Math.pow(1.05, 2), 
+                          lastRevenue * Math.pow(1.05, 3)];
+ var forecastedRevenue = forecast(forecastedRevenue, 'revenue');
 
 ``renderChart()`` function:
 ***************************
