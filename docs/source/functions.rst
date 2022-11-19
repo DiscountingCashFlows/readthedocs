@@ -291,55 +291,79 @@ Displaying a Table:
 -------------------
 
 ``toColumn()`` function:
-***************************************
+************************
 
 Utility functions:
 -------------------
 
 ``currencyRate()`` function:
-***************************************
+****************************
 
 ``newArrayFill()`` function:
-***************************************
+****************************
 
 ``arrayValuesToRates()`` function:
-***************************************
+**********************************
 
 ``getArraySum()`` function:
-***************************************
+***************************
 
 ``getGrowthRateList()`` function:
-***************************************
+*********************************
 
 ``addKey()`` function:
-***************************************
+**********************
 
 ``linearRegressionGrowthRate()`` function:
-***************************************
+******************************************
 
 ``averageMargin()`` function:
-***************************************
+*****************************
 
 ``averageGrowthRate()`` function:
-***************************************
+*********************************
 
 ``applyMarginToList()`` function:
-***************************************
+*********************************
 
 ``getGrowthList()`` function:
-***************************************
+*****************************
 
 ``toM()`` function:
-***************************************
+*******************
+
+Formats the given number to millions. Basically it divides the input by 1,000,000. For example, 123,456,789,000 is formatted to 123,456.789
+
+.. code-block::
+
+ print(toM(123456789000), 'toM()');
+ >>> toM(): 123456.789 
 
 ``toK()`` function:
-***************************************
+*******************
+
+Formats the given number to thousands. Basically it divides the input by 1,000. For example, 123,456,789 is formatted to 123,456.789
+
+.. code-block::
+
+ print(toK(123456789), 'toK()');
+ >>> toK(): 123456.789 
+
 
 ``monitor()`` function:
-***************************************
+***********************
 
 ``Description()`` function:
-***************************************
+***************************
+
+The ``Description()`` function serves as a quick readme for the model and it is shown at the top of each model. It supports html formatting, so you can style it any way you want.
+
+.. code-block:: javascript
+
+ Description(`<h5>Base Model Code</h5>
+             <p>This is the base code for writing valuation models.</p>
+             <p class='text-center'>Read more: <a href='https://github.com/DiscountingCashFlows/Documentation/' target='_blank'><i class="fab fa-github"></i> GitHub Documentation</a></p>
+             `);
 
 .. note::
 
