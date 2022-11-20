@@ -293,6 +293,15 @@ Displaying a Table:
 ``toColumn()`` function:
 ************************
 
+``monitor()`` function:
+***********************
+
+This function can render the table to the screen, similar to the ``renderChart()`` function, but has a little more complexity.
+
+.. note::
+
+ The ``monitor()`` function is also used by the ``print()`` function to render prints, but we don't recommend printing using the ``monitor()`` function. Print example: ``{name:'Revenue', display:'value', data:1,000,000,000, currency: 'USD'}`` -> Will display ``Revenue: 1,000,000,000 USD``
+
 Utility functions:
 -------------------
 
@@ -348,10 +357,6 @@ Formats the given number to thousands. Basically it divides the input by 1,000. 
 
  print(toK(123456789), 'toK()');
  >>> toK(): 123456.789 
-
-
-``monitor()`` function:
-***********************
 
 ``Description()`` function:
 ***************************
