@@ -3,6 +3,10 @@ Valuation functions
 
 The following functions are found in `DiscountingCashFlows/Documentation/source-code/valuation-functions.js <https://github.com/DiscountingCashFlows/Documentation/blob/main/source-code/valuation-functions.js>`__ with the exception of ``$.when().done()`` function. We will cover each function and its use cases.
 
+.. note::
+
+   Please note that this section is currently under active development. Some functions may not be up to date. If you find any outdated functions, please let us know `here <https://discountingcashflows.com/help/>`__
+
 ``$.when().done()`` function:
 ---------------------
 
@@ -201,13 +205,13 @@ Example:
 ``fillHistoricUsingList()`` function:
 ***************************************
 
-This function is used when we want to add a list to the chart.
+Adds a list to the chart.
 
 Arguments of ``fillHistoricUsingList(list, key, endingYear)``
 
  * ``list`` - The list of historic values that will be added to the chart (Example: [1, 2, 3, 4])
  
- * ``key`` - This is the historic data series key that you'll want to fill the chart with (for historic revenues use key 'revenue').
+ * ``key`` - This is the historic data series key that you'll want to fill the chart with (for example: use key 'revenue' for historic revenues).
  
  * ``endingYear`` - This is the year when the list ends. 
  
@@ -240,6 +244,7 @@ The forecast function adds forecasted points to the chart. These points can be c
  The forecasted points on the chart also have a forecast table right underneath the chart, where each forecasted point of the chart is linked to a cell in the table.
 
 .. warning::
+
  To use the ``forecast()`` function correctly, you need to have filled some historic data, either by using ``fillHistoricUsingReport()`` or ``fillHistoricUsingList()``. This is for the function to know the starting year of the forecast.
 
 Arguments of ``forecast(list, key, settings)``
@@ -290,13 +295,52 @@ Some technical explanation for when the rendering happens:
 Displaying a Table:
 -------------------
 
-``toColumn()`` function:
+Tables use row headers as keys (revenue, net income, etc.) and column headers as years (2022, 2023, etc.) and all other cells are actual values.
+
+The following example renders a chart with historic revenues and net income:
+
+.. code-block::
+
+ // The context array is used to hold table data
+ var context = [];
+ // Add 2 rows
+ var rows = ['Revenues', 'Net Income'];
+ lastYearDate = parseInt(income[0]['date']);
+ // Add columns, starting with the income reports first year and ending with the last year
+ var columns = [];
+ for(var i=1; i <= income.length; i++){
+   columns.push(lastYearDate - i);
+ }
+ // Add the table data
+ var data = [toList(income, 'revenue', 'M'), toList(income, 'netIncome', 'M')];
+ // Add the chart to the context
+ context.push({name:'Full history of data', display:'table', rows:rows, columns:columns, data:data});
+ // Render the chart
+ monitor(context);
+
+.. warning::
+
+ The table functions are under active development and may change in the future.
+
+``toArray()`` function:
 ************************
 
+This function is used when adding rows to the table from a report retrieved from the API.
+
+It returns a list of values from the report provided.
+
+Arguments of ``toArray(report, key, measure)``
+
+ * ``report`` - The report object from the API. For example: income statement.
+ 
+ * ``key`` - This is the historic data series key that you'll want to fill the table with (for historic revenues use key 'revenue')
+ 
+ * ``measure`` - Has 3 options: 'M', 'K' or left blank.
+ 
 ``monitor()`` function:
 ***********************
 
-This function can render the table to the screen, similar to the ``renderChart()`` function, but has a little more complexity.
+This function can render the table to the screen, similar to the ``renderChart()`` function, but it also has a little more functionality.
 
 .. note::
 
@@ -305,26 +349,166 @@ This function can render the table to the screen, similar to the ``renderChart()
 Utility functions:
 -------------------
 
-``currencyRate()`` function:
+``fxRate()`` function:
 ****************************
+
+Retrieves the FX Rate of conversion between 2 currencies.
+
+Arguments of ``fxRate(fx, fromCurrency, toCurrency)``
+
+ * ``fx`` - The report object from the API. For example: income statement.
+ 
+ * ``fromCurrency`` - This is the historic data series key that you'll want to fill the table with (for historic revenues use key 'revenue')
+ 
+ * ``toCurrency`` - Has 3 options: 'M', 'K' or left blank.
+
+.. code-block::
+
+ $.when(
+   get_fx()).done(
+   function(_fx){
+     var fx = JSON.parse(JSON.stringify(_fx));
+     var fxRate = fxRate(fx,  'USD', 'EUR');
+     print(fxRate, 'FX Rate');
+   });
+   
+   >>> FX Rate: 0.9766 
 
 ``newArrayFill()`` function:
 ****************************
 
+Returns a new array with a specified length of the same object.
+ 
+Arguments of ``newArrayFill(length, fillObject)``
+
+ * ``length`` - The length of the new array
+ 
+ * ``fillObject`` - The object the array will be filled with. Could be a number, a string or an object.
+ 
+.. code-block::
+
+ // Array filled of length 10 filled with zeros
+ var testArray = newArrayFill(10, 0);
+ print(testArray, 'Test Array');
+ 
+ >>> Test Array: 0,0,0,0,0,0,0,0,0,0
+
 ``arrayValuesToRates()`` function:
 **********************************
+
+Converts an array of values to an array of rate strings. For example, 0.1 is converted to '10%'
+
+.. code-block::
+
+ // Make a new array of values of length 3 and 0.5 values
+ var valuesArray = newArrayFill(3, 0.5);
+ // Convert to rates, these are string format, do not use as numbers
+ var ratesArray = arrayValuesToRates(valuesArray);
+ print(ratesArray, 'Rates Array');
+ 
+ >>> Rates Array: 50%,50%,50% 
 
 ``getArraySum()`` function:
 ***************************
 
+Get the sum of all elements in an array of numbers.
+
+.. code-block::
+
+ // Make a new array of values
+ var valuesArray = [1, 2, 3, 4];
+ // Get the sum of all elements in the array
+ var sum = getArraySum(valuesArray);
+ print(sum, 'Sum of all elements');
+
+ >>> Sum of all elements: 10 
+
 ``getGrowthRateList()`` function:
 *********************************
+
+Returns an array of growth rates based on a given input array of values.
+
+Arguments of ``getGrowthRateList(values, mode)``
+
+ * ``values`` - The array of values.
+ 
+ * ``mode`` - Has 2 options: 'percentage' or left blank
+ 
+  #. 'percentage' - will return rate strings
+  
+  #. Leave blank - will return numbers
+  
+.. code-block::
+
+ // Dividend Growth Rates
+ var dividends = [0.5, 0.6, 0.7, 0.8, 0.9, 1];
+ var dividendGrowth = getGrowthRateList(dividends, 'percentage');
+ print(dividendGrowth, 'Dividend Growth Rates (as %)');
+ var dividendGrowth = getGrowthRateList(dividends);
+ print(dividendGrowth, 'Dividend Growth Rates');
+ 
+ >>> Dividend Growth Rates (as %): ,20.00%,16.67%,14.29%,12.50%,11.11% 
+ >>> Dividend Growth Rates: 0,0.19999999999999996,0.16666666666666663,0.142857142857143,0.12499999999999997,0.11111111111111108 
 
 ``addKey()`` function:
 **********************
 
+Add a data series from one report to another. Add revenues (which is located in the income statements) to all cash flow statements.
+
+.. code-block::
+
+ $.when(
+   get_income_statement(),
+   get_cash_flow_statement()).done(
+   function(_income, _flows){
+     var income = JSON.parse(JSON.stringify(_income));
+     var flows = JSON.parse(JSON.stringify(_flows));
+
+     income = income[0];
+     flows = flows[0];
+
+     // Add the revenue key to the flows report
+     flows = addKey('revenue', income, flows);
+
+     // Press F12 or right-click to inspect console output
+     console.log(flows);
+ });
+
 ``linearRegressionGrowthRate()`` function:
 ******************************************
+
+Create a linear regression array from a report. 
+
+For example, create a regression line for historic revenues, present in the income statement.
+
+Arguments of ``linearRegressionGrowthRate(key, report, years, slope)``
+
+ * ``key`` - The key of the data series (For example 'revenue')
+ 
+ * ``report`` - The report which contains the data series
+ 
+ * ``years`` - The number of years the regression line will continue into the future
+ 
+ * ``slope`` - The level of inclination of the regression line. <0 for inverse inclination, 0 for flat, 1 for normal, >1 for steeper curve
+
+.. code-block::
+
+ $.when(
+   get_income_statement()).done(
+   function(_income){
+     var income = JSON.parse(JSON.stringify(_income));
+
+     var projection_years = 5;
+     var slope_value = 1;
+
+     var linRevenue = linearRegressionGrowthRate('revenue', income, projection_years, slope_value);
+     for(var i in linRevenue){
+       linRevenue[i] = toM(linRevenue[i]);
+     }
+     fillHistoricUsingReport(income, 'revenue', 'M');
+     fillHistoricUsingList(linRevenue, 'regressionRevenue');
+     renderChart('Revenues');
+ });
 
 ``averageMargin()`` function:
 *****************************
@@ -369,7 +553,3 @@ The ``Description()`` function serves as a quick readme for the model and it is 
              <p>This is the base code for writing valuation models.</p>
              <p class='text-center'>Read more: <a href='https://github.com/DiscountingCashFlows/Documentation/' target='_blank'><i class="fab fa-github"></i> GitHub Documentation</a></p>
              `);
-
-.. note::
-
-   Please note that this section is currently under active development.
