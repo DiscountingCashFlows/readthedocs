@@ -54,7 +54,7 @@ So, you'd probably want to stick to method 2 because it saves a lot of time. And
 ``print()`` function:
 ---------------------
 
-The ``print()`` function prints values and messages to the screen. Below are examples of usage types:
+Prints values and messages to the screen. Below are examples of usage types:
 
 .. code-block:: javascript
 
@@ -165,7 +165,7 @@ Here is a code example of defining and setting assumptions:
 Displaying a Chart:
 -------------------
 
-The following functions can be used to display a chart to the screen. The flow of creating a chart is:
+The flow of creating a chart is:
 
  #. Step 1. Fill the historic data (for example the company's historic revenues, net income, etc.) by using either ``fillHistoricUsingReport()`` or ``fillHistoricUsingList()``, whichever you find easier to setup.
  
@@ -176,7 +176,7 @@ The following functions can be used to display a chart to the screen. The flow o
 ``fillHistoricUsingReport()`` function:
 ***************************************
 
-This function makes things really quick and easy when you want to add historic financial data in the chart from an existing report(income statement, balance sheet, etc.).
+Adds a data series ('revenue', 'netIncome') to the chart from a given report. This function makes things really quick and easy when you want to add historic financial data in the chart from an existing report(income statement, balance sheet, etc.).
 
 Arguments of ``fillHistoricUsingReport(report, key, measure)``
 
@@ -237,7 +237,7 @@ Example without ``endingYear``:
 ``forecast()`` function:
 ************************
 
-The forecast function adds forecasted points to the chart. These points can be considered as 'assumptions' on the chart. For example, we could project the next 10 years of free cash flow and, by using the forecast function, we can make each forecasted point draggable and editable in the forecast table.
+Adds forecasted points to the chart. These points can be considered as 'assumptions' on the chart. For example, we could project the next 10 years of free cash flow and, by using the forecast function, we can make each forecasted point draggable and editable in the forecast table.
 
 .. note::
 
@@ -259,7 +259,7 @@ Arguments of ``forecast(list, key, settings)``
   
   #. Leave blank if you want to display the forecasted list to the chart.
 
-The function returns the list with any user edits. For example, if we forecast array [1, 2, 3, 4] and the user changes value number 2 to 5, then the function will return array [1, 5, 3, 4].
+Returns the list with any user edits. For example, if we forecast list [1, 2, 3, 4] and the user changes index [1] value (current value is 2) to 5, then the function will return list [1, 5, 3, 4].
 
 Example:
 
@@ -322,14 +322,12 @@ The following example renders a chart with historic revenues and net income:
 
  The table functions are under active development and may change in the future.
 
-``toArray()`` function:
+``toList()`` function:
 ************************
 
-This function is used when adding rows to the table from a report retrieved from the API.
+Adds rows to the table from a report retrieved from the API. It then returns a list of values from the report provided.
 
-It returns a list of values from the report provided.
-
-Arguments of ``toArray(report, key, measure)``
+Arguments of ``toList(report, key, measure)``
 
  * ``report`` - The report object from the API. For example: income statement.
  
@@ -337,10 +335,20 @@ Arguments of ``toArray(report, key, measure)``
  
  * ``measure`` - Has 3 options: 'M', 'K' or left blank.
  
+.. code-block::
+   $.when(
+     get_income_statement()).done(
+     function(_income){
+       var income = JSON.parse(JSON.stringify(_income));
+       print(toList(income.slice(0,5), 'revenue', 'M'), 'List of revenues');
+   });
+   
+   >>> List of revenues: 394328,365817,274515,260174,265595 
+ 
 ``monitor()`` function:
 ***********************
 
-This function can render the table to the screen, similar to the ``renderChart()`` function, but it also has a little more functionality.
+Renders the table to the screen, similar to the ``renderChart()`` function, but it also has a little more functionality.
 
 .. note::
 
