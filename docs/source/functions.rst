@@ -481,7 +481,7 @@ Create a linear regression array from a report.
 
 For example, create a regression line for historic revenues, present in the income statement.
 
-Arguments of ``linearRegressionGrowthRate(key, report, years, slope)``
+Arguments of ``linearRegressionGrowthRate(key, report, years, slope)``:
 
  * ``key`` - The key of the data series (For example 'revenue')
  
@@ -513,14 +513,101 @@ Arguments of ``linearRegressionGrowthRate(key, report, years, slope)``
 ``averageMargin()`` function:
 *****************************
 
+Calculates the historic average of one data series (key1) divided by another data series (key2) from the provided report.
+
+Arguments of ``averageMargin(key1, key2, report)``:
+
+ * ``key1`` - The key of the data series number 1 (For example 'netIncome')
+ 
+ * ``key2`` - The key of the data series number 2 (For example 'revenue')
+ 
+ * ``report`` - The report retrieved from the API that contains the two keys.
+
+.. code-block::
+
+   $.when(
+     get_income_statement()).done(
+     function(_income){
+       var income = JSON.parse(JSON.stringify(_income));
+
+       var averageNetIncomeMargin = averageMargin('netIncome', 'revenue', income);
+       print(averageNetIncomeMargin, 'Average Net Income Margin', '%');
+   });
+   
+   >>> Average Net Income Margin: 11.45% 
+
 ``averageGrowthRate()`` function:
 *********************************
+
+Calculates the average growth rate of all growth rates of a data series from a given report.
+
+Arguments of ``averageGrowthRate(key, report)``:
+
+ * ``key`` - The key of the data series (For example 'revenue')
+ 
+ * ``report`` - The report retrieved from the API that contains the data series.
+
+.. code-block::
+
+   $.when(
+     get_income_statement()).done(
+     function(_income){
+       var income = JSON.parse(JSON.stringify(_income));
+      // Average Revenue Growth Rate
+       print(averageGrowthRate('revenue', income), 'Average Revenue Growth Rate', '%');
+   });
+   
+   >>> Average Revenue Growth Rate: 18.00% 
 
 ``applyMarginToList()`` function:
 *********************************
 
+Multiplies all elements of a list by a given margin.
+
+Arguments of ``applyMarginToList(list, margin)``:
+
+ * ``list`` - The list of values.
+ 
+ * ``margin`` - The margin you want to apply.
+
+.. code-block::
+
+   var listOfNumbers = [1, 2, 3, 4, 5];
+   print(applyMarginToList(listOfNumbers, 0.5), 'Margin of list');
+   
+   >>> Margin of list: 0.5,1,1.5,2,2.5 
+
 ``getGrowthList()`` function:
 *****************************
+
+Calculates future values of a data series from a given report based on a given rate.
+
+Arguments of ``getGrowthList(report, key, length, rate)``:
+
+ * ``report`` - The report that contains the data series.
+ 
+ * ``key`` - The key of the data series you want to grow
+
+ * ``length`` - The number of projected years
+ 
+ * ``rate`` - The rate at which you project growth
+ 
+.. code-block::
+ 
+   $.when(
+     get_income_statement()).done(
+     function(_income){
+       var income = JSON.parse(JSON.stringify(_income));
+       var growthYears = 3;
+       var growthRate = 0.1;  // 10%
+
+       print(income[0].revenue, 'Last revenue')
+      // Average Revenue Growth Rate
+       print(getGrowthList(income[0], 'revenue', growthYears, growthRate), 'List of future revenues');
+   });
+   
+   >>> Last revenue: 394328000000 
+   >>> List of future revenues: 433760800000.00006,477136880000.00006,524850568000.0002 
 
 ``toM()`` function:
 *******************
