@@ -196,13 +196,18 @@ Example:
 
 .. code-block:: javascript
  
-   // Adds the full history of eps from the income statements
-   fillHistoricUsingReport(income, 'eps');
+   $.when(
+     get_income_statement()).done(
+     function(_income){
+       var income = JSON.parse(JSON.stringify(_income));
+       // Adds the full history of eps from the income statements
+       fillHistoricUsingReport(income, 'eps');
 
-   // Adds the revenues, formatted to millions, of the last 10 years of income statements
-   fillHistoricUsingReport(income.slice(0,10), 'revenue', 'M');
- 
-   renderChart('Example chart');
+       // Adds the revenues, formatted to millions, of the last 10 years of income statements
+       fillHistoricUsingReport(income.slice(0,10), 'revenue', 'M');
+
+       renderChart('Example chart');
+   });
  
 ``fillHistoricUsingList()`` function:
 ***************************************
