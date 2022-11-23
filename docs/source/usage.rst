@@ -44,7 +44,7 @@ To run your code, you need to fill in a Ticker (Example: ``AAPL`` for Apple Inc.
 This retrieves the company's profile data and prints out a ``Hello World`` message, the company's name, the last stock price and the company's website.
 
 Press F12 or right-click and Inspect the page, and you will see an expandable object. This is the profile object that we have logged using ``console.log(profile);``.
-If you expand it, you will see all the properties the object has. These properties are information about the company such as the company's full name. We printed it using ``profile.companyName``.
+If you expand it, you will see all the properties the object has. These properties are information about the company such as the company's full name (``profile.companyName``).
 
 The following will be printed in the Terminal:
 
