@@ -265,18 +265,24 @@ Example:
 
 .. code-block:: javascript
 
- // Fill the chart with the revenues in the last 10 years of income statements, formatted to millions
- fillHistoricUsingReport(income.slice(0,10), 'revenue', 'M');
+   $.when(
+     get_income_statement()).done(
+     function(_income){
+       var income = JSON.parse(JSON.stringify(_income));
+       // Fill the chart with the revenues in the last 10 years of income statements, formatted to millions
+       fillHistoricUsingReport(income.slice(0,10), 'revenue', 'M');
 
- // We will build a revenue forecast based on the last annual revenue reported in the income statement
- // We also need to convert the value to millions toM(), because the forecast function does not support number formatting
- var lastRevenue = toM(income[0].revenue);  
- 
- // To make a forecast example, we will assume the revenue grows 5% each year for 3 years
- var forecastedRevenue = [lastRevenue * 1.05, 
-                          lastRevenue * Math.pow(1.05, 2), 
-                          lastRevenue * Math.pow(1.05, 3)];
- var forecastedRevenue = forecast(forecastedRevenue, 'revenue');
+       // We will build a revenue forecast based on the last annual revenue reported in the income statement
+       // We also need to convert the value to millions toM(), because the forecast function does not support number formatting
+       var lastRevenue = toM(income[0].revenue);
+
+       // To make a forecast example, we will assume the revenue grows 5% each year for 3 years
+       var forecastedRevenue = [lastRevenue * 1.05,
+                                lastRevenue * Math.pow(1.05, 2),
+                                lastRevenue * Math.pow(1.05, 3)];
+       var forecastedRevenue = forecast(forecastedRevenue, 'revenue');
+       renderChart('Revenues chart');
+   });
 
 ``renderChart()`` function:
 ***************************
@@ -301,22 +307,27 @@ The following example renders a chart with historic revenues and net income:
 
 .. code-block:: javascript
 
- // The context array is used to hold table data
- var context = [];
- // Add 2 rows
- var rows = ['Revenues', 'Net Income'];
- lastYearDate = parseInt(income[0]['date']);
- // Add columns, starting with the income reports first year and ending with the last year
- var columns = [];
- for(var i=1; i <= income.length; i++){
-   columns.push(lastYearDate - i);
- }
- // Add the table data
- var data = [toList(income, 'revenue', 'M'), toList(income, 'netIncome', 'M')];
- // Add the chart to the context
- context.push({name:'Full history of data', display:'table', rows:rows, columns:columns, data:data});
- // Render the chart
- monitor(context);
+   $.when(
+     get_income_statement()).done(
+     function(_income){
+       var income = JSON.parse(JSON.stringify(_income));
+       // The context array is used to hold table data
+       var context = [];
+       // Add 2 rows
+       var rows = ['Revenues', 'Net Income'];
+       lastYearDate = parseInt(income[0]['date']);
+       // Add columns, starting with the income reports first year and ending with the last year
+       var columns = [];
+       for(var i=1; i <= income.length; i++){
+         columns.push(lastYearDate - i);
+       }
+       // Add the table data
+       var data = [toList(income, 'revenue', 'M'), toList(income, 'netIncome', 'M')];
+       // Add the chart to the context
+       context.push({name:'Full history of data', display:'table', rows:rows, columns:columns, data:data});
+       // Render the chart
+       monitor(context);
+   });
 
 .. warning::
 
