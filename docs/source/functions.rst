@@ -299,7 +299,7 @@ Tables use row headers as keys (revenue, net income, etc.) and column headers as
 
 The following example renders a chart with historic revenues and net income:
 
-.. code-block::
+.. code-block:: javascript
 
  // The context array is used to hold table data
  var context = [];
@@ -335,7 +335,7 @@ Arguments of ``toList(report, key, measure)``
  
  * ``measure`` - Has 3 options: 'M', 'K' or left blank.
  
-.. code-block::
+.. code-block:: javascript
    $.when(
      get_income_statement()).done(
      function(_income){
@@ -370,7 +370,7 @@ Arguments of ``fxRate(fx, fromCurrency, toCurrency)``
  
  * ``toCurrency`` - Has 3 options: 'M', 'K' or left blank.
 
-.. code-block::
+.. code-block:: javascript
 
  $.when(
    get_fx()).done(
@@ -393,7 +393,7 @@ Arguments of ``newArrayFill(length, fillObject)``
  
  * ``fillObject`` - The object the array will be filled with. Could be a number, a string or an object.
  
-.. code-block::
+.. code-block:: javascript
 
  // Array filled of length 10 filled with zeros
  var testArray = newArrayFill(10, 0);
@@ -406,7 +406,7 @@ Arguments of ``newArrayFill(length, fillObject)``
 
 Converts an array of values to an array of rate strings. For example, 0.1 is converted to '10%'
 
-.. code-block::
+.. code-block:: javascript
 
  // Make a new array of values of length 3 and 0.5 values
  var valuesArray = newArrayFill(3, 0.5);
@@ -421,7 +421,7 @@ Converts an array of values to an array of rate strings. For example, 0.1 is con
 
 Get the sum of all elements in an array of numbers.
 
-.. code-block::
+.. code-block:: javascript
 
  // Make a new array of values
  var valuesArray = [1, 2, 3, 4];
@@ -446,7 +446,7 @@ Arguments of ``getGrowthRateList(values, mode)``
   
   #. Leave blank - will return numbers
   
-.. code-block::
+.. code-block:: javascript
 
  // Dividend Growth Rates
  var dividends = [0.5, 0.6, 0.7, 0.8, 0.9, 1];
@@ -463,7 +463,7 @@ Arguments of ``getGrowthRateList(values, mode)``
 
 Add a data series from one report to another. Add revenues (which is located in the income statements) to all cash flow statements.
 
-.. code-block::
+.. code-block:: javascript
 
  $.when(
    get_income_statement(),
@@ -499,7 +499,7 @@ Arguments of ``linearRegressionGrowthRate(key, report, years, slope)``:
  
  * ``slope`` - The level of inclination of the regression line. <0 for inverse inclination, 0 for flat, 1 for normal, >1 for steeper curve
 
-.. code-block::
+.. code-block:: javascript
 
  $.when(
    get_income_statement()).done(
@@ -531,7 +531,7 @@ Arguments of ``averageMargin(key1, key2, report)``:
  
  * ``report`` - The report retrieved from the API that contains the two keys.
 
-.. code-block::
+.. code-block:: javascript
 
    $.when(
      get_income_statement()).done(
@@ -555,7 +555,7 @@ Arguments of ``averageGrowthRate(key, report)``:
  
  * ``report`` - The report retrieved from the API that contains the data series.
 
-.. code-block::
+.. code-block:: javascript
 
    $.when(
      get_income_statement()).done(
@@ -578,7 +578,7 @@ Arguments of ``applyMarginToList(list, margin)``:
  
  * ``margin`` - The margin you want to apply.
 
-.. code-block::
+.. code-block:: javascript
 
    var listOfNumbers = [1, 2, 3, 4, 5];
    print(applyMarginToList(listOfNumbers, 0.5), 'Margin of list');
@@ -600,7 +600,7 @@ Arguments of ``getGrowthList(report, key, length, rate)``:
  
  * ``rate`` - The rate at which you project growth
  
-.. code-block::
+.. code-block:: javascript
  
    $.when(
      get_income_statement()).done(
@@ -622,7 +622,7 @@ Arguments of ``getGrowthList(report, key, length, rate)``:
 
 Formats the given number to millions. Basically it divides the input by 1,000,000. For example, 123,456,789,000 is formatted to 123,456.789
 
-.. code-block::
+.. code-block:: javascript
 
  print(toM(123456789000), 'toM()');
  >>> toM(): 123456.789 
@@ -632,7 +632,7 @@ Formats the given number to millions. Basically it divides the input by 1,000,00
 
 Formats the given number to thousands. Basically it divides the input by 1,000. For example, 123,456,789 is formatted to 123,456.789
 
-.. code-block::
+.. code-block:: javascript
 
  print(toK(123456789), 'toK()');
  >>> toK(): 123456.789 
