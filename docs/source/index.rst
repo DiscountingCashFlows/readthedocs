@@ -18,20 +18,14 @@ The valuation models are editable
 The user can set watches and price alerts
    We will let the user know by email when his model reaches a value threshold.
 
-.. note::
+.. warning::
 
    Please note that our website does not try to bypass the **Due Diligence** required before commiting to purchase a company and does not offer financial advice. We recommed users to get informed about the company and its business model and try to come up with their own projections for each company.
 
 Model Code Editor
 ---------------------
 
-We will go through every function available to the editor. You can also find the source code and tutorials here: `Model Source Code <https://github.com/DiscountingCashFlows/Documentation/>`__
-
-
-
-Check out the :doc:`usage` section for further information, including
-how to :ref:`installation` the project.
-
+We will go through every function available to the editor. You can also find the source code and description for all our valuation models and how they are calculated `here <https://github.com/DiscountingCashFlows/Documentation/>`__
 
 Contents
 --------
