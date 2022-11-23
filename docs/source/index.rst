@@ -1,7 +1,7 @@
-Discounting Cash Flows Developer's Documentation (`discountingcashflows.com <https://discountingcashflows.com/>`__)
-================================================
+Discounting Cash Flows Developer's Guide
+========================================
 
-Discounting Cash Flows is dedicated to fundamental stock analysis and valuation. We try to automate and bypass the process of retrieving data from financial sources(sec.gov, Yahoo Finance, etc.), importing the data into Microsoft Excel and creating a valuation model (such as Discounted Cash Flow, Dividend Discount Model, etc.) that will calculate an intrinsic value for our stock. 
+Discounting Cash Flows (`discountingcashflows.com <https://discountingcashflows.com/>`__) is dedicated to fundamental stock analysis and valuation. We try to automate and bypass the process of retrieving data from financial sources(sec.gov, Yahoo Finance, etc.), importing the data into Microsoft Excel and creating a valuation model (such as Discounted Cash Flow, Dividend Discount Model, etc.) that will calculate an intrinsic value for our stock. 
 
 Our data is provided by `financialmodelingprep.com <https://site.financialmodelingprep.com/>`__ and we use fully transparent and editable models written in the JavaScript programming language to process the data and output the intrinsic value of a company. The valuation models are evaluated by the client's own browser(Chrome, Firefox, Opera, etc.)
 
