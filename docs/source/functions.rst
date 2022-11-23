@@ -59,8 +59,8 @@ Prints values and messages to the screen. Below are examples of usage types:
 .. code-block:: javascript
 
   // Prints a message with a label
-  print('Hello World!', 'First Message');
-  >>> First Message: Hello World! 
+  print('Hello World!');
+  >>> Hello World! 
   
   // This is how you would display an error
   print('This is how you display an error', 'Error');
