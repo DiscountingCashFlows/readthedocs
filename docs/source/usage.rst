@@ -57,7 +57,7 @@ The following will be printed in the Terminal:
 Base Code for a Model
 ---------------------
 
-This is a base preset with all basic functionalities of a model. Copy-Paste this into the valuation editor when creating a new model (it's easier than writing everything from scratch)
+This is a preset with all basic functionalities of a model. Copy-Paste this into the valuation editor when creating a new model (it's easier than writing everything from scratch)
 
 .. code-block:: javascript
 
