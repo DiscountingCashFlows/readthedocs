@@ -23,8 +23,10 @@ Copy the following base code into the editor:
       // Editing it could cause caching problems in the Watchlist page
       var profile = JSON.parse(JSON.stringify(_profile));
       profile = profile[0];
-
+      
       // Use console.log() to inspect the data
+      // Press F12 or right-click to inspect the Console
+      // You will see an exapandable object (profile)
       console.log(profile);
 
       // Print messages to the screen
