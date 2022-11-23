@@ -594,11 +594,11 @@ Arguments of ``getGrowthList(report, key, length, rate)``:
 
  * ``report`` - The report that contains the data series.
  
- * ``key`` - The key of the data series you want to grow
+ * ``key`` - The key of the data series you want to grow.
 
- * ``length`` - The number of projected years
+ * ``length`` - The number of projected years.
  
- * ``rate`` - The rate at which you project growth
+ * ``rate`` - The rate at which you project growth.
  
 .. code-block:: javascript
  
@@ -624,8 +624,12 @@ Formats the given number to millions. Basically it divides the input by 1,000,00
 
 .. code-block:: javascript
 
- print(toM(123456789000), 'toM()');
- >>> toM(): 123456.789 
+   var num = 123456789000;
+   print(toM(num), 'toM(number)');
+   print(toM([num, num*2, num*3]), 'toM(array)');
+
+   >>> toM(number): 123456.789 
+   >>> toM(array): 123456.789,246913.578,370370.367 
 
 ``toK()`` function:
 *******************
@@ -634,8 +638,12 @@ Formats the given number to thousands. Basically it divides the input by 1,000. 
 
 .. code-block:: javascript
 
- print(toK(123456789), 'toK()');
- >>> toK(): 123456.789 
+   var num = 123456789;
+   print(toK(num), 'toK(number)');
+   print(toK([num, num*2, num*3]), 'toK(array)');
+   
+   >>> toK(number): 123456.789 
+   >>> toK(array): 123456.789,246913.578,370370.367 
 
 ``Description()`` function:
 ***************************
