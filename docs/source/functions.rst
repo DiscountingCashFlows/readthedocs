@@ -372,12 +372,12 @@ Arguments of ``fxRate(fx, fromCurrency, toCurrency)``
 
 .. code-block:: javascript
 
- $.when(
-   get_fx()).done(
-   function(_fx){
-     var fx = JSON.parse(JSON.stringify(_fx));
-     var fxRate = fxRate(fx,  'USD', 'EUR');
-     print(fxRate, 'FX Rate');
+   $.when(
+     get_fx()).done(
+     function(_fx){
+       var fx = JSON.parse(JSON.stringify(_fx));
+       var rate = fxRate(fx,  'USD', 'EUR');
+       print(rate, 'FX Rate');
    });
    
    >>> FX Rate: 0.9766 
