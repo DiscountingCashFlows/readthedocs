@@ -196,11 +196,13 @@ Example:
 
 .. code-block:: javascript
  
- // Adds the full history of eps from the income statements
- fillHistoricUsingReport(income, 'eps');
+   // Adds the full history of eps from the income statements
+   fillHistoricUsingReport(income, 'eps');
+
+   // Adds the revenues, formatted to millions, of the last 10 years of income statements
+   fillHistoricUsingReport(income.slice(0,10), 'revenue', 'M');
  
- // Adds the revenues, formatted to millions, of the last 10 years of income statements
- fillHistoricUsingReport(income.slice(0,10), 'revenue', 'M');
+   renderChart('Example chart');
  
 ``fillHistoricUsingList()`` function:
 ***************************************
@@ -225,14 +227,22 @@ Example with ``endingYear``:
  
  // Adds to the chart the data series [1, 2, 3, 4] labeled as 'My List' ending in year 2022
  fillHistoricUsingList([1, 2, 3, 4], 'myList', 2022);
+ renderChart('Example chart');
  
 Example without ``endingYear``:
  
 .. code-block:: javascript
 
- // The ending year will be the report's ending year.
- fillHistoricUsingReport(income.slice(0,10), 'revenue', 'M');
- fillHistoricUsingList([1, 2, 3, 4], 'myList');
+   $.when(
+     get_income_statement()).done(
+     function(_income){
+       var income = JSON.parse(JSON.stringify(_income));
+
+       // The ending year will be the report's ending year.
+       fillHistoricUsingReport(income.slice(0,10), 'revenue', 'M');
+       fillHistoricUsingList(newArrayFill(10, 100000), 'myList');
+       renderChart('Example chart');
+   });
  
 ``forecast()`` function:
 ************************
