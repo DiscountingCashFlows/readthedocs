@@ -12,16 +12,13 @@ Start a new model by going to the Code Editor where we will be writing our valua
 
 Copy the following base code into the editor:
 
-.. code-block:: console
+.. code-block:: javascript
 
   var INPUT = Input({NUMBER: 5,
-                     _RATE: ''}); 
+                     _RATE: ''});
   $.when(
     get_profile()).done(
     function(_profile){
-      // The context array is used to hold charts, tables and prints information.
-      var context = [];
-
       // We need to make sure we don't edit the _profile variable
       // Editing it could cause caching problems in the Watchlist page
       var profile = JSON.parse(JSON.stringify(_profile));
@@ -35,9 +32,6 @@ Copy the following base code into the editor:
       print(profile.companyName, "Company's Name");
       print(profile.price, "Stock Price", "#", profile.currency);
       print(profile.website, "Company's Website");
-
-      // Call this at the end of the model
-      monitor(context);
   });
 
 Running & Saving the Code
