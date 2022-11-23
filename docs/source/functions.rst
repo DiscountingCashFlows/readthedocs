@@ -489,15 +489,15 @@ Create a linear regression array from a report.
 
 For example, create a regression line for historic revenues, present in the income statement.
 
-Arguments of ``linearRegressionGrowthRate(key, report, years, slope)``:
+Arguments of ``linearRegressionGrowthRate(report, key, projection_years, slope)``:
 
- * ``key`` - The key of the data series (For example 'revenue')
+ * ``report`` - The report which contains the data series.
  
- * ``report`` - The report which contains the data series
+ * ``key`` - The key of the data series (For example 'revenue').
  
- * ``years`` - The number of years the regression line will continue into the future
+ * ``projection_years`` - The number of years the regression line will project into the future.
  
- * ``slope`` - The level of inclination of the regression line. <0 for inverse inclination, 0 for flat, 1 for normal, >1 for steeper curve
+ * ``slope`` - The level of inclination of the regression line. <0 for inverse inclination, 0 for flat, 1 for normal, >1 for steeper curve.
 
 .. code-block:: javascript
 
@@ -509,7 +509,7 @@ Arguments of ``linearRegressionGrowthRate(key, report, years, slope)``:
      var projection_years = 5;
      var slope_value = 1;
 
-     var linRevenue = linearRegressionGrowthRate('revenue', income, projection_years, slope_value);
+     var linRevenue = linearRegressionGrowthRate(income, 'revenue', projection_years, slope_value);
      for(var i in linRevenue){
        linRevenue[i] = toM(linRevenue[i]);
      }
