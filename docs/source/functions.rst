@@ -1,7 +1,7 @@
 Valuation functions
 ====================
 
-The following functions are found in `DiscountingCashFlows/Documentation/source-code/valuation-functions.js <https://github.com/DiscountingCashFlows/Documentation/blob/main/source-code/valuation-functions.js>`__ with the exception of ``$.when().done()`` function. We will cover each function and its use cases.
+Some of the following functions can also be found in `DiscountingCashFlows/Documentation/source-code/valuation-functions.js <https://github.com/DiscountingCashFlows/Documentation/blob/main/source-code/valuation-functions.js>`__. We will cover each function and its use cases.
 
 .. note::
 
@@ -337,7 +337,7 @@ The following example renders a chart with historic revenues and net income:
          columns.push(lastYearDate - i);
        }
        // Add the table data
-       var data = [toList(income, 'revenue', 'M'), toList(income, 'netIncome', 'M')];
+       var data = [reportKeyToList(income, 'revenue', 'M'), reportKeyToList(income, 'netIncome', 'M')];
        // Add the chart to the context
        context.push({name:'Full history of data', display:'table', rows:rows, columns:columns, data:data});
        // Render the chart
@@ -348,12 +348,12 @@ The following example renders a chart with historic revenues and net income:
 
  The table functions are under active development and may change in the future.
 
-``toList()`` function:
+``reportKeyToList()`` function:
 ************************
 
 Adds rows to the table from a report retrieved from the API. It then returns a list of values from the report provided.
 
-Arguments of ``toList(report, key, measure)``
+Arguments of ``reportKeyToList(report, key, measure)``
 
  * ``report`` - The report object from the API. For example: income statement.
  
@@ -366,7 +366,7 @@ Arguments of ``toList(report, key, measure)``
      get_income_statement()).done(
      function(_income){
        var income = JSON.parse(JSON.stringify(_income));
-       print(toList(income.slice(0,5), 'revenue', 'M'), 'List of revenues');
+       print(reportKeyToList(income.slice(0,5), 'revenue', 'M'), 'List of revenues');
    });
    
    >>> List of revenues: 394328,365817,274515,260174,265595 
@@ -646,7 +646,9 @@ Arguments of ``getGrowthList(report, key, length, rate)``:
 ``toM()`` function:
 *******************
 
-Formats the given number to millions. Basically it divides the input by 1,000,000. For example, 123,456,789,000 is formatted to 123,456.789
+Formats the given number to millions. 
+
+Basically, it divides the input by 1,000,000.
 
 .. code-block:: javascript
 
@@ -660,7 +662,9 @@ Formats the given number to millions. Basically it divides the input by 1,000,00
 ``toK()`` function:
 *******************
 
-Formats the given number to thousands. Basically it divides the input by 1,000. For example, 123,456,789 is formatted to 123,456.789
+Formats the given number or array to thousands. 
+
+Basically, it divides the input by 1,000.
 
 .. code-block:: javascript
 
@@ -670,6 +674,21 @@ Formats the given number to thousands. Basically it divides the input by 1,000. 
    
    >>> toK(number): 123456.789 
    >>> toK(array): 123456.789,246913.578,370370.367 
+   
+``toR()`` function:
+*******************
+
+Formats the given number or array to a rate or an array of rates. 
+
+Basically, it multiplies the input by 100.
+
+.. code-block:: javascript
+
+   print(toR(0.5), 'toR(number)');
+   print(toR([0.1, 0.055, 0.12345]), 'toR(array)');
+   
+   >>> toR(number): 50 
+   >>> toR(array): 10,5.5,12.345 
 
 ``Description()`` function:
 ***************************
