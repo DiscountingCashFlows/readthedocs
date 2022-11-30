@@ -95,12 +95,18 @@ Prints values and messages to the screen. Below are examples of usage types:
 Setting an Estimated Value:
 ---------------------------
 
+**What is the estimated value?**
+
+Every valuation model needs to output an **estimated value** based on future prospects of the company or some other method.
+
+For example, the `Discounted Free Cash Flow Model <https://discountingcashflows.com/company/AAPL/valuation/default/3/>`__ takes in some financial data and some assumptions, processes them and comes up with an estimated value of the company, per share. You can see it at the top of the model "$AAPL Estimated Value in USD ...".
+
 ``_SetEstimatedValue()`` function:
 **********************************
 
-Set the estimated value of a company at the top of the model. This is only visible in Company Valuation and not in Model Code Editor.
+Set the estimated value of a company at the top of the model (this is only visible in Company Valuation and not in Model Code Editor).
 
-Arguments of ``_StopIfWatch(value, currency)``
+Arguments of ``_SetEstimatedValue(value, currency)``
 
  * ``value`` - The estimated value.
  
@@ -110,8 +116,8 @@ Arguments of ``_StopIfWatch(value, currency)``
  
    $.when().done(
      function(){
-       // Sets the value 123 USD at the top of the model
-       _SetEstimatedValue(123, 'USD')
+       // Sets the value at the top of the model to 123 USD
+       _SetEstimatedValue(123, 'USD');
    });
  
 To see the example code in action, save the code and go to Models Dropdown -> Open in Company Valuation.
@@ -123,7 +129,7 @@ This function is built specfifically for watches and notifications (from the Wat
 
 A watchlist item or a notification item does not need to print messages or show charts and tables, because nobody is going to see them anyway.
 
-The only purpose of watches and notifications is to evaluate a given model and show an estimated value. When the code has reached an estimated value, it can stop right there and return.
+The only purpose of watches and notifications is to evaluate a given valuation model and show an estimated value. When the code has reached an estimated value, it can stop right away and return.
 
 Arguments of ``_StopIfWatch(value, currency)``
 
@@ -140,6 +146,7 @@ Arguments of ``_StopIfWatch(value, currency)``
      if(_StopIfWatch(123, 'USD')){
        return;
      }
+     _SetEstimatedValue(123, 'USD');
      print('Some information...');
   }); 
  
