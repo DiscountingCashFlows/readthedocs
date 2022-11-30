@@ -92,7 +92,63 @@ Prints values and messages to the screen. Below are examples of usage types:
   print(1.23, 'Rate', '%');
   >>> Rate: 123.00% 
  
+Setting an Estimated Value:
+---------------------------
+
+``_SetEstimatedValue()`` function:
+**********************************
+
+Set the estimated value of a company at the top of the model. This is only visible in Company Valuation and not in Model Code Editor.
+
+Arguments of ``_StopIfWatch(value, currency)``
+
+ * ``value`` - The estimated value.
  
+ * ``currency`` - The currency of the estimated value.
+ 
+.. code-block:: javascript
+ 
+   $.when().done(
+     function(){
+       // Sets the value 123 USD at the top of the model
+       _SetEstimatedValue(123, 'USD')
+   });
+ 
+To see the example code in action, save the code and go to Models Dropdown -> Open in Company Valuation.
+
+``_StopIfWatch()`` function:
+****************************
+
+This function is built specfifically for watches and notifications (from the Watchlist & Notifications page).
+
+A watchlist item or a notification item does not need to print messages or show charts and tables, because nobody is going to see them anyway.
+
+The only purpose of watches and notifications is to evaluate a given model and show an estimated value. When the code has reached an estimated value, it can stop right there and return.
+
+Arguments of ``_StopIfWatch(value, currency)``
+
+ * ``value`` - The estimated value.
+ 
+ * ``currency`` - The currency of the estimated value.
+ 
+.. code-block:: javascript
+
+ $.when().done(
+   function(){
+     // If this code is being run by a watch or a notification interpreter
+     // then, it will stop right here and not print anything.
+     if(_StopIfWatch(123, 'USD')){
+       return;
+     }
+     print('Some information...');
+  }); 
+ 
+But, if we run the code in the Model Code Editor, we will see:
+
+.. code-block:: javascript
+
+   >>> Some information...
+
 Setting assumptions:
 --------------------
 
