@@ -142,7 +142,7 @@ This is a preset with all basic functionalities of a model. Copy-Paste this into
       for(var i=1; i <= income.length; i++){
         columns.push(lastYearDate - i);
       }
-      var data = [toList(income, 'revenue', 'M'), toList(income, 'netIncome', 'M')];
+      var data = [reportKeyToList(income, 'revenue', 'M'), reportKeyToList(income, 'netIncome', 'M')];
       context.push({name:'Full history of data', display:'table', rows:rows, columns:columns, data:data});
       // Render the table using monitor()
       monitor(context);
