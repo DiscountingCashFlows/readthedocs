@@ -28,17 +28,11 @@ The following functions retrieve financial data from the API in JSON format, and
 +-----------------------------------------+----------------------------------------------------------------------------------------------------------------------+
 | get_treasury()                          | `Treasury Rates <https://discountingcashflows.com/api/treasury/>`__                                                  |
 +-----------------------------------------+----------------------------------------------------------------------------------------------------------------------+
-| get_treasury_daily()                    | `Treasury Rates Daily Full History <https://discountingcashflows.com/api/treasury/daily/>`__                         |
+| get_treasury_daily()                    | `Daily Treasury Rates (Full History) <https://discountingcashflows.com/api/treasury/daily/>`__                       |
 +-----------------------------------------+----------------------------------------------------------------------------------------------------------------------+
-| get_treasury_daily(length)              | `Treasury Rates Daily Last 30 Days <https://discountingcashflows.com/api/treasury/daily/30/>`__                      |
+| get_treasury_monthly()                  | `Monthly Treasury Rates (Full History) <https://discountingcashflows.com/api/treasury/monthly/>`__                   |
 +-----------------------------------------+----------------------------------------------------------------------------------------------------------------------+
-| get_treasury_monthly()                  | `Treasury Rates Monthly Full History <https://discountingcashflows.com/api/treasury/monthly/>`__                     |
-+-----------------------------------------+----------------------------------------------------------------------------------------------------------------------+
-| get_treasury_monthly(length)            | `Treasury Rates Monthly Last 20 Months <https://discountingcashflows.com/api/treasury/monthly/20/>`__                |
-+-----------------------------------------+----------------------------------------------------------------------------------------------------------------------+
-| get_treasury_annual()                   | `Treasury Rates Annual Full History <https://discountingcashflows.com/api/treasury/annual/>`__                       |
-+-----------------------------------------+----------------------------------------------------------------------------------------------------------------------+
-| get_treasury_annual(length)             | `Treasury Rates Annual Last 10 Years <https://discountingcashflows.com/api/treasury/annual/10/>`__                   |
+| get_treasury_annual()                   | `Annual Treasury Rates (Full History) <https://discountingcashflows.com/api/treasury/annual/>`__                     |
 +-----------------------------------------+----------------------------------------------------------------------------------------------------------------------+
 | get_ratios()                            | `Financial Ratios <https://discountingcashflows.com/api/ratios/AAPL/>`__                                             |
 +-----------------------------------------+----------------------------------------------------------------------------------------------------------------------+
