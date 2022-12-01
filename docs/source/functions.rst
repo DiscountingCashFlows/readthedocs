@@ -741,9 +741,11 @@ Basically, it divides the input by 1,000.
 ``toR()`` and ``toN()`` function:
 *********************************
 
-Formats the given number or array to a rate or a number or an array of rates or numbers.
+``toR()`` formats a given number or array of numbers to a rate or array of rates.
 
-Basically, ``toR()`` multiplies the input by 100 and ``toN()`` divideds the input by 100.
+``toN()`` formats a given rate or array of rates to a number or an array of numbers.
+
+Basically, ``toR()`` multiplies the input by 100 and ``toN()`` divides the input by 100.
 
 .. note::
 
