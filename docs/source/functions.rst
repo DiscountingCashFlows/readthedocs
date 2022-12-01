@@ -738,7 +738,7 @@ Basically, it divides the input by 1,000.
    >>> toK(number): 123456.789 
    >>> toK(array): 123456.789,246913.578,370370.367 
    
-``toR()`` and ``toN()`` function:
+``toR()`` and ``toN()`` functions:
 *********************************
 
 ``toR()`` formats a given number or array of numbers to a rate or array of rates.
@@ -749,7 +749,7 @@ Basically, ``toR()`` multiplies the input by 100 and ``toN()`` divides the input
 
 .. note::
 
-   The functions also have long forms and can be used interchangeably.
+   The functions also have long forms and can be used interchangeably:
 
     * The long form for ``toR()`` is ``numberToRate()``
 
