@@ -738,20 +738,38 @@ Basically, it divides the input by 1,000.
    >>> toK(number): 123456.789 
    >>> toK(array): 123456.789,246913.578,370370.367 
    
-``toR()`` function:
-*******************
+``toR()`` and ``toN()`` function:
+*********************************
 
-Formats the given number or array to a rate or an array of rates. 
+Formats the given number or array to a rate or a number or an array of rates or numbers.
 
-Basically, it multiplies the input by 100.
+Basically, ``toR()`` multiplies the input by 100 and ``toN()`` divideds the input by 100.
+
+.. note::
+
+   The functions also have long forms and can be used interchangeably.
+
+    * The long form for ``toR()`` is ``numberToRate()``
+
+    * The long form for ``toN()`` is ``rateToNumber()``
 
 .. code-block:: javascript
 
-   print(toR(0.5), 'toR(number)');
-   print(toR([0.1, 0.055, 0.12345]), 'toR(array)');
+   var number = toR(0.5);
+   var array = toR([0.1, 0.055, 0.12345]);
+
+   print(number, 'toR(number)');
+   print(array, 'toR(array)');
+
+   print(toN(number), 'toN(number)');
+   print(toN(array), 'toN(array)');
    
    >>> toR(number): 50 
    >>> toR(array): 10,5.5,12.345 
+   
+   >>> toN(number): 0.5 
+   >>> toN(array): 0.1,0.055,0.12345 
+
 
 ``Description()`` function:
 ***************************
