@@ -741,7 +741,7 @@ Basically, it divides the input by 1,000.
 ``toR()`` and ``toN()`` functions:
 *********************************
 
-``toR()`` formats a given number or array of numbers to a rate or array of rates.
+``toR()`` formats a given number or array of numbers to a rate or an array of rates.
 
 ``toN()`` formats a given rate or array of rates to a number or an array of numbers.
 
@@ -757,20 +757,21 @@ Basically, ``toR()`` multiplies the input by 100 and ``toN()`` divides the input
 
 .. code-block:: javascript
 
-   var number = toR(0.5);
-   var array = toR([0.1, 0.055, 0.12345]);
+   var number = 0.5;
+   var array = [0.1, 0.055, 0.12345];
 
-   print(number, 'toR(number)');
-   print(array, 'toR(array)');
+   print(toR(number), 'toR(number)');
+   print(toR(array), 'toR(array)');
 
    print(toN(number), 'toN(number)');
    print(toN(array), 'toN(array)');
-   
+
    >>> toR(number): 50 
    >>> toR(array): 10,5.5,12.345 
    
-   >>> toN(number): 0.5 
+   >>> toN(number): 0.005 
    >>> toN(array): 0.1,0.055,0.12345 
+
 
 
 ``Description()`` function:
