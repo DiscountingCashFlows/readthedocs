@@ -49,8 +49,41 @@ You can think about it like going to the grocery:
  
 So, you'd probably want to stick to method 2 because it saves a lot of time. And that's exactly what ``$.when().done()`` does. It retrieves all data at once and once it is ``done()``, it can begin processing the data.
 
-.. _print-function:
 
+``deepCopy()`` function:
+------------------------
+
+Creates a deep copy of the object that has been parsed and retrieves the underlying data.
+
+In JavaScript, objects and arrays are mutable by default. Deep copying means cloning the original object into an identical copy, which you can modify without altering the original object.
+
+.. warning::
+
+   Always create copies of your response objects. Editing the response objects directly can cause caching issues if you ever decide to add your model to your watchlist or set up notifications.
+
+Arguments of ``deepCopy(object)``
+
+ * ``object`` - The response object
+ 
+.. code-block:: javascript
+
+   $.when(
+       get_income_statement(),
+       get_balance_sheet_statement(),
+       get_profile(),
+       get_dividends_annual(),
+       get_treasury(),
+       get_fx()).done(
+       function(_income, _balance, _profile, _dividends, _treasury, _fx){
+         // Create deep copies of response objects
+         var income = deepCopy(_income);
+         var balance = deepCopy(_balance);
+         var profile = deepCopy(_profile);
+         var dividends = deepCopy(_dividends);
+         var treasury = deepCopy(_treasury);
+         var fx = deepCopy(_fx);
+     });
+ 
 Displaying Messages
 -------------------
 
