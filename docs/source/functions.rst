@@ -407,23 +407,15 @@ The following example renders a chart with historic revenues and net income:
    $.when(
      get_income_statement()).done(
      function(_income){
-       var income = JSON.parse(JSON.stringify(_income));
-       // The context array is used to hold table data
-       var context = [];
+       var income = deepCopy(_income);
        // Add 2 rows
        var rows = ['Revenues', 'Net Income'];
-       lastYearDate = parseInt(income[0]['date']);
-       // Add columns, starting with the income reports first year and ending with the last year
-       var columns = [];
-       for(var i=1; i <= income.length; i++){
-         columns.push(lastYearDate - i);
-       }
+       // Build a list of years
+       var columns = getYear(reportKeyToList(income, 'date'));
        // Add the table data
        var data = [reportKeyToList(income, 'revenue', 'M'), reportKeyToList(income, 'netIncome', 'M')];
        // Add the chart to the context
-       context.push({name:'Full history of data', display:'table', rows:rows, columns:columns, data:data});
-       // Render the chart
-       monitor(context);
+       renderTable('Full history of data', data, rows, columns);
    });
 
 .. warning::
@@ -453,14 +445,21 @@ Arguments of ``reportKeyToList(report, key, measure)``
    
    >>> List of revenues: 394328,365817,274515,260174,265595 
  
-``monitor()`` function:
-***********************
+``renderTable()`` function:
+***************************
 
-Renders the table to the screen, similar to the ``renderChart()`` function, but it also has a little more functionality.
+Renders the table to the screen, similar to the ``renderChart()`` function.
+ 
+Arguments of ``renderTable(name, data, rows, columns)``
 
-.. note::
+ * ``name`` - The table's name. Example: 'My Table'
+ 
+ * ``data`` - The values for all cells. This must be an array of size: **rows.length x columns.length**
+ 
+ * ``rows`` - The row headers. Example ['Revenues', 'Operating Costs', 'Net Income']
+ 
+ * ``columns`` - The column headers. Usually the dates/years for the data.
 
- The ``monitor()`` function is also used by the ``print()`` function to render prints, but we don't recommend printing using the ``monitor()`` function. Print example: ``{name:'Revenue', display:'value', data:1,000,000,000, currency: 'USD'}`` -> Will display ``Revenue: 1,000,000,000 USD``
 
 Utility functions
 ------------------
