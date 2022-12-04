@@ -281,7 +281,7 @@ Example:
    $.when(
      get_income_statement()).done(
      function(_income){
-       var income = JSON.parse(JSON.stringify(_income));
+       var income = deepCopy(_income);
        // Adds the full history of eps from the income statements
        fillHistoricUsingReport(income, 'eps');
 
@@ -323,7 +323,7 @@ Example without ``endingYear``:
    $.when(
      get_income_statement()).done(
      function(_income){
-       var income = JSON.parse(JSON.stringify(_income));
+       var income = deepCopy(_income);
 
        // The ending year will be the report's ending year.
        fillHistoricUsingReport(income.slice(0,10), 'revenue', 'M');
@@ -365,7 +365,7 @@ Example:
    $.when(
      get_income_statement()).done(
      function(_income){
-       var income = JSON.parse(JSON.stringify(_income));
+       var income = deepCopy(_income);
        // Fill the chart with the revenues in the last 10 years of income statements, formatted to millions
        fillHistoricUsingReport(income.slice(0,10), 'revenue', 'M');
 
@@ -439,7 +439,7 @@ Arguments of ``reportKeyToList(report, key, measure)``
    $.when(
      get_income_statement()).done(
      function(_income){
-       var income = JSON.parse(JSON.stringify(_income));
+       var income = deepCopy(_income);
        print(reportKeyToList(income.slice(0,5), 'revenue', 'M'), 'List of revenues');
    });
    
@@ -482,7 +482,7 @@ Arguments of ``fxRate(fx, fromCurrency, toCurrency)``
    $.when(
      get_fx()).done(
      function(_fx){
-       var fx = JSON.parse(JSON.stringify(_fx));
+       var fx = deepCopy(_fx);
        var rate = fxRate(fx,  'USD', 'EUR');
        print(rate, 'FX Rate');
    });
@@ -572,22 +572,19 @@ Add a data series from one report to another. Add revenues (which is located in 
 
 .. code-block:: javascript
 
- $.when(
-   get_income_statement(),
-   get_cash_flow_statement()).done(
-   function(_income, _flows){
-     var income = JSON.parse(JSON.stringify(_income));
-     var flows = JSON.parse(JSON.stringify(_flows));
+   $.when(
+      get_income_statement(),
+      get_cash_flow_statement()).done(
+      function(_income, _flows){
+        var income = deepCopy(_income);
+        var flows = deepCopy(_flows);
 
-     income = income[0];
-     flows = flows[0];
+        // Add the revenue key to the flows report
+        flows = addKey('revenue', income, flows);
 
-     // Add the revenue key to the flows report
-     flows = addKey('revenue', income, flows);
-
-     // Press F12 or right-click to inspect console output
-     console.log(flows);
- });
+        // Press F12 or right-click to inspect console output
+        console.log(flows);
+    });
 
 ``linearRegressionGrowthRate()`` function:
 ******************************************
@@ -611,7 +608,7 @@ Arguments of ``linearRegressionGrowthRate(report, key, projection_years, slope)`
  $.when(
    get_income_statement()).done(
    function(_income){
-     var income = JSON.parse(JSON.stringify(_income));
+     var income = deepCopy(_income);
 
      var projection_years = 5;
      var slope_value = 1;
@@ -643,7 +640,7 @@ Arguments of ``averageMargin(key1, key2, report)``:
    $.when(
      get_income_statement()).done(
      function(_income){
-       var income = JSON.parse(JSON.stringify(_income));
+       var income = deepCopy(_income);
 
        var averageNetIncomeMargin = averageMargin('netIncome', 'revenue', income);
        print(averageNetIncomeMargin, 'Average Net Income Margin', '%');
@@ -667,7 +664,7 @@ Arguments of ``averageGrowthRate(key, report)``:
    $.when(
      get_income_statement()).done(
      function(_income){
-       var income = JSON.parse(JSON.stringify(_income));
+       var income = deepCopy(_income);
       // Average Revenue Growth Rate
        print(averageGrowthRate('revenue', income), 'Average Revenue Growth Rate', '%');
    });
@@ -712,7 +709,7 @@ Arguments of ``getGrowthList(report, key, length, rate)``:
    $.when(
      get_income_statement()).done(
      function(_income){
-       var income = JSON.parse(JSON.stringify(_income));
+       var income = deepCopy(_income);
        var growthYears = 3;
        var growthRate = 0.1;  // 10%
 
