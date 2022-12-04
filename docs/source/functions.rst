@@ -8,7 +8,7 @@ Some of the following functions can also be found in `DiscountingCashFlows/Docum
    Please note that this section is currently under active development. Some functions may not be up to date. If you find any outdated functions, please let us know `here <https://discountingcashflows.com/help/>`__
 
 ``$.when().done()`` function:
----------------------
+-----------------------------
 
 The valuation engine is built on the popular JS Framework 'jQuery'. Don't worry if you've never used it before because the ``$.when().done()`` function is the only function that we will use from the framework in our valuations.
 
@@ -51,8 +51,11 @@ So, you'd probably want to stick to method 2 because it saves a lot of time. And
 
 .. _print-function:
 
+Displaying Messages
+-------------------
+
 ``print()`` function:
----------------------
+*********************
 
 Prints values and messages to the screen. Below are examples of usage types:
 
@@ -60,15 +63,7 @@ Prints values and messages to the screen. Below are examples of usage types:
 
   // Prints a message with a label
   print('Hello World!');
-  >>> Hello World! 
-  
-  // This is how you would display an error
-  print('This is how you display an error', 'Error');
-  >>> Error: This is how you display an error
-  
-  // Displaying a warning
-  warning('You have been warned!');
-  >>> Warning: You have been warned! 
+  >>> Hello World!
   
   // This is a plain value
   print(1.23456, 'Plain value');
@@ -81,6 +76,7 @@ Prints values and messages to the screen. Below are examples of usage types:
   // Numeric format includes thousands(K) and millions(M)
   print(1000, '1 Thousand', '#');
   >>> 1 Thousand: 1 K 
+  
   print(1000000, '1 Million', '#');
   >>> 1 Million: 1 Mil. 
   
@@ -92,7 +88,30 @@ Prints values and messages to the screen. Below are examples of usage types:
   print(1.23, 'Rate', '%');
   >>> Rate: 123.00% 
  
-Setting an Estimated Value:
+``warning()`` function:
+***********************
+ 
+Display a warning alert message (in yellow) on the top of the model.
+ 
+.. code-block:: javascript
+
+   // Displaying a warning
+   warning('You have been warned!');
+   >>> Warning: You have been warned!
+ 
+``error()`` function:
+***********************
+ 
+Display an error alert message (in red) on the top of the model.
+ 
+.. code-block:: javascript
+
+   // Displaying a warning
+   error('Something went wrong! :(');
+   >>> Error: Something went wrong! :(
+   
+   
+Setting an Estimated Value
 ---------------------------
 
 **What is the estimated value?**
@@ -156,7 +175,7 @@ But, if we run the code in the Model Code Editor, we will see:
 
    >>> Some information...
 
-Setting assumptions:
+Setting assumptions
 --------------------
 
 Assumptions are set either statically or dynamically.
@@ -225,7 +244,7 @@ Here is a code example of defining and setting assumptions:
         >>> INPUT._CALCULATED_RATE: 0.0123 
   });
 
-Displaying a Chart:
+Displaying a Chart
 -------------------
 
 The flow of creating a chart is:
@@ -376,7 +395,7 @@ Some technical explanation for when the rendering happens:
   * ``name`` - This is the title of the chart.
   * ``hidden_series`` - This controls the visibility of individual data series (when we hide revenues for example, it will be stored here).
 
-Displaying a Table:
+Displaying a Table
 -------------------
 
 Tables use row headers as keys (revenue, net income, etc.) and column headers as years (2022, 2023, etc.) and all other cells are actual values.
@@ -412,7 +431,7 @@ The following example renders a chart with historic revenues and net income:
  The table functions are under active development and may change in the future.
 
 ``reportKeyToList()`` function:
-************************
+*******************************
 
 Adds rows to the table from a report retrieved from the API. It then returns a list of values from the report provided.
 
@@ -443,8 +462,8 @@ Renders the table to the screen, similar to the ``renderChart()`` function, but 
 
  The ``monitor()`` function is also used by the ``print()`` function to render prints, but we don't recommend printing using the ``monitor()`` function. Print example: ``{name:'Revenue', display:'value', data:1,000,000,000, currency: 'USD'}`` -> Will display ``Revenue: 1,000,000,000 USD``
 
-Utility functions:
--------------------
+Utility functions
+------------------
 
 ``fxRate()`` function:
 ****************************
