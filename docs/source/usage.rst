@@ -21,8 +21,7 @@ Copy the following base code into the editor:
     function(_profile){
       // We need to make sure we don't edit the _profile variable
       // Editing it could cause caching problems in the Watchlist page
-      var profile = JSON.parse(JSON.stringify(_profile));
-      profile = profile[0];
+      var profile = deepCopy(_profile);
       
       // Use console.log() to inspect the data
       // Press F12 or right-click to inspect the Console
@@ -57,62 +56,62 @@ The following will be printed in the Terminal:
 Base Code for a Model
 ---------------------
 
-This is a preset with all basic functionalities of a model. Copy-Paste this into the valuation editor when creating a new model (it's easier than writing everything from scratch)
+This is a starter preset with all basic functionalities of a model. Copy-Paste this into the valuation editor when creating a new model (it's easier than writing everything from scratch)
 
 .. code-block:: javascript
 
-  // +----------------------------------------------------------+
-  //   Base Model Code
-  //   Copyright: https://discountingcashflows.com, 2022			
-  // +----------------------------------------------------------+
+  // +------------------------------------------------------------+
+  //   Model Starter Preset
+  //   © Copyright: https://discountingcashflows.com
+  // +------------------------------------------------------------+
 
-  var INPUT = Input({NUMBER: 5,
-                    _RATE: ''}); 
+  var INPUT = Input({
+                  NUMBER: '',
+            _RATE: ''
+              });
 
   $.when(
     get_income_statement(),
-    get_profile()).done(
-    function(_income, _profile){
-      // We need to make sure we don't edit the _profile variable
-      // Editing it could cause caching problems in the Watchlist page
-      var income = JSON.parse(JSON.stringify(_income));
-      var profile = JSON.parse(JSON.stringify(_profile));
-      profile = profile[0][0];
-      income = income[0];
-      // Use console.log() to inspect the data
-      // Example: console.log(profile);
+    get_profile(),
+    get_treasury(),
+    get_fx()).done(
+    function(_income, _profile, _treasury, _fx){
+      // Create deep copies of the response objects 
+      // Editing the _objects directly can cause caching issues in Watchlist & Notifications
+      var income = deepCopy(_income);
+      // Company's Profile
+      var profile = deepCopy(_profile);
+      // Lastest Treasury Yields
+      var treasury = deepCopy(_treasury);
+      // Lastest FX Rates
+      var fx = deepCopy(_fx);
 
-      // ---------------- ASSUMPTIONS SECTION ---------------- 
-      // Set the INPUT._RATE to 1.23%
+      // +-------------------- ASSUMPTIONS SECTION -------------------+
+      setInputDefault('NUMBER', 5);
       setInputDefault('_RATE', 1.23);
-      // ------------ END OF ASSUMPTIONS SECTION -------------
+      // +---------------- END OF ASSUMPTIONS SECTION ----------------+
 
-      // This valuePerShare and currency will be used as the intrinsic value of the stock
+      // +---------------- VALUES OF INTEREST SECTION ----------------+
+      // This estimated value of the stock
       var valuePerShare = 123;
+      // Get the currency from the profile data
+    var currency = profile.convertedCurrency;
 
-      // Get the currency from the income statements 
-    var currency = income[0].convertedCurrency;
+      if(_StopIfWatch(valuePerShare, currency)){return;}
 
-      // ---------------- VALUES OF INTEREST SECTION ----------------
-      // If we are calculating the value per share for a watch, we can stop right here
-      if(_StopIfWatch(valuePerShare, currency)){
-        return;
-      }
-
-      print('Hello World!');
       print(profile.companyName, "Company's Name");
-      print('This is how you display an error', 'Error');
       print(1.23, 'Value', '#', currency);  // 1.23 USD
       print(1.23, 'Rate', '%');  // 123% 
       print(INPUT.NUMBER, 'INPUT.NUMBER', '#');
       print(INPUT._RATE, 'INPUT._RATE', '%');
       warning('You have been warned!');
+      error('This is how you display an error!');
 
       // Print the value to the top of the model
       _SetEstimatedValue(valuePerShare, currency);
-    // ------------- END OF VALUES OF INTEREST SECTION ------------
+      // +------------- END OF VALUES OF INTEREST SECTION ------------+
 
-      // ---------------- CHARTS SECTION ----------------
+      // +---------------------- CHARTS SECTION ----------------------+
       // Displaying a chart of Revenues
       // income.slice(0,10) gets the last 10 years of income statements
       // fillHistoricUsingReport() will fill in the revenues from the income statements
@@ -129,28 +128,19 @@ This is a preset with all basic functionalities of a model. Copy-Paste this into
       // forecastedRevenue stores the value if the user modifies the forecast chart or table
       // use renderChart to display the chart to the screen
     renderChart('Revenues (In Mill. of ' + currency + ')');
-      // ------------- END OF CHARTS SECTION ------------
+      // +------------------- END OF CHARTS SECTION ------------------+
 
-      // ---------------- TABLES SECTION ----------------
-      // The context array is used to hold tables data
-      var context = [];
+      // +---------------------- TABLES SECTION ----------------------+
       // Displaying tables
       var rows = ['Revenues', 'Net Income'];
-      lastYearDate = parseInt(income[0]['date']);
-      var columns = [];
-      // Push all previous years until lastYearDate
-      for(var i=1; i <= income.length; i++){
-        columns.push(lastYearDate - i);
-      }
+      var columns = getYear(reportKeyToList(income, 'date'));
       var data = [reportKeyToList(income, 'revenue', 'M'), reportKeyToList(income, 'netIncome', 'M')];
-      context.push({name:'Full history of data', display:'table', rows:rows, columns:columns, data:data});
-      // Render the table using monitor()
-      monitor(context);
-      // ------------ END OF TABLES SECTION ------------- 
+      renderTable('Full history of data', data, rows, columns);
+      // +------------------ END OF TABLES SECTION -------------------+
   });
-
   // Add a quick description shown at the top of the model 
-  var DESCRIPTION = Description(`<h5>Base Model Code</h5>
-                                  <p>This is the base code for writing valuation models.</p>
-                                  <p class='text-center'>Read more: <a href='https://github.com/DiscountingCashFlows/Documentation/' target='_blank'><i class="fab fa-github"></i> GitHub Documentation</a></p>
-                                  `);
+  Description(`
+    <h5>Model Starter Preset</h5>
+    <p>This is a good starting point for writing new valuation models.</p>
+    <p class='text-center'>Read more: <a href='https://github.com/DiscountingCashFlows/Documentation/' target='_blank'><i class="fab fa-github"></i> GitHub Documentation</a></p>
+  `);
