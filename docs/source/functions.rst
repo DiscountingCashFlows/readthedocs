@@ -109,7 +109,19 @@ Display an error alert message (in red) on the top of the model.
    // Displaying a warning
    error('Something went wrong! :(');
    >>> Error: Something went wrong! :(
-   
+
+``Description()`` function:
+***************************
+
+The ``Description()`` function serves as a quick readme for the model and it is shown at the top of each model. It supports html formatting, so you can style it any way you want.
+
+.. code-block:: javascript
+
+ Description(`<h5>Base Model Code</h5>
+             <p>This is the base code for writing valuation models.</p>
+             <p class='text-center'>Read more: <a href='https://github.com/DiscountingCashFlows/Documentation/' target='_blank'><i class="fab fa-github"></i> GitHub Documentation</a></p>
+             `);
+
    
 Setting an Estimated Value
 ---------------------------
@@ -786,17 +798,3 @@ Basically, ``toR()`` multiplies the input by 100 and ``toN()`` divides the input
    
    >>> toN(number): 0.005 
    >>> toN(array): 0.1,0.055,0.12345 
-
-
-
-``Description()`` function:
-***************************
-
-The ``Description()`` function serves as a quick readme for the model and it is shown at the top of each model. It supports html formatting, so you can style it any way you want.
-
-.. code-block:: javascript
-
- Description(`<h5>Base Model Code</h5>
-             <p>This is the base code for writing valuation models.</p>
-             <p class='text-center'>Read more: <a href='https://github.com/DiscountingCashFlows/Documentation/' target='_blank'><i class="fab fa-github"></i> GitHub Documentation</a></p>
-             `);
