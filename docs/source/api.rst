@@ -1,10 +1,10 @@
-API Functions
-=============
+API Functions & Endpoints
+=========================
 
 The following functions retrieve financial data from the API in JSON format, and can be used inside the Code Editor.
 
 +-----------------------------------------+----------------------------------------------------------------------------------------------------------------------+
-| Function                                | Link to API                                                                                                          |
+| Functions                               | Link to API (Endpoints)                                                                                              |
 +-----------------------------------------+----------------------------------------------------------------------------------------------------------------------+
 | get_income_statement()                  | `Income Statement Annual <https://discountingcashflows.com/api/income-statement/AAPL/>`__                            |
 +-----------------------------------------+----------------------------------------------------------------------------------------------------------------------+
