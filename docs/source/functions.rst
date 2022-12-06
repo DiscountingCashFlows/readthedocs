@@ -92,6 +92,16 @@ Displaying Messages
 
 Prints values and messages to the screen. Below are examples of usage types:
 
+Arguments of ``print(str, label='', type='', currency='')``
+
+ * ``str`` - The actual message that will be printed to the screen.
+ 
+ * ``label`` - The label of the print message. Leave blank for no label.
+ 
+ * ``type`` - Has 2 options: '#' for number formatting or '%' for rate formatting. Leave blank for no formatting.
+ 
+ * ``currency`` - Can be either a currency (USD, EUR), or '%'. Leave blank for no currency.
+
 .. code-block:: javascript
 
   // Prints a message with a label
@@ -504,6 +514,23 @@ Arguments of ``renderTable(name, data, rows, columns)``
  * ``rows`` - The row headers. Example ['Revenues', 'Operating Costs', 'Net Income']
  
  * ``columns`` - The column headers. Usually the dates/years for the data.
+
+
+Dates functions
+---------------
+
+``getYear()`` function:
+************************
+
+Arguments of ``getYear(date)``
+
+ * ``date`` - The full date in %YY-%mm-%dd format or 2022-12-31
+
+.. code-block:: javascript
+
+   print(getYear('2022-12-31'));
+   
+   >>> 2022
 
 
 Utility functions
