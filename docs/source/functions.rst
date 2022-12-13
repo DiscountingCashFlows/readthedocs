@@ -273,17 +273,17 @@ Here is a code example of defining and setting assumptions:
 
 .. code-block:: javascript
 
-  var INPUT = Input({NUMBER: 5,  // Plain number 5
-                     CALCULATED_NUMBER: '',  // Number will be calculated later on
-                     _RATE: 5,  // Plain rate 5%
-                     _CALCULATED_RATE: '',  // Rate that will be calculated later on
+  var INPUT = Input({NUMBER: 5,  // Static Assumption: Number 5
+                     CALCULATED_NUMBER: '',  // Dynamic Assumption (will be calculated later on)
+                     _RATE: 5,  // Static Assumption: Rate 5%
+                     _CALCULATED_RATE: '',  // Dynamic Assumption Rate (will be calculated later on)
                     }); 
   $.when().done(
       function(){
-        // Set the INPUT.CALCULATED_NUMBER to 1.23
+        // Set the dynamic assumption number
         setInputDefault('CALCULATED_NUMBER', 1.23);
 
-        // Set the INPUT._CALCULATED_RATE to 1.23%
+        // Set the dynamic assumption rate
         setInputDefault('_CALCULATED_RATE', 1.23);
         
         print(INPUT.NUMBER, 'INPUT.NUMBER');
