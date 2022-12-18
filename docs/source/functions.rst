@@ -551,9 +551,11 @@ Arguments of ``getYear(date)``
 .. code-block:: javascript
 
    print(getYear('2022-12-31'));
+   print(getYear(['2022-12-31', '2021-12-31', '2020-12-31']));
    
    >>> 2022
-
+   >>> 2022,2021,2020
+   
 
 Utility functions
 ------------------
