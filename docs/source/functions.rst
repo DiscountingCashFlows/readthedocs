@@ -53,6 +53,8 @@ So, you'd probably want to stick to method 2 because it saves a lot of time. And
 ``deepCopy()`` function:
 ------------------------
 
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/new-valuation-functions.js#L337>`__
+
 Creates a deep copy of the object that has been parsed and retrieves the underlying data.
 
 In JavaScript, objects and arrays are mutable by default. Deep copying means cloning the original object into an identical copy, which you can modify without altering the original object.
@@ -89,6 +91,8 @@ Displaying Messages
 
 ``print()`` function:
 *********************
+
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/valuation-functions.js#L1007>`__
 
 Prints values and messages to the screen. Below are examples of usage types:
 
@@ -155,6 +159,8 @@ Display an error alert message (in red) on the top of the model.
 
 ``Description()`` function:
 ***************************
+
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/valuation-functions.js#L217>`__
 
 The ``Description()`` function serves as a quick readme for the model and it is shown at the top of each model. It supports html formatting, so you can style it any way you want.
 
@@ -261,6 +267,8 @@ Use '_' as the first character when referring to a rate:
 ``setInputDefault()`` function:
 *******************************
 
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/valuation-functions.js#L988>`__
+
 Use ``setInputDefault()`` to set a blank INPUT assumption dynamically. 
 
 For example, if we wanted to set an assumption (``INPUT._TREASURY_YIELD``) to the Yield of the US 10 Year Treasury Bond. Assume we've got the treasury data in object ``treasury``.
@@ -313,6 +321,8 @@ The flow of creating a chart is:
 ``fillHistoricUsingReport()`` function:
 ***************************************
 
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/valuation-functions.js#L835>`__
+
 Adds a data series ('revenue', 'netIncome') to the chart from a given report. This function makes things really quick and easy when you want to add historic financial data in the chart from an existing report(income statement, balance sheet, etc.).
 
 Arguments of ``fillHistoricUsingReport(report, key, measure)``
@@ -348,6 +358,8 @@ Example:
  
 ``fillHistoricUsingList()`` function:
 ***************************************
+
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/valuation-functions.js#L854>`__
 
 Adds a list to the chart.
 
@@ -388,6 +400,8 @@ Example without ``endingYear``:
  
 ``forecast()`` function:
 ************************
+
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/valuation-functions.js#L876>`__
 
 Adds forecasted points to the chart. These points can be considered as 'assumptions' on the chart. For example, we could project the next 10 years of free cash flow and, by using the forecast function, we can make each forecasted point draggable and editable in the forecast table.
 
@@ -439,6 +453,8 @@ Example:
 ``renderChart()`` function:
 ***************************
 
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/valuation-functions.js#L750>`__
+
 Some technical explanation for when the rendering happens: 
 
  In  `valuation-functions.js <https://github.com/DiscountingCashFlows/Documentation/blob/main/source-code/valuation-functions.js>`__ there is a global object that stores all chart data called ``_chart_data`` which has the following members:
@@ -480,6 +496,8 @@ The following example renders a chart with historic revenues and net income:
 ``reportKeyToList()`` function:
 *******************************
 
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/new-valuation-functions.js#L261>`__
+
 Adds rows to the table from a report retrieved from the API. It then returns a list of values from the report provided.
 
 Arguments of ``reportKeyToList(report, key, measure)``
@@ -503,6 +521,8 @@ Arguments of ``reportKeyToList(report, key, measure)``
 ``renderTable()`` function:
 ***************************
 
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/valuation-functions.js#L814>`__
+
 Renders the table to the screen, similar to the ``renderChart()`` function.
  
 Arguments of ``renderTable(name, data, rows, columns)``
@@ -522,6 +542,8 @@ Dates functions
 ``getYear()`` function:
 ************************
 
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/new-valuation-functions.js#L324>`__
+
 Arguments of ``getYear(date)``
 
  * ``date`` - The full date in %YY-%mm-%dd format or 2022-12-31
@@ -538,6 +560,8 @@ Utility functions
 
 ``fxRate()`` function:
 ****************************
+
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/new-valuation-functions.js#L211>`__
 
 Retrieves the FX Rate of conversion between 2 currencies.
 
@@ -564,6 +588,8 @@ Arguments of ``fxRate(fx, fromCurrency, toCurrency)``
 ``newArrayFill()`` function:
 ****************************
 
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/new-valuation-functions.js#L277>`__
+
 Returns a new array with a specified length of the same object.
  
 Arguments of ``newArrayFill(length, fillObject)``
@@ -583,6 +609,8 @@ Arguments of ``newArrayFill(length, fillObject)``
 ``arrayValuesToRates()`` function:
 **********************************
 
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/new-valuation-functions.js#L285>`__
+
 Converts an array of values to an array of rate strings. For example, 0.1 is converted to '10%'
 
 .. code-block:: javascript
@@ -598,6 +626,8 @@ Converts an array of values to an array of rate strings. For example, 0.1 is con
 ``getArraySum()`` function:
 ***************************
 
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/new-valuation-functions.js#L293>`__
+
 Get the sum of all elements in an array of numbers.
 
 .. code-block:: javascript
@@ -612,6 +642,8 @@ Get the sum of all elements in an array of numbers.
 
 ``getGrowthRateList()`` function:
 *********************************
+
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/new-valuation-functions.js#L303>`__
 
 Returns an array of growth rates based on a given input array of values.
 
@@ -640,6 +672,8 @@ Arguments of ``getGrowthRateList(values, mode)``
 ``addKey()`` function:
 **********************
 
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/new-valuation-functions.js#L189>`__
+
 Add a data series from one report to another. Add revenues (which is located in the income statements) to all cash flow statements.
 
 .. code-block:: javascript
@@ -660,6 +694,8 @@ Add a data series from one report to another. Add revenues (which is located in 
 
 ``linearRegressionGrowthRate()`` function:
 ******************************************
+
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/new-valuation-functions.js#L159>`__
 
 Create a linear regression array from a report. 
 
@@ -697,6 +733,8 @@ Arguments of ``linearRegressionGrowthRate(report, key, projection_years, slope)`
 ``averageMargin()`` function:
 *****************************
 
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/new-valuation-functions.js#L136>`__
+
 Calculates the historic average of one data series (key1) divided by another data series (key2) from the provided report.
 
 Arguments of ``averageMargin(key1, key2, report)``:
@@ -723,6 +761,8 @@ Arguments of ``averageMargin(key1, key2, report)``:
 ``averageGrowthRate()`` function:
 *********************************
 
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/new-valuation-functions.js#L115>`__
+
 Calculates the average growth rate of all growth rates of a data series from a given report.
 
 Arguments of ``averageGrowthRate(key, report)``:
@@ -746,6 +786,8 @@ Arguments of ``averageGrowthRate(key, report)``:
 ``applyMarginToList()`` function:
 *********************************
 
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/new-valuation-functions.js#L108>`__
+
 Multiplies all elements of a list by a given margin.
 
 Arguments of ``applyMarginToList(list, margin)``:
@@ -763,6 +805,8 @@ Arguments of ``applyMarginToList(list, margin)``:
 
 ``getGrowthList()`` function:
 *****************************
+
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/new-valuation-functions.js#L93>`__
 
 Calculates future values of a data series from a given report based on a given rate.
 
@@ -796,6 +840,8 @@ Arguments of ``getGrowthList(report, key, length, rate)``:
 ``toM()`` function:
 *******************
 
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/new-valuation-functions.js#L37>`__
+
 Formats the given number to millions. 
 
 Basically, it divides the input by 1,000,000.
@@ -811,6 +857,8 @@ Basically, it divides the input by 1,000,000.
 
 ``toK()`` function:
 *******************
+
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/new-valuation-functions.js#L49>`__
 
 Formats the given number or array to thousands. 
 
@@ -828,9 +876,10 @@ Basically, it divides the input by 1,000.
 ``toR()`` and ``toN()`` functions:
 *********************************
 
-``toR()`` formats a given number or array of numbers to a rate or an array of rates.
+``toR()`` formats a given number or array of numbers to a rate or an array of rates. `Source toR() <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/new-valuation-functions.js#L61>`__
 
-``toN()`` formats a given rate or array of rates to a number or an array of numbers.
+``toN()`` formats a given rate or array of rates to a number or an array of numbers. 
+`Source toN() <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/new-valuation-functions.js#L77>`__
 
 Basically, ``toR()`` multiplies the input by 100 and ``toN()`` divides the input by 100.
 
