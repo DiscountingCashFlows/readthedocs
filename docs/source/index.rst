@@ -5,6 +5,14 @@ Discounting Cash Flows (`discountingcashflows.com <https://discountingcashflows.
 
 Our data is provided by `financialmodelingprep.com <https://site.financialmodelingprep.com/>`__ and we use fully transparent and editable models written in the JavaScript programming language to process the data and output the intrinsic value of a company. The valuation models are evaluated by the client's own browser(Chrome, Firefox, Opera, etc.)
 
+**Check out the `Code Editor YouTube Video Tutorial Series  <https://www.youtube.com/watch?v=WoZpjxFbZO0&list=PLYtAU4aYbpMbA7rXL5FLySHcnWKvzFmHp>`__**
+
+.. raw:: html
+
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; height: auto;">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/WoZpjxFbZO0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+
 Advantages
 ---------------------
 
