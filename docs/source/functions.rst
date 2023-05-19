@@ -50,42 +50,46 @@ You can think about it like going to the grocery:
 So, you'd probably want to stick to method 2 because it saves a lot of time. And that's exactly what ``$.when().done()`` does. It retrieves all data at once and once it is ``done()``, it can begin processing the data.
 
 
-``deepCopy()`` function:
-------------------------
+Unpacking the Financial Data:
+-----------------------------
 
-`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/new-valuation-functions.js#L337>`__
+Once all data has been retrieved from the API, it is now in "response" format and it would look like something this:
 
-Creates a deep copy of the object that has been parsed and retrieves the underlying data.
-
-In JavaScript, objects and arrays are mutable by default. Deep copying means cloning the original object into an identical copy, which you can modify without altering the original object.
-
-.. warning::
-
-   Always create copies of your response objects. Editing the response objects directly can cause caching issues if you ever decide to add your model to your watchlist or set up notifications.
-
-Arguments of ``deepCopy(object)``
-
- * ``object`` - The response object
- 
 .. code-block:: javascript
 
-   $.when(
-       get_income_statement(),
-       get_balance_sheet_statement(),
-       get_profile(),
-       get_dividends_annual(),
-       get_treasury(),
-       get_fx()).done(
-       function(_income, _balance, _profile, _dividends, _treasury, _fx){
-         // Create deep copies of response objects
-         var income = deepCopy(_income);
-         var balance = deepCopy(_balance);
-         var profile = deepCopy(_profile);
-         var dividends = deepCopy(_dividends);
-         var treasury = deepCopy(_treasury);
-         var fx = deepCopy(_fx);
-     });
- 
+   _income = {
+      0: Array(...) [ {…}, {…}, {…}, … ]
+      1: "success"
+      2: Object { readyState: 4, getResponseHeader: getResponseHeader(e), getAllResponseHeaders: getAllResponseHeaders(), … }
+      length: 3
+   }
+
+The format is not very pretty and we should **never** use the object in "reponse" format directly as this can cause caching issues in the Watchlist & Notifications page.
+
+We should use the  ``Response()`` class to unpack the financial data. By using this class we make sure that:
+   1. We avoid any caching issues.
+   2. All financial data values are in one currency only.
+
+``Response()`` class:
+*********************
+
+All response objects need to be passed into the ``Response()`` class as such:
+
+.. code-block:: javascript
+
+   var response = new Response({
+      income: _income,
+      balance: _balance,
+      flows: _flows,
+      profile: _profile,
+      treasury: _treasury,
+      dividends: _dividends,
+    }).toOneCurrency('income', _fx);
+    
+    print(response.treasury.year10, 'U.S. 10 Bond Yield', '%');
+    
+    >>> U.S. 10 Bond Yield: 3.5%
+
 Displaying Messages
 -------------------
 
@@ -909,3 +913,37 @@ Basically, ``toR()`` multiplies the input by 100 and ``toN()`` divides the input
    
    >>> toN(number): 0.005 
    >>> toN(array): 0.1,0.055,0.12345 
+   
+
+``deepCopy()`` function:
+************************
+
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/new-valuation-functions.js#L337>`__
+
+Creates a deep copy of the object that has been parsed and retrieves the underlying data.
+
+In JavaScript, objects and arrays are mutable by default. Deep copying means cloning the original object into an identical copy, which you can modify without altering the original object.
+
+Arguments of ``deepCopy(object)``
+
+ * ``object`` - The response object
+ 
+.. code-block:: javascript
+
+   $.when(
+       get_income_statement(),
+       get_balance_sheet_statement(),
+       get_profile(),
+       get_dividends_annual(),
+       get_treasury(),
+       get_fx()).done(
+       function(_income, _balance, _profile, _dividends, _treasury, _fx){
+         // Create deep copies of response objects
+         var income = deepCopy(_income);
+         var balance = deepCopy(_balance);
+         var profile = deepCopy(_profile);
+         var dividends = deepCopy(_dividends);
+         var treasury = deepCopy(_treasury);
+         var fx = deepCopy(_fx);
+     });
+ 
