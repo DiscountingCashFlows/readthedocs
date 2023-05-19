@@ -50,8 +50,8 @@ You can think about it like going to the grocery:
 So, you'd probably want to stick to method 2 because it saves a lot of time. And that's exactly what ``$.when().done()`` does. It retrieves all data at once and once it is ``done()``, it can begin processing the data.
 
 
-Unpacking the Financial Data:
------------------------------
+Unpacking the Financial Data - ``Response()`` class:
+----------------------------------------------------
 
 Once all data has been retrieved from the API, it is now in "response" format and it would look like something this:
 
@@ -70,8 +70,8 @@ We should use the  ``Response()`` class to unpack the financial data. By using t
    1. We avoid any caching issues.
    2. All financial data values are in one currency only.
 
-``Response()`` class:
-*********************
+``Response()`` class constructor:
+*********************************
 
 All response objects need to be passed into the ``Response()`` class as such:
 
@@ -89,6 +89,21 @@ All response objects need to be passed into the ``Response()`` class as such:
     print(response.treasury.year10, 'U.S. 10 Bond Yield', '%');
     
     >>> U.S. 10 Bond Yield: 3.5%
+
+``Response.toOneCurrency()``:
+*****************************
+
+The function makes sure that all response objects that have been passed in ``Response()`` are in one currency, and that currency is the currency of the specified report (through ``report_key``).
+
+In the example above, ``toOneCurrency('income', _fx)`` uses the currency found in report 'income' as a baseline.
+
+If any other passed response object report is in another currency, all values in that report will be converted to the baseline currency at the fx rate passed in ``fx``.
+
+Arguments of ``Response.toOneCurrency(report_key, fx)``
+
+ * ``report_key`` - The actual message that will be printed to the screen.
+ 
+ * ``fx`` - The label of the print message. Leave blank for no label.
 
 Displaying Messages
 -------------------
