@@ -105,6 +105,31 @@ Arguments of ``Response.toOneCurrency(report_key, fx)``
  
  * ``fx`` - The label of the print message. Leave blank for no label.
 
+``Response.merge()``:
+*****************************
+
+The function merges all keys with an ``extenstion``, into their respective parents.
+
+For the example below, response.merge('_ltm') merges 'income_ltm' into 'income' and 'flows_ltm' into 'flows'.
+ 
+.. code-block:: javascript
+
+   var response = new Response({
+      income: _income,
+      income_ltm: _income_ltm,
+      balance_quarterly: _balance_quarterly,
+      balance_ltm: 'balance_quarterly:0',
+      flows: _flows,
+      flows_ltm: _flows_ltm,
+      profile: _profile,
+      treasury: _treasury,
+      risk_premium: _risk_premium,
+    }).toOneCurrency('income', _fx).merge('_ltm');
+
+Arguments of ``Response.merge(extension)``
+
+ * ``extension`` - response.merge('_ltm') merges 'income_ltm' into 'income'
+
 Displaying Messages
 -------------------
 
