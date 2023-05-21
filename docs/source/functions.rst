@@ -216,6 +216,8 @@ Also, notice that both '_netMargin' and '_returnOnEquity' keys start with an '_'
 
 Writes the formula onto a DateValueData object before calculation.
 
+Must be set before the ``compute()`` operation!
+
 Arguments of ``DateValueData.setFormula(new_formula)``:
 
  * ``new_formula`` - The new formula object to be set.
@@ -273,6 +275,65 @@ Function ``function:linear_regression``:
       
 ``DateValueData.compute()``:
 ****************************
+
+Computes the stored formulas that were set using ``DateValueData.setFormula()`` in the correct order.
+
+Arguments of ``DateValueData.compute(properties)``:
+
+ * ``properties`` - (Optional) Object containing the compute end date
+ 
+If ``properties`` is left blank, then the computation will stop at last date in the ``DateValueData`` object. This means that if the ``DateValueData`` object starts at 1990 and ends in 2022, the compute function will compute the formulas for each year between 1990 and 2022.
+
+For forecasting, we need to specify the number of years to continue computing formulas. We achieve this with a ``properties`` object:
+
+.. code-block:: javascript
+   
+   properties = {
+      'forecast_years': 5
+   }
+   
+   // Or if we want to specify the date
+   
+   properties = {
+      'forecast_end_date': 2027
+   }
+   
+   // Forecasting Example:
+   var forecasted_data = historical_computed_data.setFormula({
+      ...
+    }).compute({'forecast_end_date': 2027});
+      
+``DateValueData.setEditable()``:
+********************************
+
+Sets DateValueData keys as editable. They can then be edited from the chart or from the forecast table.
+
+Must be set before the ``compute()`` operation!
+
+Arguments of ``DateValueData.setEditable(_edit(), object)``:
+
+ * ``_edit()`` - This is required to be always ``_edit()``
+ 
+ * ``object`` - Object that contains the editable keys and the start date
+ 
+   object = {
+      start_date: nextYear,
+      keys: ['key1', 'key2', ...],
+   }
+
+Full example:
+
+.. code-block:: javascript
+   
+   var nextYear = historical_computed_data.lastDate() + 1;
+   var forecasted_data = historical_computed_data.setFormula({
+      'revenue': ...,
+      'operatingCashFlow': ...,
+      'freeCashFlow': ...,
+    }).setEditable(_edit(), {
+      start_date: nextYear,
+      keys: ['revenue', 'operatingCashFlow', 'freeCashFlow'],
+    }).compute({'forecast_end_date': forecastEndDate});
 
 Displaying Messages
 -------------------
@@ -429,71 +490,74 @@ Setting assumptions
 
 Assumptions are set either statically or dynamically.
 
-- ``static`` : We have a default value for the assumption (Example: INPUT.GROWTH_YEARS: 5 - it will be 5 growth years by default)
+- ``static`` : We have a default value for the assumption (Example: GROWTH_YEARS: 5 - it will be 5 growth years by default)
 
-- ``dynamic``: We can set the assumption by using ``setInputDefault()`` (Example: INPUT._TREASURY_YIELD: '' - needs to be filled dynamically with the us 10 year treasury yield)
+- ``dynamic``: We can set the assumption by using ``setAssumption()`` (Example: _TREASURY_YIELD: '' - needs to be filled dynamically with the us 10 year treasury yield)
 
 ``Input()`` function:
 *********************
   
 The ``Input()`` function holds the interactive assumptions data, which the user is able tweak and play around with.
 
-We usually use UPPERCASE when defining INPUT variables, so that we know it is referring to an input, but you can use whichever case you want.
+We usually use UPPERCASE when defining INPUT variables, so that we know it is referring to an assumption, but you can use whichever case you want.
 
 The variable name will be formatted like so:
 
-  ``INPUT.NUMBER_ONE`` -> Number One
+  ``NUMBER_ONE`` -> Number One
   
-  ``INPUT.Number_Two`` -> Number Two
+  ``Number_Two`` -> Number Two
   
-  ``INPUT.number_three`` -> Number Three
+  ``number_three`` -> Number Three
 
 Use '_' as the first character when referring to a rate:
 
-  ``INPUT._RATE: 10`` -> Will translate to 10% or 0.1
+  ``_RATE: 10`` -> Will translate to 10% or 0.1
  
-``setInputDefault()`` function:
+``setAssumption()`` function:
 *******************************
 
 `Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/valuation-functions.js#L988>`__
 
-Use ``setInputDefault()`` to set a blank INPUT assumption dynamically. 
+Use ``setAssumption()`` to set a blank INPUT assumption dynamically. 
 
-For example, if we wanted to set an assumption (``INPUT._TREASURY_YIELD``) to the Yield of the US 10 Year Treasury Bond. Assume we've got the treasury data in object ``treasury``.
+For example, if we wanted to set an assumption (``_TREASURY_YIELD``) to the Yield of the US 10 Year Treasury Bond. Assume we've got the treasury data in object ``treasury``.
 
-  ``INPUT._TREASURY_YIELD: ''``
+  ``_TREASURY_YIELD: ''``
   
-  ``setInputDefault('_TREASURY_YIELD', treasury['year10']);``
+  ``setAssumption('_TREASURY_YIELD', treasury['year10']);``
 
 Here is a code example of defining and setting assumptions:
 
 .. code-block:: javascript
 
-  var INPUT = Input({NUMBER: 5,  // Static Assumption: Number 5
-                     CALCULATED_NUMBER: '',  // Dynamic Assumption (will be calculated later on)
-                     _RATE: 5,  // Static Assumption: Rate 5%
-                     _CALCULATED_RATE: '',  // Dynamic Assumption Rate (will be calculated later on)
-                    }); 
-  $.when().done(
+   Input(
+      {
+         NUMBER: 5,  // Static Assumption: Number 5
+         CALCULATED_NUMBER: '',  // Dynamic Assumption (will be calculated later on)
+         _RATE: 5,  // Static Assumption: Rate 5%
+         _CALCULATED_RATE: '',  // Dynamic Assumption Rate (will be calculated later on)
+      }
+   ); 
+   $.when().done(
       function(){
         // Set the dynamic assumption number
-        setInputDefault('CALCULATED_NUMBER', 1.23);
+        setAssumption('CALCULATED_NUMBER', 1.23);
 
         // Set the dynamic assumption rate
-        setInputDefault('_CALCULATED_RATE', 1.23);
+        setAssumption('_CALCULATED_RATE', 1.23);
         
-        print(INPUT.NUMBER, 'INPUT.NUMBER');
-        >>> INPUT.NUMBER: 5 
+        print(getAssumption('NUMBER'), 'NUMBER');
+        >>> NUMBER: 5 
         
-        print(INPUT.CALCULATED_NUMBER, 'INPUT.CALCULATED_NUMBER');
-        >>> INPUT.CALCULATED_NUMBER: 1.23 
+        print(getAssumption('CALCULATED_NUMBER'), 'CALCULATED_NUMBER');
+        >>> CALCULATED_NUMBER: 1.23 
         
-        print(INPUT._RATE, 'INPUT._RATE');
-        >>> INPUT._RATE: 0.05 
+        print(getAssumption('_RATE'), '_RATE');
+        >>> _RATE: 0.05 
         
-        print(INPUT._CALCULATED_RATE, 'INPUT._CALCULATED_RATE');
-        >>> INPUT._CALCULATED_RATE: 0.0123 
-  });
+        print(getAssumption('_CALCULATED_RATE'), '_CALCULATED_RATE');
+        >>> _CALCULATED_RATE: 0.0123 
+   });
 
 Displaying a Chart
 -------------------
