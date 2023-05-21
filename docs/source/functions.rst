@@ -513,12 +513,12 @@ Use '_' as the first character when referring to a rate:
 
   ``_RATE: 10`` -> Will translate to 10% or 0.1
  
-``setAssumption()`` function:
-*******************************
+``setAssumption()`` and ``getAssumption()``:
+********************************************
 
 `Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/valuation-functions.js#L988>`__
 
-Use ``setAssumption()`` to set a blank INPUT assumption dynamically. 
+Use ``setAssumption()`` to set a '' blank assumption dynamically and ``getAssumption()`` to retrieve the value of an assumption.
 
 For example, if we wanted to set an assumption (``_TREASURY_YIELD``) to the Yield of the US 10 Year Treasury Bond. Assume we've got the treasury data in object ``treasury``.
 
@@ -559,234 +559,82 @@ Here is a code example of defining and setting assumptions:
         >>> _CALCULATED_RATE: 0.0123 
    });
 
-Displaying a Chart
--------------------
+Displaying a Chart - ``DateValueData.renderChart()``:
+----------------------------------------------------
 
-The flow of creating a chart is:
+Displays a chart based on a DateValueData object. 
 
- #. Step 1. Fill the historic data (for example the company's historic revenues, net income, etc.) by using either ``fillHistoricUsingReport()`` or ``fillHistoricUsingList()``, whichever you find easier to setup.
+If the DateValueData object has any editable keys, they will be displayed as editable chart points and placed inside the forecast table.
+
+Arguments of ``DateValueData.renderChart(object)``
+
+ * ``object`` - The object containing both the keys and the properties of the chart.
  
- #. Step 2. Fill the forecasted data by using ``forecast()``. This data represents the 'assumptions' for the chart (for example predicting future revenues).
- 
- #. Step 3. Be sure to render the chart or else it won't be shown on the screen.
-
-``fillHistoricUsingReport()`` function:
-***************************************
-
-`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/valuation-functions.js#L835>`__
-
-Adds a data series ('revenue', 'netIncome') to the chart from a given report. This function makes things really quick and easy when you want to add historic financial data in the chart from an existing report(income statement, balance sheet, etc.).
-
-Arguments of ``fillHistoricUsingReport(report, key, measure)``
-
- * ``report`` - The report object from the API. For example: income statement.
- 
- * ``key`` - This is the historic data series key that you'll want to fill the chart with (for historic revenues use key 'revenue')
- 
- * ``measure`` - Has 3 options: 'M', 'K' or left blank. 
- 
-  #. Use 'M' when you want to format the numbers to millions (divide by 1,000,000). 
-  
-  #. Use 'K'when you want to format the numbers to thosands (divide by 1,000).
-  
-  #. Leave blank when you don't want any number formatting.
-
-Example:
-
-.. code-block:: javascript
- 
-   $.when(
-     get_income_statement()).done(
-     function(_income){
-       var income = deepCopy(_income);
-       // Adds the full history of eps from the income statements
-       fillHistoricUsingReport(income, 'eps');
-
-       // Adds the revenues, formatted to millions, of the last 10 years of income statements
-       fillHistoricUsingReport(income.slice(0,10), 'revenue', 'M');
-
-       renderChart('Example chart');
-   });
- 
-``fillHistoricUsingList()`` function:
-***************************************
-
-`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/valuation-functions.js#L854>`__
-
-Adds a list to the chart.
-
-Arguments of ``fillHistoricUsingList(list, key, endingYear)``
-
- * ``list`` - The list of historic values that will be added to the chart (Example: [1, 2, 3, 4])
- 
- * ``key`` - This is the historic data series key that you'll want to fill the chart with (for example: use key 'revenue' for historic revenues).
- 
- * ``endingYear`` - This is the year when the list ends. 
- 
-.. note::
- 
- Specify only if ``fillHistoricUsingReport()`` was not used before. If ``fillHistoricUsingReport()`` has been used, then the ending year will be the report's ending year.
-
-Example with ``endingYear``:
-
-.. code-block:: javascript
- 
- // Adds to the chart the data series [1, 2, 3, 4] labeled as 'My List' ending in year 2022
- fillHistoricUsingList([1, 2, 3, 4], 'myList', 2022);
- renderChart('Example chart');
- 
-Example without ``endingYear``:
+object = {
+   start_date: ...,  // Chart starts at start_date
+   keys: ['key1', 'key2', ...],  // keys to be displayed on the chart (must be present in the DateValueData object)
+   properties: {
+      title: 'My Chart Title',  // The main title of the chart
+      currency: ...,  // (Optional) In what currency are the chart's values
+      number_format: ...,  // (Optional) 'M' for Millions, 'K' for thousands, blank for no number format
+      disabled_keys: ['key1'],  // (Optional) keys that will be hidden by default, but can be toggled to visible from the chart
+   }
+}
  
 .. code-block:: javascript
 
-   $.when(
-     get_income_statement()).done(
-     function(_income){
-       var income = deepCopy(_income);
+   forecasted_data.renderChart({
+      start_date: nextYear - getAssumption('HISTORICAL_YEARS'),
+      keys: ['revenue', 'operatingCashFlow', 'freeCashFlow', 'discountedFreeCashFlow'],
+      properties: {
+         title: 'Historical and forecasted data',
+         currency: currency,
+         number_format: 'M',
+         disabled_keys: ['operatingCashFlow', 'discountedFreeCashFlow'],
+      }
+    });
 
-       // The ending year will be the report's ending year.
-       fillHistoricUsingReport(income.slice(0,10), 'revenue', 'M');
-       fillHistoricUsingList(newArrayFill(10, 100000), 'myList');
-       renderChart('Example chart');
-   });
- 
-``forecast()`` function:
-************************
-
-`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/valuation-functions.js#L876>`__
-
-Adds forecasted points to the chart. These points can be considered as 'assumptions' on the chart. For example, we could project the next 10 years of free cash flow and, by using the forecast function, we can make each forecasted point draggable and editable in the forecast table.
-
-.. note::
-
- The forecasted points on the chart also have a forecast table right underneath the chart, where each forecasted point of the chart is linked to a cell in the table.
-
-.. warning::
-
- To use the ``forecast()`` function correctly, you need to have filled some historic data, either by using ``fillHistoricUsingReport()`` or ``fillHistoricUsingList()``. This is for the function to know the starting year of the forecast.
-
-Arguments of ``forecast(list, key, settings)``
-
- * ``list`` - The list of forecasted points that will be added to the chart (Example: [1, 2, 3, 4]).
- 
- * ``key`` - This is the key of the data series you are trying to forecast (for forecasting revenues use key 'revenue').
- 
- * ``settings`` - Has 2 options: 'chartHidden' or left blank.
- 
-  #. 'chartHidden' is for hiding values from being displayed in the chart. This is useful when we need to forecast rates and ratios, that are too small to be displayed on the chart.
-  
-  #. Leave blank if you want to display the forecasted list to the chart.
-
-Returns the list with any user edits. For example, if we forecast list [1, 2, 3, 4] and the user changes index [1] value (current value is 2) to 5, then the function will return list [1, 5, 3, 4].
-
-Example:
-
-.. code-block:: javascript
-
-   $.when(
-     get_income_statement()).done(
-     function(_income){
-       var income = deepCopy(_income);
-       // Fill the chart with the revenues in the last 10 years of income statements, formatted to millions
-       fillHistoricUsingReport(income.slice(0,10), 'revenue', 'M');
-
-       // We will build a revenue forecast based on the last annual revenue reported in the income statement
-       // We also need to convert the value to millions toM(), because the forecast function does not support number formatting
-       var lastRevenue = toM(income[0].revenue);
-
-       // To make a forecast example, we will assume the revenue grows 5% each year for 3 years
-       var forecastedRevenue = [lastRevenue * 1.05,
-                                lastRevenue * Math.pow(1.05, 2),
-                                lastRevenue * Math.pow(1.05, 3)];
-       var forecastedRevenue = forecast(forecastedRevenue, 'revenue');
-       renderChart('Revenues chart');
-   });
-
-``renderChart()`` function:
-***************************
-
-`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/valuation-functions.js#L750>`__
-
-Some technical explanation for when the rendering happens: 
-
- In  `valuation-functions.js <https://github.com/DiscountingCashFlows/Documentation/blob/main/source-code/valuation-functions.js>`__ there is a global object that stores all chart data called ``_chart_data`` which has the following members:
-  * ``x_historic`` - This is the X-Axis for the historic data, where we usually store years (for example 2012 - 2022, a historic period of 10 years).
-  * ``x_forecasted`` - This is the X-Axis for the forecasted data (for example 2022 - 2032, a future period of 10 years).
-  * ``y_historic`` - This is the Y-Axis for historic data, where we store historic revenue, net income, etc.
-  * ``y_forecasted`` - This is the Y-Axis for future data (future revenue, net income, etc.).
-  * ``y_forecasted_chart_hidden`` - This is not actually visible on the chart. It is a part of the forecast table. Please, refer to the ``forecast()`` section.
-  * ``name`` - This is the title of the chart.
-  * ``hidden_series`` - This controls the visibility of individual data series (when we hide revenues for example, it will be stored here).
-
-Displaying a Table
--------------------
-
-Tables use row headers as keys (revenue, net income, etc.) and column headers as years (2022, 2023, etc.) and all other cells are actual values.
-
-The following example renders a chart with historic revenues and net income:
-
-.. code-block:: javascript
-
-   $.when(
-     get_income_statement()).done(
-     function(_income){
-       var income = deepCopy(_income);
-       // Add 2 rows
-       var rows = ['Revenues', 'Net Income'];
-       // Build a list of years
-       var columns = getYear(reportKeyToList(income, 'date'));
-       // Add the table data
-       var data = [reportKeyToList(income, 'revenue', 'M'), reportKeyToList(income, 'netIncome', 'M')];
-       // Add the chart to the context
-       renderTable('Full history of data', data, rows, columns);
-   });
-
-.. warning::
-
- The table functions are under active development and may change in the future.
-
-``reportKeyToList()`` function:
-*******************************
-
-`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/new-valuation-functions.js#L261>`__
-
-Adds rows to the table from a report retrieved from the API. It then returns a list of values from the report provided.
-
-Arguments of ``reportKeyToList(report, key, measure)``
-
- * ``report`` - The report object from the API. For example: income statement.
- 
- * ``key`` - This is the historic data series key that you'll want to fill the table with (for historic revenues use key 'revenue')
- 
- * ``measure`` - Has 3 options: 'M', 'K' or left blank.
- 
-.. code-block:: javascript
-   $.when(
-     get_income_statement()).done(
-     function(_income){
-       var income = deepCopy(_income);
-       print(reportKeyToList(income.slice(0,5), 'revenue', 'M'), 'List of revenues');
-   });
-   
-   >>> List of revenues: 394328,365817,274515,260174,265595 
- 
-``renderTable()`` function:
-***************************
+Displaying a Table - ``DateValueData.renderTable()``:
+-----------------------------------------------------
 
 `Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/valuation-functions.js#L814>`__
 
-Renders the table to the screen, similar to the ``renderChart()`` function.
+Renders the table to the screen, similar to the ``DateValueData.renderChart()`` function.
  
-Arguments of ``renderTable(name, data, rows, columns)``
+Arguments of ``DateValueData.renderTable(object)``
 
- * ``name`` - The table's name. Example: 'My Table'
- 
- * ``data`` - The values for all cells. This must be an array of size: **rows.length x columns.length**
- 
- * ``rows`` - The row headers. Example ['Revenues', 'Operating Costs', 'Net Income']
- 
- * ``columns`` - The column headers. Usually the dates/years for the data.
+ * ``object`` - The object containing both the keys and the properties of the table.
 
+object = {
+   start_date: nextYear - getAssumption('HISTORICAL_YEARS'),
+   keys: ['key1', 'key2', '_percentageKey', 'perShareKey', ...],
+   rows: ['Key 1 Name', 'Key 2 Name', '{%} Rate Key Name', '{PerShare} Per Share Key Name', ...],
+   'properties': {
+      'title': 'My Table Title',  // Main title of the table
+      'currency': ...,  // (Optional) In what currency are the table's values
+      'number_format': ...,  // (Optional) 'M' for Millions, 'K' for thousands, blank for no number format
+      'display_averages': true/false,  // (Optional) true for displaying an averages column
+      'column_order': 'descending'/'ascending'  // (Optional) Sort the columns in 'ascending' order, or 'descending' order.
+   }
+}
+
+.. code-block:: javascript
+
+    historical_computed_data.renderTable({
+      start_date: nextYear - getAssumption('HISTORICAL_YEARS'),
+      keys: ['netIncome', 'totalStockholdersEquity', '_returnOnEquity', 'dividendsPaidToCommon',
+            '_payoutRatio', 'weightedAverageShsOut', 'eps', 'adjDividend', 'bookValue'],
+      rows: ['Net income', 'Total Equity', '{%} Return on equity', 'Dividends paid',
+            '{%} Payout ratio', 'Shares outstanding', '{PerShare} EPS',
+            '{PerShare} Dividends', '{PerShare} Book Value'],
+      'properties': {
+         'title': 'Historical Data',
+         'currency': currency,
+         'number_format': 'M',
+         'display_averages': true,
+         'column_order': 'descending'
+      }
+   });
 
 Dates functions
 ---------------
@@ -1194,4 +1042,161 @@ Arguments of ``deepCopy(object)``
          var treasury = deepCopy(_treasury);
          var fx = deepCopy(_fx);
      });
+
+``fillHistoricUsingReport()`` function:
+***************************************
+
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/valuation-functions.js#L835>`__
+
+Adds a data series ('revenue', 'netIncome') to the chart from a given report. This function makes things really quick and easy when you want to add historic financial data in the chart from an existing report(income statement, balance sheet, etc.).
+
+Arguments of ``fillHistoricUsingReport(report, key, measure)``
+
+ * ``report`` - The report object from the API. For example: income statement.
+ 
+ * ``key`` - This is the historic data series key that you'll want to fill the chart with (for historic revenues use key 'revenue')
+ 
+ * ``measure`` - Has 3 options: 'M', 'K' or left blank. 
+ 
+  #. Use 'M' when you want to format the numbers to millions (divide by 1,000,000). 
+  
+  #. Use 'K'when you want to format the numbers to thosands (divide by 1,000).
+  
+  #. Leave blank when you don't want any number formatting.
+
+Example:
+
+.. code-block:: javascript
+ 
+   $.when(
+     get_income_statement()).done(
+     function(_income){
+       var income = deepCopy(_income);
+       // Adds the full history of eps from the income statements
+       fillHistoricUsingReport(income, 'eps');
+
+       // Adds the revenues, formatted to millions, of the last 10 years of income statements
+       fillHistoricUsingReport(income.slice(0,10), 'revenue', 'M');
+
+       renderChart('Example chart');
+   });
+ 
+``fillHistoricUsingList()`` function:
+***************************************
+
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/valuation-functions.js#L854>`__
+
+Adds a list to the chart.
+
+Arguments of ``fillHistoricUsingList(list, key, endingYear)``
+
+ * ``list`` - The list of historic values that will be added to the chart (Example: [1, 2, 3, 4])
+ 
+ * ``key`` - This is the historic data series key that you'll want to fill the chart with (for example: use key 'revenue' for historic revenues).
+ 
+ * ``endingYear`` - This is the year when the list ends. 
+ 
+.. note::
+ 
+ Specify only if ``fillHistoricUsingReport()`` was not used before. If ``fillHistoricUsingReport()`` has been used, then the ending year will be the report's ending year.
+
+Example with ``endingYear``:
+
+.. code-block:: javascript
+ 
+ // Adds to the chart the data series [1, 2, 3, 4] labeled as 'My List' ending in year 2022
+ fillHistoricUsingList([1, 2, 3, 4], 'myList', 2022);
+ renderChart('Example chart');
+ 
+Example without ``endingYear``:
+ 
+.. code-block:: javascript
+
+   $.when(
+     get_income_statement()).done(
+     function(_income){
+       var income = deepCopy(_income);
+
+       // The ending year will be the report's ending year.
+       fillHistoricUsingReport(income.slice(0,10), 'revenue', 'M');
+       fillHistoricUsingList(newArrayFill(10, 100000), 'myList');
+       renderChart('Example chart');
+   });
+ 
+``forecast()`` function:
+************************
+
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/valuation-functions.js#L876>`__
+
+Adds forecasted points to the chart. These points can be considered as 'assumptions' on the chart. For example, we could project the next 10 years of free cash flow and, by using the forecast function, we can make each forecasted point draggable and editable in the forecast table.
+
+.. note::
+
+ The forecasted points on the chart also have a forecast table right underneath the chart, where each forecasted point of the chart is linked to a cell in the table.
+
+.. warning::
+
+ To use the ``forecast()`` function correctly, you need to have filled some historic data, either by using ``fillHistoricUsingReport()`` or ``fillHistoricUsingList()``. This is for the function to know the starting year of the forecast.
+
+Arguments of ``forecast(list, key, settings)``
+
+ * ``list`` - The list of forecasted points that will be added to the chart (Example: [1, 2, 3, 4]).
+ 
+ * ``key`` - This is the key of the data series you are trying to forecast (for forecasting revenues use key 'revenue').
+ 
+ * ``settings`` - Has 2 options: 'chartHidden' or left blank.
+ 
+  #. 'chartHidden' is for hiding values from being displayed in the chart. This is useful when we need to forecast rates and ratios, that are too small to be displayed on the chart.
+  
+  #. Leave blank if you want to display the forecasted list to the chart.
+
+Returns the list with any user edits. For example, if we forecast list [1, 2, 3, 4] and the user changes index [1] value (current value is 2) to 5, then the function will return list [1, 5, 3, 4].
+
+Example:
+
+.. code-block:: javascript
+
+   $.when(
+     get_income_statement()).done(
+     function(_income){
+       var income = deepCopy(_income);
+       // Fill the chart with the revenues in the last 10 years of income statements, formatted to millions
+       fillHistoricUsingReport(income.slice(0,10), 'revenue', 'M');
+
+       // We will build a revenue forecast based on the last annual revenue reported in the income statement
+       // We also need to convert the value to millions toM(), because the forecast function does not support number formatting
+       var lastRevenue = toM(income[0].revenue);
+
+       // To make a forecast example, we will assume the revenue grows 5% each year for 3 years
+       var forecastedRevenue = [lastRevenue * 1.05,
+                                lastRevenue * Math.pow(1.05, 2),
+                                lastRevenue * Math.pow(1.05, 3)];
+       var forecastedRevenue = forecast(forecastedRevenue, 'revenue');
+       renderChart('Revenues chart');
+   });
+ 
+``reportKeyToList()`` function:
+*******************************
+
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/new-valuation-functions.js#L261>`__
+
+Adds rows to the table from a report retrieved from the API. It then returns a list of values from the report provided.
+
+Arguments of ``reportKeyToList(report, key, measure)``
+
+ * ``report`` - The report object from the API. For example: income statement.
+ 
+ * ``key`` - This is the historic data series key that you'll want to fill the table with (for historic revenues use key 'revenue')
+ 
+ * ``measure`` - Has 3 options: 'M', 'K' or left blank.
+ 
+.. code-block:: javascript
+   $.when(
+     get_income_statement()).done(
+     function(_income){
+       var income = deepCopy(_income);
+       print(reportKeyToList(income.slice(0,5), 'revenue', 'M'), 'List of revenues');
+   });
+   
+   >>> List of revenues: 394328,365817,274515,260174,265595 
  
