@@ -44,5 +44,7 @@ The following functions retrieve financial data from the API in JSON format, and
 +-----------------------------------------+----------------------------------------------------------------------------------------------------------------------+
 | get_prices_annual()                     | `Full history of market share prices for each year <https://discountingcashflows.com/api/prices/annual/AAPL/>`__     |
 +-----------------------------------------+----------------------------------------------------------------------------------------------------------------------+
+| get_risk_premium()                      | `Risk premiums for all countries <https://discountingcashflows.com/api/risk-premium/>`__                             |
++-----------------------------------------+----------------------------------------------------------------------------------------------------------------------+
 | get_fx()                                | `FX Market Prices for all currencies <https://discountingcashflows.com/api/fx/>`__                                   |
 +-----------------------------------------+----------------------------------------------------------------------------------------------------------------------+
