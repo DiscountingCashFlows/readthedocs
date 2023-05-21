@@ -187,16 +187,92 @@ So, the first step is to register the original data into a ``DateValueData()``. 
 
 Notice that we use the ``DateValueList`` class to store our data. Basically the ``DateValueData()`` class is just a collection of ``DateValueList()`` objects.
 
-Step 2 - Writing and Processing Formulas - ``setFormula()`` and ``compute()``:
-******************************************************************************
+Step 2 - Writing and Processing Formulas:
+*****************************************
 
-Following up on the previous examples,
+Following up on the previous examples, to calculate the Net Margin and the Return on Equity, our code would look something like this:
 
-   // Compute historical values and ratios
+.. code-block:: javascript
+
    var historical_computed_data = original_data.setFormula({
       '_netMargin': ['netIncome:0', '/', 'revenue:0'],
       '_returnOnEquity': ['netIncome:0', '/', 'totalStockholdersEquity:-1'],
    }).compute();
+   
+First, we set the formulas on ``original_data`` using the ``DateValueData.setFormula()`` function. After the formulas have been set we call the ``DateValueData.compute()`` function. Formulas are written between [] and, for now, they support a maximum of 3 items.
+
+Let's look at the '_returnOnEquity' formula. Notice it has 3 items:
+
+   * The first item 'netIncome:0' refers to the 'netIncome' registered in our original_data object and the ':0' refers to the current year.
+   
+   * The second item '/' refers to an operation (division in this case).
+   
+   * The third item refers to the 'totalStockholdersEquity' registered in our original_data object and the ':-1' refers to the previous year.
+
+Also, notice that both '_netMargin' and '_returnOnEquity' keys start with an '_' underline, this is because both of them are treated as percentages. So, beggining with an '_' underline will mark the respective key as a percentage.
+
+``DateValueData.setFormula()``:
+*******************************
+
+Writes the formula onto a DateValueData object before calculation.
+
+Arguments of ``DateValueData.setFormula(new_formula)``:
+
+ * ``new_formula`` - The new formula object to be set.
+
+Constants:
+**********
+
+Constants are used when we want a single value for all periods. Here is an example of setting the value 123 for all dates:
+   
+   * ``constant: [123]`` // Creates a list of constant 123
+   
+Copying Other Keys:
+********************
+
+   * ``copyOfNetIncome: ['netIncome']`` // Creates a copy of Net Income
+   
+   * ``copyOfNetIncome: ['netIncome:0']`` // Equivalent to the previous formula, but with an explicit ":0"
+   
+   * ``shiftedCopyOfNetIncome: ['netIncome:-1']`` // Creates a copy of Net Income shifted one year into the past.
+
+Operations:
+***********
+   
+   * ``bookValue: ['totalStockholdersEquity', '/', 'weightedAverageShsOut']`` // Divides the totalStockholdersEquity in current year by weightedAverageShsOut in current year
+   
+   * ``bookValue: ['totalStockholdersEquity:0', '/', 'weightedAverageShsOut:0']`` // Equivalent to the previous formula, but with an explicit ":0"
+   
+   * ``_returnOnEquity: ['netIncome:0', '/', 'totalStockholdersEquity:-1']`` // netIncome in current year divided by totalStockholdersEquity in previous year
+ 
+Function ``function:discount`` and ``function:compound``:
+*********************************************************
+   
+   * ``discountedFreeCashFlow: ['function:discount', 'freeCashFlow', {rate: '_costOfEquity', start_date: currentDate}]`` // Discounts the 'freeCashFlow' by '_costOfEquity', starting at ``currentDate``
+  
+   * ``discountedFreeCashFlow: ['function:discount', 'freeCashFlow', {rate: getAssumption('_DISCOUNT_RATE'), start_date: currentDate}]`` // Discounts the 'freeCashFlow' by constant ``getAssumption('_DISCOUNT_RATE')`` set in the assumptions, starting at ``currentDate``
+  
+   * ``discountedFreeCashFlow: ['function:discount', 'freeCashFlow:start_date', {rate: '_costOfEquity', start_date: currentDate}]`` // Discounts the constant 'freeCashFlow' taken at ``start_date`` by '_costOfEquity', starting at ``currentDate``
+  
+   * ``discountedFreeCashFlow: ['function:discount', 'freeCashFlow:other_date', {rate: '_costOfEquity', start_date: currentDate, other_date: otherDate}]`` // Discounts the constant 'freeCashFlow' taken at ``other_date`` by '_costOfEquity', starting at ``currentDate``
+  
+   * ``discountedOne: ['function:discount', 1, {rate: '_costOfEquity', start_date: currentDate}]`` // Discounts the constant value 1 by '_costOfEquity', starting at ``currentDate``
+  
+   * ``discountedOne: ['function:discount', 1, {rate: 0.1, start_date: currentDate}]`` // Discounts the constant value 1 by constant value 0.1 (or 10%), starting at ``currentDate``
+      >>> [1, 0.91, 0.83, 0.75, 0.68, 0.62]
+
+Function ``function:growth_rate``:
+**********************************
+
+   * ``_revenueGrowthRate: ['function:growth_rate', 'revenue']`` // Calculates the growth rate of key revenue
+   
+Function ``function:linear_regression``:
+****************************************
+
+   * ``linearRegressionRevenue: ['function:linear_regression', 'revenue', {slope: 1, start_date: 2013}]`` // Calculates the linear regression of key revenue, with slope = 1, starting back in 2013
+      
+``DateValueData.compute()``:
+****************************
 
 Displaying Messages
 -------------------
