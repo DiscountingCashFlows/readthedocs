@@ -23,6 +23,7 @@ Copy the following base code into the editor:
   $.when(
     get_profile()).done(
     function(_profile){
+    try{
       // We need to make sure we don't edit the _profile variable
       // Editing it could cause caching problems in the Watchlist page
       var response = new Response({
@@ -36,9 +37,13 @@ Copy the following base code into the editor:
 
       // Print messages to the screen
       print("Hello World!", "First Message");
-      print(profile.companyName, "Company's Name");
-      print(profile.price, "Stock Price", "#", profile.currency);
-      print(profile.website, "Company's Website");
+      print(response.profile.companyName, "Company's Name");
+      print(response.profile.price, "Stock Price", "#", response.profile.currency);
+      print(response.profile.website, "Company's Website");
+    }
+    catch (error) {
+      throwError(error);
+    }
   });
 
 Running & Saving the Code
