@@ -602,18 +602,21 @@ Arguments of ``DateValueData.renderChart(object)``
 
  * ``object`` - The object containing both the keys and the properties of the chart.
  
-object = {
-   start_date: ...,  // Chart starts at start_date
-   keys: ['key1', 'key2', ...],  // keys to be displayed on the chart (must be present in the DateValueData object)
-   properties: {
-      title: 'My Chart Title',  // The main title of the chart
-      currency: ...,  // (Optional) In what currency are the chart's values
-      number_format: ...,  // (Optional) 'M' for Millions, 'K' for thousands, blank for no number format
-      disabled_keys: ['key1'],  // (Optional) keys that will be hidden by default, but can be toggled to visible from the chart
-   }
-}
- 
 .. code-block:: javascript
+
+   /*
+   Format of object:
+   object = {
+      start_date: ...,  // Chart starts at start_date
+      keys: ['key1', 'key2', ...],  // keys to be displayed on the chart (must be present in the DateValueData object)
+      properties: {
+         title: 'My Chart Title',  // The main title of the chart
+         currency: ...,  // (Optional) In what currency are the chart's values
+         number_format: 'M'/'K'/'',  // (Optional) 'M' for Millions, 'K' for thousands, blank for no number format
+         disabled_keys: ['key1'],  // (Optional) keys that will be hidden by default, but can be toggled to visible from the chart
+      }
+   }
+   */
 
    forecasted_data.renderChart({
       start_date: nextYear - getAssumption('HISTORICAL_YEARS'),
@@ -637,22 +640,25 @@ Arguments of ``DateValueData.renderTable(object)``
 
  * ``object`` - The object containing both the keys and the properties of the table.
 
-object = {
-   start_date: nextYear - getAssumption('HISTORICAL_YEARS'),
-   keys: ['key1', 'key2', '_percentageKey', 'perShareKey', ...],
-   rows: ['Key 1 Name', 'Key 2 Name', '{%} Rate Key Name', '{PerShare} Per Share Key Name', ...],
-   'properties': {
-      'title': 'My Table Title',  // Main title of the table
-      'currency': ...,  // (Optional) In what currency are the table's values
-      'number_format': ...,  // (Optional) 'M' for Millions, 'K' for thousands, blank for no number format
-      'display_averages': true/false,  // (Optional) true for displaying an averages column
-      'column_order': 'descending'/'ascending'  // (Optional) Sort the columns in 'ascending' order, or 'descending' order.
-   }
-}
-
 .. code-block:: javascript
 
-    historical_computed_data.renderTable({
+   /*
+   Format of object:
+   object = {
+      start_date: ...,
+      keys: ['key1', 'key2', '_percentageKey', 'perShareKey', ...],
+      rows: ['Key 1 Name', 'Key 2 Name', '{%} Rate Key Name', '{PerShare} Per Share Key Name', ...],
+      'properties': {
+         'title': 'My Table Title',  // Main title of the table
+         'currency': ...,  // (Optional) In what currency are the table's values
+         'number_format': 'M'/'K'/'',  // (Optional) 'M' for Millions, 'K' for thousands, blank for no number format
+         'display_averages': true/false,  // (Optional) true for displaying an averages column
+         'column_order': 'descending'/'ascending'  // (Optional) Sort the columns in 'ascending' order, or 'descending' order.
+      }
+   }
+   */
+   
+   historical_computed_data.renderTable({
       start_date: nextYear - getAssumption('HISTORICAL_YEARS'),
       keys: ['netIncome', 'totalStockholdersEquity', '_returnOnEquity', 'dividendsPaidToCommon',
             '_payoutRatio', 'weightedAverageShsOut', 'eps', 'adjDividend', 'bookValue'],
