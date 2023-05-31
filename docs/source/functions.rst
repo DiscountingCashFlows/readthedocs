@@ -1,7 +1,14 @@
 Valuation functions
 ====================
 
-Some of the following functions can also be found in `DiscountingCashFlows/Documentation/source-code/valuation-functions.js <https://github.com/DiscountingCashFlows/Documentation/blob/main/source-code/valuation-functions.js>`__. We will cover each function and its use cases.
+This is the official documentation for the Valuation Framework of Discounting Cash Flows Website (discountingcashflows.com)
+
+.. warning::
+
+   All code needs to be compatible with `EcmaScript 5.1 (ES5.1) <https://www.w3schools.com/js/js_es5.asp>`__
+   Features from ES6 do not work and need to be avoided.
+   
+Github repository source code: `valuation-functions/new-valuation-functions.js <https://github.com/DiscountingCashFlows/Documentation/blob/main/source-code/valuation-functions/new-valuation-functions.js>`__. 
 
 .. note::
 
@@ -10,9 +17,9 @@ Some of the following functions can also be found in `DiscountingCashFlows/Docum
 ``$.when().done()`` function:
 -----------------------------
 
-The valuation engine is built on the popular JS Framework 'jQuery'. Don't worry if you've never used it before because the ``$.when().done()`` function is the only function that we will use from the framework in our valuations.
+The ``$.when().done()`` function is an asynchronous function from the popular JavaScript Framework 'jQuery' that retrieves the financial data for us. The ``$.when().done()`` function is the only function that we will use from the 'jQuery' framework in our valuations.
 
-To understand what the ``$.when().done()`` function does, we need to think about what the workflow of valuing a company is. 
+To understand the ``$.when().done()`` function, we need to think about what the workflow of valuing a company is. 
  
 Step 1. Gather financial data for the company (get the income statements, the balance sheets, the cashflow reports, dividends, etc. )
 
