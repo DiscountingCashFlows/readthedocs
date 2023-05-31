@@ -75,7 +75,7 @@ The format is not very pretty and we should **never** use the object in "reponse
 
 We should always use the  ``Response()`` class to unpack the financial data. By using this class we make sure that:
    1. We avoid any caching issues.
-   2. All financial data values are in one currency only.
+   2. All financial data values are stored in one currency only.
 
 ``Response()`` class constructor:
 *********************************
@@ -179,8 +179,8 @@ Also, the class is called DateValueData because it stores pairs of Dates and Val
       ]
    }
    
-Step 1 - Defining Original Data:
-********************************
+Defining Original Data:
+***********************
 
 So, the first step is to register the original data into a ``DateValueData()``. In our previous examples the original data is: Net Income, Revenue and Total Equity. Let's see how we do that (we need the ``Response()`` object defined previously).
 
@@ -190,12 +190,13 @@ So, the first step is to register the original data into a ``DateValueData()``. 
       netIncome: new DateValueList(response.income, 'netIncome'),
       revenue: new DateValueList(response.income, 'revenue'),
       totalStockholdersEquity: new DateValueList(response.balance, 'totalStockholdersEquity'),
+      _treasuryYield: new DateValueList(response.treasury, 'year10', '%'),
     });
 
 Notice that we use the ``DateValueList`` class to store our data. Basically the ``DateValueData()`` class is just a collection of ``DateValueList()`` objects.
 
-Step 2 - Writing and Processing Formulas:
-*****************************************
+Writing and Processing Formulas:
+********************************
 
 Following up on the previous examples, to calculate the Net Margin and the Return on Equity, our code would look something like this:
 
@@ -373,6 +374,15 @@ Full example:
       start_date: nextYear,
       keys: ['revenue', 'operatingCashFlow', 'freeCashFlow'],
     }).compute({'forecast_end_date': forecastEndDate});
+
+``DateValueList()`` class:
+--------------------------
+
+The ``DateValueList()`` class is a list of date-value pairs. Here is an example:
+
+.. code-block:: javascript
+
+   TODO: Example ...
 
 Displaying Messages
 -------------------
