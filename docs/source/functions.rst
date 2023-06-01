@@ -14,7 +14,7 @@ Github repository source code: `valuation-functions/new-valuation-functions.js <
 
    Please note that this section is currently under active development. Some functions may not be up to date. If you find any outdated functions, please let us know `here <https://discountingcashflows.com/help/>`__
 
-$.when().done() function
+$.when().done() - Function
 ------------------------
 
 The ``$.when().done()`` function is an asynchronous function from the popular JavaScript Framework 'jQuery' that retrieves the financial data for us. The ``$.when().done()`` function is the only function that we will use from the 'jQuery' framework in our valuations.
@@ -82,6 +82,8 @@ We should always use the  ``Response()`` class to unpack the financial data. By 
 Response() - Class Constructor
 ****************************
 
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/82196c4db3d381c3eb44f2aeed8daeef677ecb15/source-code/valuation-functions/new-valuation-functions.js#L30>`__
+
 All data that has been retrieved from the API in "http response" format, needs to be passed into a ``Response()`` object as such:
 
 .. code-block:: javascript
@@ -102,6 +104,8 @@ All data that has been retrieved from the API in "http response" format, needs t
 Response.toOneCurrency() - Class Function
 ***********************************
 
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/82196c4db3d381c3eb44f2aeed8daeef677ecb15/source-code/valuation-functions/new-valuation-functions.js#L92>`__
+
 The function makes sure that all response objects that have been passed in ``Response()`` are valued in one currency, and that currency is the currency of the specified report (through ``report_key``).
 
 In the example above, ``toOneCurrency('income', _fx)`` uses the currency found in report 'income' as a baseline.
@@ -116,6 +120,8 @@ Arguments of ``Response.toOneCurrency(report_key, fx)``
 
 Response.merge() - Class Function
 ***************************
+
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/82196c4db3d381c3eb44f2aeed8daeef677ecb15/source-code/valuation-functions/new-valuation-functions.js#L172>`__
 
 The function merges all keys with an ``extension``, into their respective parents.
 
@@ -143,6 +149,8 @@ Arguments of ``Response.merge(extension)``
 
 DateValueData() - Class
 -----------------------
+
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/82196c4db3d381c3eb44f2aeed8daeef677ecb15/source-code/valuation-functions/new-valuation-functions.js#L192>`__
 
 Now that we have our financial data unpacked in the ``Response()`` object, it is ready to use in our calculations.
 
@@ -223,6 +231,8 @@ Let's look at the '_returnOnEquity' formula. Notice it has 3 items:
 
 DateValueData.setFormula() - Class Function
 *************************************
+
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/82196c4db3d381c3eb44f2aeed8daeef677ecb15/source-code/valuation-functions/new-valuation-functions.js#L233>`__
 
 Writes the formula onto a DateValueData object before calculation.
 
@@ -318,6 +328,8 @@ Operations
 DateValueData.compute() - Class Function
 ***********************
 
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/82196c4db3d381c3eb44f2aeed8daeef677ecb15/source-code/valuation-functions/new-valuation-functions.js#L593>`__
+
 Computes the stored formulas that were set using ``DateValueData.setFormula()`` in the correct order.
 
 Arguments of ``DateValueData.compute(properties)``:
@@ -348,6 +360,8 @@ For forecasting, we need to specify the number of years to continue computing fo
 DateValueData.setEditable() - Class Function
 ***************************
 
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/82196c4db3d381c3eb44f2aeed8daeef677ecb15/source-code/valuation-functions/new-valuation-functions.js#L1056>`__
+
 Sets DateValueData keys as editable. They can then be edited from the chart or from the forecast table.
 
 Must be set before the ``compute()`` operation!
@@ -377,14 +391,31 @@ Full example:
       keys: ['revenue', 'operatingCashFlow', 'freeCashFlow'],
     }).compute({'forecast_end_date': forecastEndDate});
 
+DateValueData.removeDate() - Class Function
+***************************
+
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/82196c4db3d381c3eb44f2aeed8daeef677ecb15/source-code/valuation-functions/new-valuation-functions.js#L431>`__
+
+Loops all data and removes all items at the specified date.
+
+Arguments of ``DateValueData.removeDate(date)``
+
+ * ``date`` - The date to be removed from the ``DateValueData`` object.
+ 
+The following example shows how we can remove the Last Twelve Months items from a table:
+
+.. code-block:: javascript
+   
+   forecasted_data.removeDate('LTM').renderTable({
+      ...
+    });
+
 DateValueList() - Class
 -----------------------
 
-The ``DateValueList()`` class contains a list of date-value pairs.
+The ``DateValueList()`` class contains a list of date-value pairs. Storing the data in this format will make sure that dates will not get mixed up, when performing calculations.
 
-Storing the data in this format will make sure that dates will not get mixed up, when performing calculations.
-
-Below is an example of a ``DateValueList()`` object:
+Below is an example of a ``DateValueList()`` object format:
 
 .. code-block:: javascript
 
@@ -411,6 +442,8 @@ Below is an example of a ``DateValueList()`` object:
 DateValueList() - Class Constructor
 **************************************
 
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/82196c4db3d381c3eb44f2aeed8daeef677ecb15/source-code/valuation-functions/new-valuation-functions.js#L1315>`__
+
 ``DateValueList()`` objects can be created using one the following methods:
 
 .. code-block:: javascript
@@ -426,7 +459,6 @@ DateValueList() - Class Constructor
    }).toOneCurrency('income', _fx);
    
    // The DateValueList() class is built to be stored inside a DateValueData() object
-   
    var original_data = new DateValueData({
    
       // Example 1: Store the list of revenues from the income statement
@@ -441,9 +473,11 @@ DateValueList() - Class Constructor
 DateValueList.average() - Class Function
 *************************************
 
-Gets the average of all values in the ``DateValueList`` object. 
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/82196c4db3d381c3eb44f2aeed8daeef677ecb15/source-code/valuation-functions/new-valuation-functions.js#L1417>`__
 
-It is the sum of all values divided by the number of dates available.
+Gets the average of all values in the ``DateValueList`` object. It is the sum of all values divided by the number of dates available.
+
+``DateValueList.average()`` has no arguments.
 
 Example: 
 
@@ -461,7 +495,11 @@ Example:
 DateValueList.sum() - Class Function
 *********************************
 
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/82196c4db3d381c3eb44f2aeed8daeef677ecb15/source-code/valuation-functions/new-valuation-functions.js#L1421>`__
+
 Gets the sum of all values in the ``DateValueList`` object. 
+
+``DateValueList.average()`` has no arguments.
 
 Example: 
 
@@ -479,10 +517,16 @@ Example:
 DateValueList.sublist() - Class Function
 *************************************
 
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/82196c4db3d381c3eb44f2aeed8daeef677ecb15/source-code/valuation-functions/new-valuation-functions.js#L1441>`__
+
 Gets a sublist of the ``DateValueList`` object by providing a start date and optionally an end date.
 
-If the end date is not provided, then the last date in the ``DateValueList`` object will be considered end date.
+Arguments of ``DateValueList.sublist(start_date, end_date)``
 
+ * ``start_date`` - The start date for the sublist.
+ 
+ * ``end_date`` - (Optional) End date. If the end date is not provided, then the last date in the ``DateValueList`` object will be considered end date.
+ 
 Example: 
 
 .. code-block:: javascript
@@ -494,16 +538,24 @@ Example:
    // Get 5 years of revenues
    var sublistRevenue = original_data.get('revenue').sublist(startDate);
    
-   // Providing an endDate (additionally to the startDate) will 
-   // retrieve a DateValueList sublist from the startDate to endDate.
-   // The endDate is the date from 1 year ago.
+   /*
+      Providing an endDate (additionally to the startDate) will 
+      retrieve a DateValueList sublist from the startDate to endDate.
+      The endDate is the date from 1 year ago.
+   */
    var endDate = original_data.lastDate() - 1;
    var sublistRevenue = original_data.get('revenue').sublist(startDate, endDate);
 
-DateValueList.valueAtDate() and DateValueList.lastValue() - Class Functions
+DateValueList.valueAtDate() - Class Functions
 *****************************************
 
-Get the value at a specified Date from a ``DateValueList`` object.
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/82196c4db3d381c3eb44f2aeed8daeef677ecb15/source-code/valuation-functions/new-valuation-functions.js#L1378>`__
+
+Get the value at a specified Date from a ``DateValueList`` object. If the date is not found, the function returns null.
+
+Arguments of ``DateValueList.valueAtDate(date)``
+
+ * ``date`` - The date to search for in the list. 
 
 Example:
 
@@ -517,9 +569,23 @@ Example:
    // Retrieve the 10Y treasury yield from 5 years ago
    var historicalTreasuryYield = original_data.get('_treasuryYield').valueAtDate(original_data.lastDate() - 5);
    
+
+DateValueList.lastValue() - Class Functions
+****************************************
+
+`Source <https://github.com/DiscountingCashFlows/Documentation/blob/82196c4db3d381c3eb44f2aeed8daeef677ecb15/source-code/valuation-functions/new-valuation-functions.js#L1512>`__
+
+Returns the value from the Last Twelve Months(LTM) if it exists or highest year if LTM is not found.
+
+``DateValueList.lastValue()`` takes no arguments.
+
+Example:
+
+.. code-block:: javascript
+
    // Retrieve the latest 10Y treasury yield, LTM value if exists or latest year
    var lastTreasuryYield = original_data.get('_treasuryYield').lastValue();
-
+ 
 Displaying Messages
 -------------------
 
