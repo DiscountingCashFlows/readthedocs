@@ -37,10 +37,15 @@ The ``$.when().done()`` function takes care of Step 1. It retrieves the financia
     get_treasury(),
     get_fx()).done(
     function(_income, _balance, _profile, _dividends, _treasury, _fx){
-
-    // Here we take care of Step 2. Process the data to calculate an intrinsic value of the company.
-    // ...
-
+    try{
+    
+       // Here we take care of Step 2. Process the data to calculate an intrinsic value of the company.
+       // ...
+       
+    }
+    catch (error) {
+     throwError(error);
+    }
   });
 
 
