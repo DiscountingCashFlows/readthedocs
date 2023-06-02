@@ -32,11 +32,12 @@ The ``$.when().done()`` function takes care of Step 1. It retrieves the financia
   $.when(
     get_income_statement(),
     get_balance_sheet_statement(),
+    get_cash_flow_statement(),
     get_profile(),
     get_dividends_annual(),
     get_treasury(),
     get_fx()).done(
-    function(_income, _balance, _profile, _dividends, _treasury, _fx){
+    function($income, $balance, $flows, $profile, $dividends, $treasury, $fx){
     try{
     
        // Here we take care of Step 2. Process the data to calculate an intrinsic value of the company.
@@ -94,13 +95,13 @@ All data that has been retrieved from the API in "http response" format, needs t
 .. code-block:: javascript
 
    var response = new Response({
-      income: _income,
-      balance: _balance,
-      flows: _flows,
-      profile: _profile,
-      treasury: _treasury,
-      dividends: _dividends,
-    }).toOneCurrency('income', _fx);
+      income: $income,
+      balance: $balance,
+      flows: $flows,
+      profile: $profile,
+      treasury: $treasury,
+      dividends: $dividends,
+    }).toOneCurrency('income', $fx);
     
     print(response.profile.companyName, "Company's Full Name");
     
@@ -126,9 +127,9 @@ In the example below, ``toOneCurrency('income', _fx)`` uses the currency found i
 .. code-block:: javascript
 
    var response = new Response({
-      income: _income,
+      income: $income,
       ...
-    }).toOneCurrency('income', _fx);
+    }).toOneCurrency('income', $fx);
     
     print(response.profile.companyName, "Company's Full Name");
     
@@ -146,16 +147,16 @@ For the example below, response.merge('_ltm') merges 'income_ltm' into 'income' 
 .. code-block:: javascript
 
    var response = new Response({
-      income: _income,
-      income_ltm: _income_ltm,
-      balance_quarterly: _balance_quarterly,
+      income: $income,
+      income_ltm: $income_ltm,
+      balance_quarterly: $balance_quarterly,
       balance_ltm: 'balance_quarterly:0',
-      flows: _flows,
-      flows_ltm: _flows_ltm,
-      profile: _profile,
-      treasury: _treasury,
-      risk_premium: _risk_premium,
-    }).toOneCurrency('income', _fx).merge('_ltm');
+      flows: $flows,
+      flows_ltm: $flows_ltm,
+      profile: $profile,
+      treasury: $treasury,
+      risk_premium: $risk_premium,
+    }).toOneCurrency('income', $fx).merge('_ltm');
 
 Because the example above does not have a report named 'balance', 'balance_ltm' will be skipped.
 
@@ -421,9 +422,9 @@ Full example:
    
    var nextYear = historical_computed_data.lastDate() + 1;
    var forecasted_data = historical_computed_data.setFormula({
-      'revenue': ...,
-      'operatingCashFlow': ...,
-      'freeCashFlow': ...,
+      revenue: ...,
+      operatingCashFlow: ...,
+      freeCashFlow: ...,
     }).setEditable(_edit(), {
       start_date: nextYear,
       keys: ['revenue', 'operatingCashFlow', 'freeCashFlow'],
@@ -487,14 +488,14 @@ DateValueList() - Class Constructor
 .. code-block:: javascript
    
    // Note: 
-   // For this example to work, _income and _treasury need to be retrieved 
+   // For this example to work, $income and $treasury need to be retrieved 
    // by using get_income_statement() and get_treasury_annual()
    
    var response = new Response({
-      income: _income,
-      treasury: _treasury,
+      income: $income,
+      treasury: $treasury,
       // Other reports ...
-   }).toOneCurrency('income', _fx);
+   }).toOneCurrency('income', $fx);
    
    // The DateValueList() class is built to be stored inside a DateValueData() object
    var original_data = new DateValueData({
