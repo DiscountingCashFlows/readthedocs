@@ -227,6 +227,7 @@ So, the first step is to register the original data into a ``DateValueData()``. 
       netIncome: new DateValueList(response.income, 'netIncome'),
       eps: new DateValueList(response.income, 'eps'),
       totalStockholdersEquity: new DateValueList(response.balance, 'totalStockholdersEquity'),
+      freeCashFlow: new DateValueList(response.flows, 'freeCashFlow'),
       _treasuryYield: new DateValueList(response.treasury, 'year10', '%'),
     });
 
@@ -242,6 +243,7 @@ Following up on the previous examples, to calculate the Net Margin and the Retur
    var historical_computed_data = original_data.setFormula({
       _netMargin: ['netIncome:0', '/', 'revenue:0'],
       _returnOnEquity: ['netIncome:0', '/', 'totalStockholdersEquity:-1'],
+      discountedFreeCashFlow: ['freeCashFlow'],
    }).compute();
    
 First, we set the formulas on ``original_data`` using the ``DateValueData.setFormula()`` function. After the formulas have been set we call the ``DateValueData.compute()`` function. Formulas are written between [] and, for now, they support a maximum of 3 items.
@@ -878,6 +880,7 @@ Arguments of ``DateValueData.renderChart(object)``
  
 .. code-block:: javascript
 
+   // Must be included
    Input(
      {			
        HISTORICAL_YEARS: 10,
@@ -900,12 +903,12 @@ Arguments of ``DateValueData.renderChart(object)``
 
    forecasted_data.renderChart({
       start_date: original_data.lastDate() - getAssumption('HISTORICAL_YEARS'),
-      keys: ['revenue', 'operatingCashFlow', 'freeCashFlow', 'discountedFreeCashFlow'],
+      keys: ['revenue', 'netIncome', 'freeCashFlow', 'discountedFreeCashFlow'],
       properties: {
          title: 'Historical and forecasted data',
          currency: response.currency,
          number_format: 'M',
-         disabled_keys: ['operatingCashFlow', 'discountedFreeCashFlow'],
+         disabled_keys: ['netIncome', 'discountedFreeCashFlow'],
       }
     });
 
@@ -922,6 +925,7 @@ Arguments of ``DateValueData.renderTable(object)``
 
 .. code-block:: javascript
 
+   // Must be included
    Input(
      {			
        HISTORICAL_YEARS: 10,
