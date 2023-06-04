@@ -31,13 +31,17 @@ The ``$.when().done()`` function takes care of Step 1. It retrieves the financia
 
   $.when(
     get_income_statement(),
+    get_income_statement_ltm(),
     get_balance_sheet_statement(),
+    get_balance_sheet_statement_quarterly(),
     get_cash_flow_statement(),
+    get_cash_flow_statement_ltm(),
     get_profile(),
     get_dividends_annual(),
     get_treasury(),
-    get_fx()).done(
-    function($income, $balance, $flows, $profile, $dividends, $treasury, $fx){
+    get_fx(),
+    get_risk_premium()).done(
+    function($income, $income_ltm, $balance, $balance_quarterly, $flows, $flows_ltm, $profile, $dividends, $treasury, $fx, $risk_premium){
     try{
     
        // Here we take care of Step 2. Process the data to calculate an intrinsic value of the company.
@@ -149,6 +153,7 @@ For the example below, response.merge('_ltm') merges 'income_ltm' into 'income' 
    var response = new Response({
       income: $income,
       income_ltm: $income_ltm,
+      balance: $balance,
       balance_quarterly: $balance_quarterly,
       balance_ltm: 'balance_quarterly:0',
       flows: $flows,
@@ -157,8 +162,12 @@ For the example below, response.merge('_ltm') merges 'income_ltm' into 'income' 
       treasury: $treasury,
       risk_premium: $risk_premium,
     }).toOneCurrency('income', $fx).merge('_ltm');
-
-Because the example above does not have a report named 'balance', 'balance_ltm' will be skipped.
+    // For the balance sheet, we need to set the LTM manually
+    response.balance_ltm['date'] = 'LTM';
+    
+    print(response.income[0].date, 'Last Date');
+    
+    >>> Last Date: LTM
 
 Arguments of ``Response.merge(extension)``
 
@@ -214,8 +223,9 @@ So, the first step is to register the original data into a ``DateValueData()``. 
 .. code-block:: javascript
 
    var original_data = new DateValueData({
-      netIncome: new DateValueList(response.income, 'netIncome'),
       revenue: new DateValueList(response.income, 'revenue'),
+      netIncome: new DateValueList(response.income, 'netIncome'),
+      eps: new DateValueList(response.income, 'eps'),
       totalStockholdersEquity: new DateValueList(response.balance, 'totalStockholdersEquity'),
       _treasuryYield: new DateValueList(response.treasury, 'year10', '%'),
     });
@@ -868,26 +878,32 @@ Arguments of ``DateValueData.renderChart(object)``
  
 .. code-block:: javascript
 
+   Input(
+     {			
+       HISTORICAL_YEARS: 10,
+     }
+   );
+   
    /*
-   Format of object:
-   object = {
-      start_date: ...,  // Chart starts at start_date
-      keys: ['key1', 'key2', ...],  // keys to be displayed on the chart (must be present in the DateValueData object)
-      properties: {
-         title: 'My Chart Title',  // The main title of the chart
-         currency: ...,  // (Optional) In what currency are the chart's values
-         number_format: 'M'/'K'/'',  // (Optional) 'M' for Millions, 'K' for thousands, blank for no number format
-         disabled_keys: ['key1'],  // (Optional) keys that will be hidden by default, but can be toggled to visible from the chart
+      Format of object:
+      object = {
+         start_date: ...,  // Chart starts at start_date
+         keys: ['key1', 'key2', ...],  // keys to be displayed on the chart (must be present in the DateValueData object)
+         properties: {
+            title: 'My Chart Title',  // The main title of the chart
+            currency: ...,  // (Optional) In what currency are the chart's values
+            number_format: 'M'/'K'/'',  // (Optional) 'M' for Millions, 'K' for thousands, blank for no number format
+            disabled_keys: ['key1'],  // (Optional) keys that will be hidden by default, but can be toggled to visible from the chart
+         }
       }
-   }
    */
 
    forecasted_data.renderChart({
-      start_date: nextYear - getAssumption('HISTORICAL_YEARS'),
+      start_date: original_data.lastDate() - getAssumption('HISTORICAL_YEARS'),
       keys: ['revenue', 'operatingCashFlow', 'freeCashFlow', 'discountedFreeCashFlow'],
       properties: {
          title: 'Historical and forecasted data',
-         currency: currency,
+         currency: response.currency,
          number_format: 'M',
          disabled_keys: ['operatingCashFlow', 'discountedFreeCashFlow'],
       }
@@ -906,32 +922,35 @@ Arguments of ``DateValueData.renderTable(object)``
 
 .. code-block:: javascript
 
+   Input(
+     {			
+       HISTORICAL_YEARS: 10,
+     }
+   );
+
    /*
-   Format of object:
-   object = {
-      start_date: ...,
-      keys: ['key1', 'key2', '_percentageKey', 'perShareKey', ...],
-      rows: ['Key 1 Name', 'Key 2 Name', '{%} Rate Key Name', '{PerShare} Per Share Key Name', ...],
-      'properties': {
-         'title': 'My Table Title',  // Main title of the table
-         'currency': ...,  // (Optional) In what currency are the table's values
-         'number_format': 'M'/'K'/'',  // (Optional) 'M' for Millions, 'K' for thousands, blank for no number format
-         'display_averages': true/false,  // (Optional) true for displaying an averages column
-         'column_order': 'descending'/'ascending'  // (Optional) Sort the columns in 'ascending' order, or 'descending' order.
+      Format of object:
+      object = {
+         start_date: ...,
+         keys: ['key1', 'key2', '_percentageKey', 'perShareKey', ...],
+         rows: ['Key 1 Name', 'Key 2 Name', '{%} Rate Key Name', '{PerShare} Per Share Key Name', ...],
+         'properties': {
+            'title': 'My Table Title',  // Main title of the table
+            'currency': ...,  // (Optional) In what currency are the table's values
+            'number_format': 'M'/'K'/'',  // (Optional) 'M' for Millions, 'K' for thousands, blank for no number format
+            'display_averages': true/false,  // (Optional) true for displaying an averages column
+            'column_order': 'descending'/'ascending'  // (Optional) Sort the columns in 'ascending' order, or 'descending' order.
+         }
       }
-   }
    */
    
    historical_computed_data.renderTable({
-      start_date: nextYear - getAssumption('HISTORICAL_YEARS'),
-      keys: ['netIncome', 'totalStockholdersEquity', '_returnOnEquity', 'dividendsPaidToCommon',
-            '_payoutRatio', 'weightedAverageShsOut', 'eps', 'adjDividend', 'bookValue'],
-      rows: ['Net income', 'Total Equity', '{%} Return on equity', 'Dividends paid',
-            '{%} Payout ratio', 'Shares outstanding', '{PerShare} EPS',
-            '{PerShare} Dividends', '{PerShare} Book Value'],
+      start_date: original_data.lastDate() - getAssumption('HISTORICAL_YEARS'),
+      keys: ['revenue', 'netIncome', 'totalStockholdersEquity', '_returnOnEquity', 'eps'],
+      rows: ['Revenue', 'Net income', 'Total Equity', '{%} Return on equity', '{PerShare} EPS'],
       'properties': {
          'title': 'Historical Data',
-         'currency': currency,
+         'currency': response.currency,
          'number_format': 'M',
          'display_averages': true,
          'column_order': 'descending'
