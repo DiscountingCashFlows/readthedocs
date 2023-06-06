@@ -29,29 +29,34 @@ The ``$.when().done()`` function takes care of Step 1. It retrieves the financia
 
 .. code-block:: javascript
 
-  $.when(
-    get_income_statement(),
-    get_income_statement_ltm(),
-    get_balance_sheet_statement(),
-    get_balance_sheet_statement_quarterly(),
-    get_cash_flow_statement(),
-    get_cash_flow_statement_ltm(),
-    get_profile(),
-    get_dividends_annual(),
-    get_treasury(),
-    get_fx(),
-    get_risk_premium()).done(
-    function($income, $income_ltm, $balance, $balance_quarterly, $flows, $flows_ltm, $profile, $dividends, $treasury, $fx, $risk_premium){
-    try{
-    
+   Input(
+     {
+       // Assumptions go here
+     }
+   );
+
+   $.when(
+     get_income_statement(),
+     get_income_statement_ltm(),
+     get_balance_sheet_statement(),
+     get_balance_sheet_statement_quarterly(),
+     get_cash_flow_statement(),
+     get_cash_flow_statement_ltm(),
+     get_profile(),
+     get_dividends_annual(),
+     get_treasury(),
+     get_fx(),
+     get_risk_premium()).done(
+     function($income, $income_ltm, $balance, $balance_quarterly, $flows, $flows_ltm, $profile, $dividends, $treasury, $fx, $risk_premium){
+     try{
+
        // Here we take care of Step 2. Process the data to calculate an intrinsic value of the company.
-       // ...
-       
-    }
-    catch (error) {
-     throwError(error);
-    }
-  });
+
+     }
+     catch (error) {
+      throwError(error);
+     }
+   });
 
 
 So, why do we use ``$.when().done()`` anyway and not some other function like ``$.get()``? 
@@ -89,6 +94,28 @@ We should always use the  ``Response()`` class to unpack the financial data. By 
    1. We avoid any caching issues.
    2. All financial data values are stored in one currency only.
 
+Example Usage
+****************************
+
+.. code-block:: javascript
+   
+   var response = new Response({
+     income: $income,
+     income_ltm: $income_ltm,
+     balance: $balance,
+     balance_quarterly: $balance_quarterly,
+     balance_ltm: 'balance_quarterly:0',
+     flows: $flows,
+     flows_ltm: $flows_ltm,
+     profile: $profile,
+     treasury: $treasury,
+     risk_premium: $risk_premium,
+   }).toOneCurrency('income', $fx).merge('_ltm');
+   // For the balance sheet, we need to set the LTM manually
+   response.balance_ltm['date'] = 'LTM';
+
+   print(response.income[0].date, 'Last Date');
+
 Response() - Class Constructor
 ****************************
 
@@ -100,11 +127,7 @@ All data that has been retrieved from the API in "http response" format, needs t
 
    var response = new Response({
       income: $income,
-      balance: $balance,
-      flows: $flows,
       profile: $profile,
-      treasury: $treasury,
-      dividends: $dividends,
     }).toOneCurrency('income', $fx);
     
     print(response.profile.companyName, "Company's Full Name");
@@ -153,17 +176,7 @@ For the example below, response.merge('_ltm') merges 'income_ltm' into 'income' 
    var response = new Response({
       income: $income,
       income_ltm: $income_ltm,
-      balance: $balance,
-      balance_quarterly: $balance_quarterly,
-      balance_ltm: 'balance_quarterly:0',
-      flows: $flows,
-      flows_ltm: $flows_ltm,
-      profile: $profile,
-      treasury: $treasury,
-      risk_premium: $risk_premium,
     }).toOneCurrency('income', $fx).merge('_ltm');
-    // For the balance sheet, we need to set the LTM manually
-    response.balance_ltm['date'] = 'LTM';
     
     print(response.income[0].date, 'Last Date');
     
