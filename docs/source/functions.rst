@@ -505,6 +505,15 @@ Full Forecasting Example:
 
 .. code-block:: javascript
 
+   // Required assumptions
+   Input(
+     {
+       HISTORICAL_YEARS: 10,
+       FORECAST_YEARS: 5,
+       _DISCOUNT_RATE: 10
+     }
+   );
+
    // Required to know when to start averaging for average_revenue_growth and average_fcf_margin
    var start_date = original_data.lastDate() - getAssumption('HISTORICAL_YEARS');
 
