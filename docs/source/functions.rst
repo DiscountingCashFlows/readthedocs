@@ -1010,31 +1010,31 @@ Example Usage
        HISTORICAL_YEARS: 10,
      }
    );
-   
+
    /*
-      Format of object:
-      object = {
-         start_date: ...,  // Chart starts at start_date
-         keys: ['key1', 'key2', ...],  // keys to be displayed on the chart (must be present in the DateValueData object)
-         properties: {
-            title: 'My Chart Title',  // The main title of the chart
-            currency: ...,  // (Optional) In what currency are the chart's values
-            number_format: 'M'/'K'/'',  // (Optional) 'M' for Millions, 'K' for thousands, blank for no number format
-            disabled_keys: ['key1'],  // (Optional) keys that will be hidden by default, but can be toggled to visible from the chart
+         Format of object:
+         object = {
+            start_date: ...,  // Chart starts at start_date
+            keys: ['key1', 'key2', ...],  // keys to be displayed on the chart (must be present in the DateValueData object)
+            properties: {
+               title: 'My Chart Title',  // The main title of the chart
+               currency: ...,  // (Optional) In what currency are the chart's values
+               number_format: 'M'/'K'/'',  // (Optional) 'M' for Millions, 'K' for thousands, blank for no number format
+               disabled_keys: ['key1'],  // (Optional) keys that will be hidden by default, but can be toggled to visible from the chart
+            }
          }
-      }
-   */
+      */
 
    forecasted_data.renderChart({
-      start_date: original_data.lastDate() - getAssumption('HISTORICAL_YEARS'),
-      keys: ['revenue', 'netIncome', 'freeCashFlow', 'discountedFreeCashFlow'],
-      properties: {
-         title: 'Historical and forecasted data',
-         currency: response.currency,
-         number_format: 'M',
-         disabled_keys: ['netIncome', 'discountedFreeCashFlow'],
-      }
-    });
+     start_date: original_data.lastDate() - getAssumption('HISTORICAL_YEARS'),
+     keys: ['revenue', 'netIncome', 'freeCashFlow', 'discountedFreeCashFlow'],
+     properties: {
+       title: 'Historical and forecasted data',
+       currency: response.currency,
+       number_format: 'M',
+       disabled_keys: ['netIncome', 'discountedFreeCashFlow'],
+     }
+   });
 
 Displaying a Table - ``DateValueData.renderTable()``:
 -----------------------------------------------------
@@ -1060,32 +1060,32 @@ Example Usage
    );
 
    /*
-      Format of object:
-      object = {
-         start_date: ...,
-         keys: ['key1', 'key2', '_percentageKey', 'perShareKey', ...],
-         rows: ['Key 1 Name', 'Key 2 Name', '{%} Rate Key Name', '{PerShare} Per Share Key Name', ...],
-         'properties': {
-            'title': 'My Table Title',  // Main title of the table
-            'currency': ...,  // (Optional) In what currency are the table's values
-            'number_format': 'M'/'K'/'',  // (Optional) 'M' for Millions, 'K' for thousands, blank for no number format
-            'display_averages': true/false,  // (Optional) true for displaying an averages column
-            'column_order': 'descending'/'ascending'  // (Optional) Sort the columns in 'ascending' order, or 'descending' order.
+         Format of object:
+         object = {
+            start_date: ...,
+            keys: ['key1', 'key2', '_percentageKey', 'perShareKey', ...],
+            rows: ['Key 1 Name', 'Key 2 Name', '{%} Rate Key Name', '{PerShare} Per Share Key Name', ...],
+            'properties': {
+               'title': 'My Table Title',  // Main title of the table
+               'currency': ...,  // (Optional) In what currency are the table's values
+               'number_format': 'M'/'K'/'',  // (Optional) 'M' for Millions, 'K' for thousands, blank for no number format
+               'display_averages': true/false,  // (Optional) true for displaying an averages column
+               'column_order': 'descending'/'ascending'  // (Optional) Sort the columns in 'ascending' order, or 'descending' order.
+            }
          }
-      }
-   */
-   
+      */
+
    historical_computed_data.renderTable({
-      start_date: original_data.lastDate() - getAssumption('HISTORICAL_YEARS'),
-      keys: ['revenue', 'netIncome', 'totalStockholdersEquity', '_returnOnEquity', 'eps'],
-      rows: ['Revenue', 'Net income', 'Total Equity', '{%} Return on equity', '{PerShare} EPS'],
-      'properties': {
-         'title': 'Historical Data',
-         'currency': response.currency,
-         'number_format': 'M',
-         'display_averages': true,
-         'column_order': 'descending'
-      }
+     start_date: original_data.lastDate() - getAssumption('HISTORICAL_YEARS'),
+     keys: ['revenue', 'netIncome', 'totalStockholdersEquity', '_returnOnEquity', 'eps'],
+     rows: ['Revenue', 'Net income', 'Total Equity', '{%} Return on equity', '{PerShare} EPS'],
+     'properties': {
+       'title': 'Historical Data',
+       'currency': response.currency,
+       'number_format': 'M',
+       'display_averages': true,
+       'column_order': 'descending'
+     }
    });
 
 Dates functions
