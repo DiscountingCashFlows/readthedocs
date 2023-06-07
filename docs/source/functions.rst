@@ -239,7 +239,7 @@ Example Usage
      {
        HISTORICAL_YEARS: 10,
        FORECAST_YEARS: 5,
-       _DISCOUNT_RATE: 0.1
+       _DISCOUNT_RATE: 10
      }
    );
    
