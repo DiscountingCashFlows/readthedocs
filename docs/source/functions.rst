@@ -50,7 +50,8 @@ The ``$.when().done()`` function takes care of Step 1. It retrieves the financia
      function($income, $income_ltm, $balance, $balance_quarterly, $flows, $flows_ltm, $profile, $dividends, $treasury, $fx, $risk_premium){
      try{
 
-       // Here we take care of Step 2. Process the data to calculate an intrinsic value of the company.
+       // Here we take care of Step 2
+       // Process the data to calculate an intrinsic value of the company...
 
      }
      catch (error) {
@@ -95,7 +96,7 @@ We should always use the  ``Response()`` class to unpack the financial data. By 
    2. All financial data values are stored in one currency only.
 
 Example Usage
-****************************
+*************
 
 .. code-block:: javascript
    
@@ -126,13 +127,13 @@ All data that has been retrieved from the API in "http response" format, needs t
 .. code-block:: javascript
 
    var response = new Response({
-      income: $income,
-      profile: $profile,
-    }).toOneCurrency('income', $fx);
-    
-    print(response.profile.companyName, "Company's Full Name");
-    
-    >>> Company's Full Name: Apple Inc. 
+     income: $income,
+     profile: $profile,
+   }).toOneCurrency('income', $fx);
+
+   print(response.profile.companyName, "Company's Full Name");
+
+   >>> Company's Full Name: Apple Inc.
 
 Response.toOneCurrency() - Class Function
 ***********************************
@@ -154,13 +155,13 @@ In the example below, ``toOneCurrency('income', _fx)`` uses the currency found i
 .. code-block:: javascript
 
    var response = new Response({
-      income: $income,
-      ...
-    }).toOneCurrency('income', $fx);
-    
-    print(response.profile.companyName, "Company's Full Name");
-    
-    >>> Company's Full Name: Apple Inc. 
+     income: $income,
+     profile: $profile,
+   }).toOneCurrency('income', $fx);
+
+   print(response.profile.companyName, "Company's Full Name");
+
+   >>> Company's Full Name: Apple Inc.
 
 Response.merge() - Class Function
 ***************************
@@ -174,13 +175,13 @@ For the example below, response.merge('_ltm') merges 'income_ltm' into 'income' 
 .. code-block:: javascript
 
    var response = new Response({
-      income: $income,
-      income_ltm: $income_ltm,
-    }).toOneCurrency('income', $fx).merge('_ltm');
-    
-    print(response.income[0].date, 'Last Date');
-    
-    >>> Last Date: LTM
+     income: $income,
+     income_ltm: $income_ltm,
+   }).toOneCurrency('income', $fx).merge('_ltm');
+
+   print(response.income[0].date, 'Last Date');
+
+   >>> Last Date: LTM   
 
 Arguments of ``Response.merge(extension)``
 
@@ -227,7 +228,81 @@ Also, the class is called DateValueData because it stores pairs of Dates and Val
          3: ...
       ]
    }
+
+Example Usage
+*************
+
+.. code-block:: javascript
    
+   // Required assumptions
+   Input(
+     {
+       HISTORICAL_YEARS: 10,
+       FORECAST_YEARS: 5,
+       _DISCOUNT_RATE: 0.1
+     }
+   );
+   
+   // Below is the full processing of data (computing historical ratios and forecasting values)
+   // Store original data
+   var original_data = new DateValueData({
+     revenue: new DateValueList(response.income, 'revenue'),
+     netIncome: new DateValueList(response.income, 'netIncome'),
+     eps: new DateValueList(response.income, 'eps'),
+     totalStockholdersEquity: new DateValueList(response.balance, 'totalStockholdersEquity'),
+     freeCashFlow: new DateValueList(response.flows, 'freeCashFlow'),
+     _treasuryYield: new DateValueList(response.treasury, 'year10', '%'),
+     weightedAverageShsOut: new DateValueList(response.income, 'weightedAverageShsOut'),
+   });
+
+   // Compute historical ratios and margins
+   var historical_computed_data = original_data.setFormula({
+     _netMargin: ['netIncome:0', '/', 'revenue:0'],
+     _returnOnEquity: ['netIncome:0', '/', 'totalStockholdersEquity:-1'],
+     _revenueGrowthRate: ['function:growth_rate', 'revenue'],
+     _freeCashFlowMargin: ['freeCashFlow:0', '/', 'revenue:0'],
+     discountedFreeCashFlow: ['freeCashFlow'],
+   }).compute();
+
+   // Required to know when to start averaging for average_revenue_growth and average_fcf_margin
+   var start_date = original_data.lastDate() - getAssumption('HISTORICAL_YEARS');
+
+   // Calculate the average Revenue growth rate beginning 10 years ago (HISTORICAL_YEARS)
+   var average_revenue_growth = historical_computed_data.get('_revenueGrowthRate').sublist(start_date).average();
+   // Calculate the average Free Cash Flow Margin beginning 10 years ago (HISTORICAL_YEARS)
+   var average_fcf_margin = historical_computed_data.get('_freeCashFlowMargin').sublist(start_date).average();
+
+   // Required to know when the forecasting ends
+   var forecast_end_date = original_data.lastDate() + getAssumption('FORECAST_YEARS');
+   var next_year_date = original_data.lastDate() + 1;
+   // Forecast future values
+   var forecasted_data = historical_computed_data.setFormula({
+     revenue: ['revenue:-1', '*', 1 + average_revenue_growth],
+     freeCashFlow: ['revenue:0', '*', average_fcf_margin],
+     discountedFreeCashFlow: ['function:discount', 'freeCashFlow', {rate: getAssumption('_DISCOUNT_RATE'), start_date: next_year_date}],
+     _freeCashFlowMargin: ['freeCashFlow:0', '/', 'revenue:0'],
+     _revenueGrowthRate: ['function:growth_rate', 'revenue'],
+   }).setEditable(_edit(), {
+     start_date: next_year_date,
+     keys: ['revenue', 'freeCashFlow'],
+   }).compute({forecast_end_date: forecast_end_date}); 
+
+   // The sum of all discounted Free Cash Flow
+   var total_discounted_fcf = forecasted_data.get('discountedFreeCashFlow').sublist(next_year_date).sum();
+   // Total shares outstanding
+   var total_shares_outstanding = original_data.get('weightedAverageShsOut').lastValue();
+   // Total discounted Free Cash Flow divided by the number of shares
+   var discounted_fcf_per_share = total_discounted_fcf / total_shares_outstanding;
+   
+   // Sets the value at the top of the model
+   if(_StopIfWatch(discounted_fcf_per_share, response.currency)){
+     return;
+   }
+   _SetEstimatedValue(discounted_fcf_per_share, response.currency);
+
+   print(total_discounted_fcf, 'The sum of all discounted Free Cash Flow', '#', response.currency);
+   print(discounted_fcf_per_share, 'Total discounted Free Cash Flow per share', '#', response.currency);
+
 Defining Original Data
 **********************
 
@@ -235,14 +310,16 @@ So, the first step is to register the original data into a ``DateValueData()``. 
 
 .. code-block:: javascript
 
+   // Store original data
    var original_data = new DateValueData({
-      revenue: new DateValueList(response.income, 'revenue'),
-      netIncome: new DateValueList(response.income, 'netIncome'),
-      eps: new DateValueList(response.income, 'eps'),
-      totalStockholdersEquity: new DateValueList(response.balance, 'totalStockholdersEquity'),
-      freeCashFlow: new DateValueList(response.flows, 'freeCashFlow'),
-      _treasuryYield: new DateValueList(response.treasury, 'year10', '%'),
-    });
+     revenue: new DateValueList(response.income, 'revenue'),
+     netIncome: new DateValueList(response.income, 'netIncome'),
+     eps: new DateValueList(response.income, 'eps'),
+     totalStockholdersEquity: new DateValueList(response.balance, 'totalStockholdersEquity'),
+     freeCashFlow: new DateValueList(response.flows, 'freeCashFlow'),
+     _treasuryYield: new DateValueList(response.treasury, 'year10', '%'),
+     weightedAverageShsOut: new DateValueList(response.income, 'weightedAverageShsOut'),
+   });
 
 Notice that we use the ``DateValueList`` class to store our data. Basically the ``DateValueData()`` class is just a collection of ``DateValueList()`` objects.
 
@@ -253,10 +330,13 @@ Following up on the previous examples, to calculate the Net Margin and the Retur
 
 .. code-block:: javascript
 
+   // Compute historical ratios and margins
    var historical_computed_data = original_data.setFormula({
-      _netMargin: ['netIncome:0', '/', 'revenue:0'],
-      _returnOnEquity: ['netIncome:0', '/', 'totalStockholdersEquity:-1'],
-      discountedFreeCashFlow: ['freeCashFlow'],
+     _netMargin: ['netIncome:0', '/', 'revenue:0'],
+     _returnOnEquity: ['netIncome:0', '/', 'totalStockholdersEquity:-1'],
+     _revenueGrowthRate: ['function:growth_rate', 'revenue'],
+     _freeCashFlowMargin: ['freeCashFlow', '/', 'revenue'],
+     discountedFreeCashFlow: ['freeCashFlow'],
    }).compute();
    
 First, we set the formulas on ``original_data`` using the ``DateValueData.setFormula()`` function. After the formulas have been set we call the ``DateValueData.compute()`` function. Formulas are written between [] and, for now, they support a maximum of 3 items.
@@ -419,7 +499,35 @@ For forecasting, we need to specify the number of years to continue computing fo
    // Forecasting Example:
    var forecasted_data = historical_computed_data.setFormula({
       ...
-    }).compute({'forecast_end_date': 2027});
+   }).compute({'forecast_end_date': 2027});
+ 
+Full Forecasting Example:
+
+.. code-block:: javascript
+
+   // Required to know when to start averaging for average_revenue_growth and average_fcf_margin
+   var start_date = original_data.lastDate() - getAssumption('HISTORICAL_YEARS');
+
+   // Calculate the average Revenue growth rate beginning 10 years ago (HISTORICAL_YEARS)
+   var average_revenue_growth = historical_computed_data.get('_revenueGrowthRate').sublist(start_date).average();
+   // Calculate the average Free Cash Flow Margin beginning 10 years ago (HISTORICAL_YEARS)
+   var average_fcf_margin = historical_computed_data.get('_freeCashFlowMargin').sublist(start_date).average();
+
+   // Required to know when the forecasting ends
+   var forecast_end_date = original_data.lastDate() + getAssumption('FORECAST_YEARS');
+   var next_year_date = original_data.lastDate() + 1;
+   
+   // Forecast future values
+   var forecasted_data = historical_computed_data.setFormula({
+     revenue: ['revenue:-1', '*', 1 + average_revenue_growth],
+     freeCashFlow: ['revenue:0', '*', average_fcf_margin],
+     discountedFreeCashFlow: ['function:discount', 'freeCashFlow', {rate: getAssumption('_DISCOUNT_RATE'), start_date: next_year_date}],
+     _freeCashFlowMargin: ['freeCashFlow:0', '/', 'revenue:0'],
+     _revenueGrowthRate: ['function:growth_rate', 'revenue'],
+   }).setEditable(_edit(), {
+     start_date: next_year_date,
+     keys: ['revenue', 'freeCashFlow'],
+   }).compute({forecast_end_date: forecast_end_date}); 
       
 DateValueData.setEditable() - Class Function
 ***************************
@@ -441,7 +549,7 @@ Arguments of ``DateValueData.setEditable(_edit(), object)``:
       keys: ['key1', 'key2', ...],
    }
 
-Full example:
+Example:
 
 .. code-block:: javascript
    
@@ -471,8 +579,8 @@ The following example shows how we can remove the Last Twelve Months items from 
 .. code-block:: javascript
    
    forecasted_data.removeDate('LTM').renderTable({
-      ...
-    });
+     ...
+   });
 
 DateValueList() - Class
 -----------------------
@@ -891,9 +999,12 @@ Arguments of ``DateValueData.renderChart(object)``
 
  * ``object`` - The object containing both the keys and the properties of the chart.
  
+Example Usage
+*************
+ 
 .. code-block:: javascript
 
-   // Must be included
+   // HISTORICAL_YEARS must be included
    Input(
      {			
        HISTORICAL_YEARS: 10,
@@ -936,9 +1047,12 @@ Arguments of ``DateValueData.renderTable(object)``
 
  * ``object`` - The object containing both the keys and the properties of the table.
 
+Example Usage
+*************
+
 .. code-block:: javascript
 
-   // Must be included
+   // HISTORICAL_YEARS must be included
    Input(
      {			
        HISTORICAL_YEARS: 10,
