@@ -497,9 +497,10 @@ For forecasting, we need to specify the number of years to continue computing fo
    }
    
    // Forecasting Example:
+   var forecast_end_date = historical_computed_data.lastDate() + getAssumption('FORECAST_YEARS');
    var forecasted_data = historical_computed_data.setFormula({
       ...
-   }).compute({'forecast_end_date': 2027});
+   }).compute({'forecast_end_date': forecast_end_date});
  
 Full Forecasting Example:
 
