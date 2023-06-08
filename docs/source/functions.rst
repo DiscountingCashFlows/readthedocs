@@ -546,6 +546,8 @@ DateValueData.setEditable() - Class Function
 
 Sets DateValueData keys as editable. They can then be edited from the chart or from the forecast table.
 
+For this to work, make sure to include to render the chart :ref:`render-chart-header-label`.
+
 Must be set before the ``compute()`` operation!
 
 Arguments of ``DateValueData.setEditable(_edit(), object)``:
@@ -563,15 +565,14 @@ Example:
 
 .. code-block:: javascript
    
-   var nextYear = historical_computed_data.lastDate() + 1;
+   var next_year_date = original_data.lastDate() + 1;
    var forecasted_data = historical_computed_data.setFormula({
-      revenue: ...,
-      operatingCashFlow: ...,
-      freeCashFlow: ...,
-    }).setEditable(_edit(), {
-      start_date: nextYear,
-      keys: ['revenue', 'operatingCashFlow', 'freeCashFlow'],
-    }).compute({'forecast_end_date': forecastEndDate});
+     revenue: ...,
+     freeCashFlow: ...,
+   }).setEditable(_edit(), {
+     start_date: next_year_date,
+     keys: ['revenue', 'freeCashFlow'],
+   }).compute({'forecast_end_date': forecast_end_date});
 
 DateValueData.removeDate() - Class Function
 ***************************
@@ -998,7 +999,9 @@ Here is a code example of defining and setting assumptions:
         >>> _CALCULATED_RATE: 0.0123 
    });
 
-Displaying a Chart - ``DateValueData.renderChart()``:
+.. _render-chart-header-label:
+
+Displaying a Chart - ``DateValueData.renderChart()``
 ----------------------------------------------------
 
 Displays a chart based on a DateValueData object. 
