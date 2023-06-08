@@ -1,14 +1,14 @@
-Valuation functions
+Valuation Framework
 ====================
 
-This is the official documentation for the Valuation Framework of Discounting Cash Flows Website (discountingcashflows.com)
+Below is the documentation for the Valuation Framework functions of Discounting Cash Flows Website (discountingcashflows.com)
+   
+Github repository source code: `valuation-functions/new-valuation-functions.js <https://github.com/DiscountingCashFlows/Documentation/blob/main/source-code/valuation-functions/new-valuation-functions.js>`__. 
 
 .. warning::
 
    All code needs to be compatible with `EcmaScript 5.1 (ES5.1) <https://www.w3schools.com/js/js_es5.asp>`__
    Features from ES6 do not work and need to be avoided.
-   
-Github repository source code: `valuation-functions/new-valuation-functions.js <https://github.com/DiscountingCashFlows/Documentation/blob/main/source-code/valuation-functions/new-valuation-functions.js>`__. 
 
 .. note::
 
@@ -427,20 +427,22 @@ Formula functions are functions that can be used inside ``DateValueData()`` obje
  * 'function:compound' - compounds a specified key using a given 'rate' and a present date as 'start_date'
 
 .. code-block:: javascript
-
+   
+   var current_date = original_data.lastDate();
+   var other_date = current_date + 1; // Next year
    var computed_data = original_data.setFormula({
-      // Discounts the 'freeCashFlow' by '_costOfEquity', starting at 'currentDate'
-      discountedFreeCashFlow: ['function:discount', 'freeCashFlow', {rate: '_costOfEquity', start_date: currentDate}],  
-      // Discounts the 'freeCashFlow' by constant getAssumption('_DISCOUNT_RATE') set in the assumptions, starting at 'currentDate'
-      discountedFreeCashFlow: ['function:discount', 'freeCashFlow', {rate: getAssumption('_DISCOUNT_RATE'), start_date: currentDate}],  
-      // Discounts the constant 'freeCashFlow' taken at 'start_date' by '_costOfEquity', starting at 'currentDate'
-      discountedFreeCashFlow: ['function:discount', 'freeCashFlow:start_date', {rate: '_costOfEquity', start_date: currentDate}],
-      // Discounts the constant 'freeCashFlow' taken at 'other_date' by '_costOfEquity', starting at 'currentDate'
-      discountedFreeCashFlow: ['function:discount', 'freeCashFlow:other_date', {rate: '_costOfEquity', start_date: currentDate, other_date: otherDate}],
-      // Discounts the constant value 1 by '_costOfEquity', starting at 'currentDate'
-      discountedOne: ['function:discount', 1, {rate: '_costOfEquity', start_date: currentDate}],
-      // Discounts the constant value 1 by constant value 0.1 (or 10%), starting at 'currentDate'
-      discountedOne: ['function:discount', 1, {rate: 0.1, start_date: currentDate}],
+      // Discounts the 'freeCashFlow' by '_costOfEquity', starting at 'current_date'
+      discountedFreeCashFlow: ['function:discount', 'freeCashFlow', {rate: '_costOfEquity', start_date: current_date}],  
+      // Discounts the 'freeCashFlow' by constant getAssumption('_DISCOUNT_RATE') set in the assumptions, starting at 'current_date'
+      discountedFreeCashFlow: ['function:discount', 'freeCashFlow', {rate: getAssumption('_DISCOUNT_RATE'), start_date: current_date}],  
+      // Discounts the constant 'freeCashFlow' taken at 'start_date' by '_costOfEquity', starting at 'current_date'
+      discountedFreeCashFlow: ['function:discount', 'freeCashFlow:start_date', {rate: '_costOfEquity', start_date: current_date}],
+      // Discounts the constant 'freeCashFlow' taken at 'other_date' by '_costOfEquity', starting at 'current_date'
+      discountedFreeCashFlow: ['function:discount', 'freeCashFlow:other_date', {rate: '_costOfEquity', start_date: current_date, other_date: other_date}],
+      // Discounts the constant value 1 by '_costOfEquity', starting at 'current_date'
+      discountedOne: ['function:discount', 1, {rate: '_costOfEquity', start_date: current_date}],
+      // Discounts the constant value 1 by constant value 0.1 (or 10%), starting at 'current_date'
+      discountedOne: ['function:discount', 1, {rate: 0.1, start_date: current_date}],
    }).compute();
    
    // discountedOne = [1, 0.91, 0.83, 0.75, 0.68, 0.62]
@@ -546,9 +548,11 @@ DateValueData.setEditable() - Class Function
 
 Sets DateValueData keys as editable. They can then be edited from the chart or from the forecast table.
 
-For this to work, make sure to include to render the chart :ref:`render-chart-header-label`.
+.. note::
 
-Must be set before the ``compute()`` operation!
+   For this to work, make sure to include :ref:`render-chart-header-label`
+   
+   Also, ``setEditable()`` must be called before the ``compute()`` operation!
 
 Arguments of ``DateValueData.setEditable(_edit(), object)``:
 
@@ -1049,7 +1053,7 @@ Example Usage
      }
    });
 
-Displaying a Table - ``DateValueData.renderTable()``:
+Displaying a Table - ``DateValueData.renderTable()``
 -----------------------------------------------------
 
 `Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/valuation-functions.js#L814>`__
