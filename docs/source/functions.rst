@@ -229,6 +229,8 @@ Also, the class is called DateValueData because it stores pairs of Dates and Val
       ]
    }
 
+.. _full-data-processing-example:
+
 Example Usage
 *************
 
@@ -931,6 +933,29 @@ But, if we run the code in the Model Code Editor, we will see:
 .. code-block:: javascript
 
    >>> Some information...
+   
+Example Usage
+*************
+
+This example is part of :ref:`full-data-processing-example`
+
+.. code-block:: javascript
+
+   // The sum of all discounted Free Cash Flow
+   var total_discounted_fcf = forecasted_data.get('discountedFreeCashFlow').sublist(next_year_date).sum();
+   // Total shares outstanding
+   var total_shares_outstanding = original_data.get('weightedAverageShsOut').lastValue();
+   // Total discounted Free Cash Flow divided by the number of shares
+   var discounted_fcf_per_share = total_discounted_fcf / total_shares_outstanding;
+
+   // Sets the value at the top of the model
+   if(_StopIfWatch(discounted_fcf_per_share, response.currency)){
+     return;
+   }
+   _SetEstimatedValue(discounted_fcf_per_share, response.currency);
+
+   print(total_discounted_fcf, 'The sum of all discounted Free Cash Flow', '#', response.currency);
+   print(discounted_fcf_per_share, 'Total discounted Free Cash Flow per share', '#', response.currency);
 
 Setting assumptions
 --------------------
