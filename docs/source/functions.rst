@@ -503,7 +503,10 @@ For forecasting, we need to specify the number of years to continue computing fo
    var forecasted_data = historical_computed_data.setFormula({
       ...
    }).compute({'forecast_end_date': forecast_end_date});
- 
+
+Forecasting Data
+***********************
+
 Full Forecasting Example:
 
 .. code-block:: javascript
