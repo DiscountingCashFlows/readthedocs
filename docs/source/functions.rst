@@ -393,10 +393,10 @@ Copying Other Keys
       shiftedCopyOfNetIncome: ['netIncome:-1'],
    }).compute();
 
-Operations
+Operators
 **********
 
-The full list of operations:
+Arithmetic operators:
 
  * '+' - Add
  
@@ -407,6 +407,20 @@ The full list of operations:
  * '*' - Multiply
  
  * '^' - Power
+
+Boolean (comparison) operators:
+
+ * '<' - Less than
+
+ * '<=' - Less than or Equal
+
+ * '>' - Greater than
+
+ * '>=' - Greater than or Equal
+
+ * '==' - Equal
+
+Boolean operation output will be the value 1 if the condition is true and the value 0 if the condition is false.
 
 .. code-block:: javascript
 
@@ -419,8 +433,11 @@ The full list of operations:
       _returnOnEquity: ['netIncome:0', '/', 'totalStockholdersEquity:-1'],
    }).compute();
  
-'function:discount' and 'function:compound' - Formula Functions
-*************************************************************
+Formula Functions 
+******************
+
+'function:discount' and 'function:compound'
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Formula functions are functions that can be used inside ``DateValueData()`` objects formulas.
 
@@ -449,8 +466,8 @@ Formula functions are functions that can be used inside ``DateValueData()`` obje
    
    // discountedOne = [1, 0.91, 0.83, 0.75, 0.68, 0.62]
 
-'function:growth_rate' - Formula Function
-***************************************
+'function:growth_rate'
+^^^^^^^^^^^^^^^^^^^^^^
 
 'function:growth_rate' - creates a list of growth rates from a specified key
 
@@ -461,8 +478,8 @@ Formula functions are functions that can be used inside ``DateValueData()`` obje
       _revenueGrowthRate: ['function:growth_rate', 'revenue'],
    }).compute();
    
-'function:linear_regression' - Formula Function
-*********************************************
+'function:linear_regression'
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 'function:linear_regression' - creates a linear regression set from a specified key
 
