@@ -436,8 +436,7 @@ Boolean operation output will be the value 1 if the condition is true and the va
 Formula Functions 
 ******************
 
-'function:discount' and 'function:compound'
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+**'function:discount' and 'function:compound'**
 
 Formula functions are functions that can be used inside ``DateValueData()`` objects formulas.
 
@@ -466,8 +465,7 @@ Formula functions are functions that can be used inside ``DateValueData()`` obje
    
    // discountedOne = [1, 0.91, 0.83, 0.75, 0.68, 0.62]
 
-'function:growth_rate'
-^^^^^^^^^^^^^^^^^^^^^^
+**'function:growth_rate'**
 
 'function:growth_rate' - creates a list of growth rates from a specified key
 
@@ -478,8 +476,7 @@ Formula functions are functions that can be used inside ``DateValueData()`` obje
       _revenueGrowthRate: ['function:growth_rate', 'revenue'],
    }).compute();
    
-'function:linear_regression'
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+**'function:linear_regression'**
 
 'function:linear_regression' - creates a linear regression set from a specified key
 
