@@ -408,6 +408,17 @@ Arithmetic operators:
  
  * '^' - Power
 
+.. code-block:: javascript
+
+   var computed_data = original_data.setFormula({
+      // Divides the totalStockholdersEquity in current year by weightedAverageShsOut in current year
+      bookValue: ['totalStockholdersEquity', '/', 'weightedAverageShsOut'],
+      // Equivalent to the previous formula, but with an explicit ":0"
+      bookValue: ['totalStockholdersEquity:0', '/', 'weightedAverageShsOut:0'],
+      // netIncome in current year divided by totalStockholdersEquity in previous year
+      _returnOnEquity: ['netIncome:0', '/', 'totalStockholdersEquity:-1'],
+   }).compute();
+ 
 Boolean (comparison) operators:
 
  * '<' - Less than
@@ -424,25 +435,191 @@ Boolean operation output will be the value 1 if the condition is true and the va
 
 .. code-block:: javascript
 
-   var computed_data = original_data.setFormula({
-      // Divides the totalStockholdersEquity in current year by weightedAverageShsOut in current year
-      bookValue: ['totalStockholdersEquity', '/', 'weightedAverageShsOut'],
-      // Equivalent to the previous formula, but with an explicit ":0"
-      bookValue: ['totalStockholdersEquity:0', '/', 'weightedAverageShsOut:0'],
-      // netIncome in current year divided by totalStockholdersEquity in previous year
-      _returnOnEquity: ['netIncome:0', '/', 'totalStockholdersEquity:-1'],
-   }).compute();
- 
+    var original_data = new DateValueData({
+        eps: new DateValueList(response.income, 'eps'),
+    });
+    var historical_computed_data = original_data.setFormula({
+        // (True = 1) if EPS is greater than 2.5
+        // (False = 0) if EPS is lower than or equal to 2.5
+        highEps: ['eps', '>', 2.5],
+    }).compute();
+
 Formula Functions 
 ******************
 
-**'function:discount' and 'function:compound'**
-
 Formula functions are functions that can be used inside ``DateValueData()`` objects formulas.
 
- * 'function:discount' - discounts a specified key using a given 'rate' and a present date as 'start_date'
+sum / add
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
- * 'function:compound' - compounds a specified key using a given 'rate' and a present date as 'start_date'
+``function:sum`` and ``function:add`` are equivalent
+
+Calculates the sum or total of a specified key over a given range or for the entire dataset.
+
+.. code-block:: javascript
+
+    var original_data = new DateValueData({
+        eps: new DateValueList(response.income, 'eps'),
+        epsdiluted: new DateValueList(response.income, 'epsdiluted'),
+    });
+    var historical_computed_data = original_data.setFormula({
+        // Formula for: 5 + eps - epsdiluted
+        sumEps: ['function:sum', {'keys': [
+            5,
+            'eps',
+            [-1, '*', 'epsdiluted'],
+        ]}],
+    }).compute();
+
+multiply
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``function:multiply``
+
+Multiplies the values of a specified key over a given range or for the entire dataset.
+
+.. code-block:: javascript
+
+    var original_data = new DateValueData({
+        eps: new DateValueList(response.income, 'eps'),
+        epsdiluted: new DateValueList(response.income, 'epsdiluted'),
+    });
+    var historical_computed_data = original_data.setFormula({
+        // Formula for: eps * (eps + epsdiluted) / 2
+        multipliedEps: ['function:multiply', {'keys': [
+            'eps',
+            ['eps', '+', 'epsdiluted'],
+            1/2,
+        ]}],
+    }).compute();
+
+minimum / min
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``function:minimum`` and ``function:min`` are equivalent
+
+.. code-block:: javascript
+
+    var original_data = new DateValueData({
+        eps: new DateValueList(response.income, 'eps'),
+    });
+    var historical_computed_data = original_data.setFormula({
+        // Get the minimum between EPS and 2.5
+        minimumEps: ['function:minimum', {'keys': [
+            2.5,
+            'eps'
+        ]}],
+    }).compute();
+
+Finds the minimum value of a specified key over a given range or for the entire dataset.
+
+maximum / max
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``function:maximum`` and ``function:max`` are equivalent
+
+Finds the maximum value of a specified key over a given range or for the entire dataset.
+
+.. code-block:: javascript
+
+    var original_data = new DateValueData({
+        eps: new DateValueList(response.income, 'eps'),
+    });
+    var historical_computed_data = original_data.setFormula({
+        // Get the maximum between EPS and 2.5
+        maximumEps: ['function:maximum', {'keys': [
+            2.5,
+            'eps'
+        ]}],
+    }).compute();
+
+average
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``function:average``
+
+Calculates the average or mean value of a specified key over a given range or for the entire dataset.
+
+.. code-block:: javascript
+
+    var original_data = new DateValueData({
+        eps: new DateValueList(response.income, 'eps'),
+    });
+    var historical_computed_data = original_data.setFormula({
+        // Get the average EPS of the last 5 years
+        averageEps: ['function:average', 'eps', {'period': 5}],
+    }).compute();
+
+exponential / nth_power / square_root / nth_root
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``function:exponential`` and ``function:nth_power`` are equivalent
+
+Raises each value of a specified key to a specified power, where the power is a constant or derived from another key.
+
+.. code-block:: javascript
+
+    var original_data = new DateValueData({
+        eps: new DateValueList(response.income, 'eps'),
+    });
+    var historical_computed_data = original_data.setFormula({
+        // Formula for: eps ^ 3
+        exponentialEps: ['function:exponential', 'eps', {'n': 3}],
+    }).compute();
+
+
+``function:square_root``
+
+Calculates the square root of each value of a specified key or constant.
+
+.. code-block:: javascript
+
+    var original_data = new DateValueData({
+        eps: new DateValueList(response.income, 'eps'),
+    });
+    var historical_computed_data = original_data.setFormula({
+        // Square eps ^ 1/2
+        sqrtEps: ['function:square_root', 'eps'],
+    }).compute();
+
+
+``function:nth_root``
+
+Calculates the nth root of each value of a specified key.
+
+.. code-block:: javascript
+
+    var original_data = new DateValueData({
+        eps: new DateValueList(response.income, 'eps'),
+    });
+    var historical_computed_data = original_data.setFormula({
+        // Formula for: eps ^ 1/3
+        nth_rootEps: ['function:nth_root', 'eps', {'n': 3}],
+    }).compute();
+
+log_n
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``function:log_n``
+
+Calculates the logarithm of each value of a specified key with a specified base.
+
+.. code-block:: javascript
+
+    var original_data = new DateValueData({
+        eps: new DateValueList(response.income, 'eps'),
+    });
+    var historical_computed_data = original_data.setFormula({
+        // Formula for: log10(eps)
+        log_nEps: ['function:log_n', 'eps', {'n': 10}],
+    }).compute();
+
+discount and compound
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ * ``function:discount`` - discounts a specified key using a given 'rate' and a present date as 'start_date'
+
+ * ``function:compound`` - compounds a specified key using a given 'rate' and a present date as 'start_date'
 
 .. code-block:: javascript
    
@@ -465,9 +642,10 @@ Formula functions are functions that can be used inside ``DateValueData()`` obje
    
    // discountedOne = [1, 0.91, 0.83, 0.75, 0.68, 0.62]
 
-**'function:growth_rate'**
+growth_rate
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-'function:growth_rate' - creates a list of growth rates from a specified key
+``function:growth_rate`` - creates a list of growth rates from a specified key
 
 .. code-block:: javascript
 
@@ -476,9 +654,10 @@ Formula functions are functions that can be used inside ``DateValueData()`` obje
       _revenueGrowthRate: ['function:growth_rate', 'revenue'],
    }).compute();
    
-**'function:linear_regression'**
+linear_regression
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-'function:linear_regression' - creates a linear regression set from a specified key
+``function:linear_regression`` - creates a linear regression set from a specified key
 
 .. code-block:: javascript
 
@@ -1702,6 +1881,8 @@ Arguments of ``reportKeyToList(report, key, measure)``
  * ``measure`` - Has 3 options: 'M', 'K' or left blank.
  
 .. code-block:: javascript
+   :linenos:
+
    $.when(
      get_income_statement()).done(
      function(_income){
