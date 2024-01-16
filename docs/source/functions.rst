@@ -15,7 +15,7 @@ Github repository source code: `valuation-functions/new-valuation-functions.js <
    Please note that this section is currently under active development. Some functions may not be up to date. If you find any outdated functions, please let us know `here <https://discountingcashflows.com/help/>`__
 
 $.when().done() - Function
-------------------------
+-------------------------------
 
 The ``$.when().done()`` function is an asynchronous function from the popular JavaScript Framework 'jQuery' that retrieves the financial data for us. The ``$.when().done()`` function is the only function that we will use from the 'jQuery' framework in our valuations.
 
@@ -74,7 +74,7 @@ So, you'd probably want to stick to method 2 because it saves a lot of time. And
 
 
 Response() - Class
-------------------
+---------------------
 
 The ``Response()`` class is used to unpack financial data.
 
@@ -83,11 +83,22 @@ Once all data has been retrieved from the API, it is now in "http response" form
 .. code-block:: javascript
 
    _income = {
-      0: Array(...) [ {…}, {…}, {…}, … ]
-      1: "success"
-      2: Object { readyState: 4, getResponseHeader: getResponseHeader(e), getAllResponseHeaders: getAllResponseHeaders(), … }
+      0: [
+         { /* Object 1 properties */ },
+         { /* Object 2 properties */ },
+         { /* Object 3 properties */ },
+         // Additional objects
+      ],
+      1: "success",
+      2: {
+         readyState: 4,
+         getResponseHeader: getResponseHeader(e),
+         getAllResponseHeaders: getAllResponseHeaders(),
+         // Additional properties
+      },
       length: 3
    }
+
 
 The "http response" format is not very pretty and we should **never** use the object in "http response" format directly as it can cause caching issues in the Watchlist & Notifications page.
 
@@ -96,7 +107,7 @@ We should always use the  ``Response()`` class to unpack the financial data. By 
    2. All financial data values are stored in one currency only.
 
 Example Usage
-*************
+***************
 
 .. code-block:: javascript
    
@@ -118,7 +129,7 @@ Example Usage
    print(response.income[0].date, 'Last Date');
 
 Response() - Class Constructor
-****************************
+*************************************
 
 `Source <https://github.com/DiscountingCashFlows/Documentation/blob/82196c4db3d381c3eb44f2aeed8daeef677ecb15/source-code/valuation-functions/new-valuation-functions.js#L30>`__
 
@@ -133,10 +144,10 @@ All data that has been retrieved from the API in "http response" format, needs t
 
    print(response.profile.companyName, "Company's Full Name");
 
-   >>> Company's Full Name: Apple Inc.
+   // Company's Full Name: Apple Inc.
 
 Response.toOneCurrency() - Class Function
-***********************************
+*************************************************
 
 `Source <https://github.com/DiscountingCashFlows/Documentation/blob/82196c4db3d381c3eb44f2aeed8daeef677ecb15/source-code/valuation-functions/new-valuation-functions.js#L92>`__
 
@@ -161,10 +172,10 @@ In the example below, ``toOneCurrency('income', _fx)`` uses the currency found i
 
    print(response.profile.companyName, "Company's Full Name");
 
-   >>> Company's Full Name: Apple Inc.
+   // Company's Full Name: Apple Inc.
 
 Response.merge() - Class Function
-***************************
+***************************************
 
 `Source <https://github.com/DiscountingCashFlows/Documentation/blob/82196c4db3d381c3eb44f2aeed8daeef677ecb15/source-code/valuation-functions/new-valuation-functions.js#L172>`__
 
@@ -188,7 +199,7 @@ Arguments of ``Response.merge(extension)``
  * ``extension`` - Example response.merge('_ltm') merges 'x_ltm' into 'x', meaning that 'x' will now contain the 'ltm' report and its length would be increased by 1.
 
 DateValueData() - Class
------------------------
+---------------------------
 
 `Source <https://github.com/DiscountingCashFlows/Documentation/blob/82196c4db3d381c3eb44f2aeed8daeef677ecb15/source-code/valuation-functions/new-valuation-functions.js#L192>`__
 
@@ -232,7 +243,7 @@ Also, the class is called DateValueData because it stores pairs of Dates and Val
 .. _full-data-processing-example:
 
 Example Usage
-*************
+****************
 
 .. code-block:: javascript
    
@@ -306,7 +317,7 @@ Example Usage
    print(discounted_fcf_per_share, 'Total discounted Free Cash Flow per share', '#', response.currency);
 
 Defining Original Data
-**********************
+**************************
 
 So, the first step is to register the original data into a ``DateValueData()``. In our previous examples the original data is: Net Income, Revenue and Total Equity. Let's see how we do that (we need the ``Response()`` object defined previously).
 
@@ -326,7 +337,7 @@ So, the first step is to register the original data into a ``DateValueData()``. 
 Notice that we use the ``DateValueList`` class to store our data. Basically the ``DateValueData()`` class is just a collection of ``DateValueList()`` objects.
 
 Writing and Processing Formulas
-*******************************
+*************************************
 
 Following up on the previous examples, to calculate the Net Margin and the Return on Equity, our code would look something like this:
 
@@ -351,10 +362,10 @@ Let's look at the '_returnOnEquity' formula. Notice it has 3 items:
    
    * The third item refers to the 'totalStockholdersEquity' registered in our original_data object and the ':-1' refers to the previous year.
 
-*Also, notice that both '_netMargin' and '_returnOnEquity' keys start with an '_' underline, this is because both of them are treated as percentages. So, beggining with an '_' underline will mark the respective key as a percentage.
+*Also, notice that both ``_netMargin`` and ``_returnOnEquity`` keys start with an '_' underline. This is because both of them are treated as percentages. So, beginning with an '_' underline will mark the respective key as a percentage.*
 
 DateValueData.setFormula() - Class Function
-*************************************
+*****************************************************
 
 `Source <https://github.com/DiscountingCashFlows/Documentation/blob/82196c4db3d381c3eb44f2aeed8daeef677ecb15/source-code/valuation-functions/new-valuation-functions.js#L233>`__
 
@@ -367,7 +378,7 @@ Arguments of ``DateValueData.setFormula(new_formula)``:
  * ``new_formula`` - The new formula object to be set.
 
 Constants
-*********
+*************
 
 Constants are used when we want a single value for all periods. Here is an example of setting the value 123 for all dates:
    
@@ -551,7 +562,7 @@ Calculates the average or mean value of a specified key over a given range or fo
     }).compute();
 
 exponential / nth_power / square_root / nth_root
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ``function:exponential`` and ``function:nth_power`` are equivalent
 
@@ -667,7 +678,7 @@ linear_regression
    }).compute();
       
 DateValueData.compute() - Class Function
-***********************
+**********************************************
 
 `Source <https://github.com/DiscountingCashFlows/Documentation/blob/82196c4db3d381c3eb44f2aeed8daeef677ecb15/source-code/valuation-functions/new-valuation-functions.js#L593>`__
 
@@ -675,9 +686,9 @@ Computes the stored formulas that were set using ``DateValueData.setFormula()`` 
 
 Arguments of ``DateValueData.compute(properties)``:
 
- * ``properties`` - (*Optional) Object containing the compute end date.
+ * ``properties`` - (Optional) Object containing the compute end date.
  
-*If ``properties`` is left blank, then the computation will stop at last date in the ``DateValueData`` object. This means that if the ``DateValueData`` object starts at 1990 and ends in 2022, the compute function will compute the formulas for each year between 1990 and 2022.
+*If ``properties`` is left blank, then the computation will stop at last date in the ``DateValueData`` object. This means that if the ``DateValueData`` object starts at 1990 and ends in 2022, the compute function will compute the formulas for each year between 1990 and 2022.*
 
 For forecasting, we need to specify the number of years to continue computing formulas. We achieve this with a ``properties`` object:
 
@@ -740,7 +751,7 @@ Full Forecasting Example:
    }).compute({forecast_end_date: forecast_end_date}); 
       
 DateValueData.setEditable() - Class Function
-***************************
+******************************************************
 
 `Source <https://github.com/DiscountingCashFlows/Documentation/blob/82196c4db3d381c3eb44f2aeed8daeef677ecb15/source-code/valuation-functions/new-valuation-functions.js#L1056>`__
 
@@ -754,14 +765,15 @@ Sets DateValueData keys as editable. They can then be edited from the chart or f
 
 Arguments of ``DateValueData.setEditable(_edit(), object)``:
 
- * ``_edit()`` - This is required to be always ``_edit()``
- 
- * ``object`` - Object that contains the editable keys and the start date
- 
-   object = {
+* ``_edit()`` - This is required to always be ``_edit()``
+
+* ``object`` - Object that contains the editable keys and the start date
+
+  object = {
       start_date: nextYear,
       keys: ['key1', 'key2', ...],
-   }
+  }
+  
 
 Example:
 
@@ -777,7 +789,7 @@ Example:
    }).compute({'forecast_end_date': forecast_end_date});
 
 DateValueData.removeDate() - Class Function
-***************************
+**************************************************
 
 `Source <https://github.com/DiscountingCashFlows/Documentation/blob/82196c4db3d381c3eb44f2aeed8daeef677ecb15/source-code/valuation-functions/new-valuation-functions.js#L431>`__
 
@@ -796,7 +808,7 @@ The following example shows how we can remove the Last Twelve Months items from 
    });
 
 DateValueList() - Class
------------------------
+--------------------------
 
 The ``DateValueList()`` class contains a list of date-value pairs. Storing the data in this format will make sure that dates will not get mixed up, when performing calculations.
 
@@ -856,7 +868,7 @@ DateValueList() - Class Constructor
    });
 
 DateValueList.average() - Class Function
-*************************************
+*********************************************
 
 `Source <https://github.com/DiscountingCashFlows/Documentation/blob/82196c4db3d381c3eb44f2aeed8daeef677ecb15/source-code/valuation-functions/new-valuation-functions.js#L1417>`__
 
@@ -878,7 +890,7 @@ Example:
    var averageRevenue = original_data.get('revenue').sublist(startDate).average();
 
 DateValueList.sum() - Class Function
-*********************************
+***********************************************
 
 `Source <https://github.com/DiscountingCashFlows/Documentation/blob/82196c4db3d381c3eb44f2aeed8daeef677ecb15/source-code/valuation-functions/new-valuation-functions.js#L1421>`__
 
@@ -900,7 +912,7 @@ Example:
    var sumRevenue = original_data.get('revenue').sublist(startDate).sum();
 
 DateValueList.sublist() - Class Function
-*************************************
+*************************************************
 
 `Source <https://github.com/DiscountingCashFlows/Documentation/blob/82196c4db3d381c3eb44f2aeed8daeef677ecb15/source-code/valuation-functions/new-valuation-functions.js#L1441>`__
 
@@ -932,7 +944,7 @@ Example:
    var sublistRevenue = original_data.get('revenue').sublist(startDate, endDate);
 
 DateValueList.valueAtDate() - Class Functions
-*****************************************
+********************************************************
 
 `Source <https://github.com/DiscountingCashFlows/Documentation/blob/82196c4db3d381c3eb44f2aeed8daeef677ecb15/source-code/valuation-functions/new-valuation-functions.js#L1378>`__
 
@@ -956,7 +968,7 @@ Example:
    
 
 DateValueList.lastValue() - Class Functions
-****************************************
+****************************************************
 
 `Source <https://github.com/DiscountingCashFlows/Documentation/blob/82196c4db3d381c3eb44f2aeed8daeef677ecb15/source-code/valuation-functions/new-valuation-functions.js#L1512>`__
 
@@ -975,7 +987,7 @@ Displaying Messages
 -------------------
 
 ``print()`` function:
-*********************
+**********************
 
 `Source <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/valuation-functions.js#L1007>`__
 
@@ -1021,7 +1033,7 @@ Arguments of ``print(str, label='', type='', currency='')``
   >>> Rate: 123.00% 
  
 ``throwWarning()`` and ``warning()`` functions:
-***********************
+****************************************************
  
 Display a warning alert message (in yellow) on the top of the model.
  
@@ -1035,7 +1047,7 @@ Display a warning alert message (in yellow) on the top of the model.
    throwWarning('You have been warned!');
  
 ``throwError()`` and ``error()`` functions:
-***********************
+**********************************************
  
 Display an error alert message (in red) on the top of the model.
  
@@ -1666,7 +1678,7 @@ Basically, it divides the input by 1,000.
    >>> toK(array): 123456.789,246913.578,370370.367 
    
 ``toR()`` and ``toN()`` functions:
-*********************************
+************************************
 
 ``toR()`` formats a given number or array of numbers to a rate or an array of rates. `Source toR() <https://github.com/DiscountingCashFlows/Documentation/blob/632e8f8c894e7ac7b1c19e18c5fe6a1f69d85064/source-code/valuation-functions/new-valuation-functions.js#L61>`__
 
@@ -1881,7 +1893,6 @@ Arguments of ``reportKeyToList(report, key, measure)``
  * ``measure`` - Has 3 options: 'M', 'K' or left blank.
  
 .. code-block:: javascript
-   :linenos:
 
    $.when(
      get_income_statement()).done(
@@ -1890,5 +1901,5 @@ Arguments of ``reportKeyToList(report, key, measure)``
        print(reportKeyToList(income.slice(0,5), 'revenue', 'M'), 'List of revenues');
    });
    
-   >>> List of revenues: 394328,365817,274515,260174,265595 
+   // List of revenues: 394328,365817,274515,260174,265595 
  
