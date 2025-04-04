@@ -3,11 +3,8 @@
 # -- Project information
 
 project = 'Discounting Cash Flows'
-copyright = '2022, discountingcashflows.com'
+copyright = '2025, discountingcashflows.com'
 author = 'Discounting Cash Flows'
-
-release = '0.1'
-version = '0.1.0'
 
 # -- General configuration
 
