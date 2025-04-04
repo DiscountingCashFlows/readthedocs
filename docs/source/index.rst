@@ -51,4 +51,3 @@ Contents
    data_object
    assumptions_object
    model_object
-   functions

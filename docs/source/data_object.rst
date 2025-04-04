@@ -180,7 +180,7 @@ projected revenue, and displays the results in a table:
    })
 
 Available Functions
--------------------
+~~~~~~~~~~~~~~~~~~~
 
 ``function:growth``
 ~~~~~~~~~~~~~~~~~~~

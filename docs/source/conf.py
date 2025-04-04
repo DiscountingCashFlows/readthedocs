@@ -6,9 +6,6 @@ project = 'Discounting Cash Flows'
 copyright = '2025, discountingcashflows.com'
 author = 'Discounting Cash Flows'
 
-release = '0.1'
-version = '0.1.0'
-
 # -- General configuration
 
 extensions = [
