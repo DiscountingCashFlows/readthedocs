@@ -5,10 +5,11 @@ When using reported data, it's essential to understand the structure of the data
 
 Example:
 
-- To access "EPS" (Earnings Per Share), you use: ``income:eps``.
+- To access EPS (Earnings Per Share), use: ``income:eps``
+- To access Revenue, use: ``income:revenue``
 
-Full Reported Data Map
-----------------------
+Preview of the Reported Data Map
+--------------------------------
 
 .. code-block:: json
 
