@@ -1,4 +1,3 @@
-
 The ``model`` object
 --------------------
 
@@ -58,8 +57,8 @@ Example 2: Percentage Formatting
    be shown as **5%**. Similarly, if the **Profit Margin** is 0.15, it
    will be displayed as **15%**.
 
-Summary
-^^^^^^^
+Summary of ``model.render_results``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The third parameter in ``model.render_results()`` allows you to control
 the formatting of the displayed values. By using **“$”** for currency
@@ -77,10 +76,8 @@ representations of financial metrics, helping to illustrate trends and
 comparisons over time. This function allows you to specify which data to
 visualize and configure various properties of the chart.
 
-.. _parameters-1:
-
-Parameters
-^^^^^^^^^^
+Parameters of ``model.render_chart()``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The function accepts a dictionary containing the following keys:
 
@@ -94,10 +91,8 @@ The function accepts a dictionary containing the following keys:
 -  **properties**: A dictionary of settings that customize the chart’s
    appearance and behavior.
 
-.. _example-11:
-
-Example:
-^^^^^^^^
+Example of using ``model.render_chart()``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -195,10 +190,8 @@ structured tabular format, allowing for easy reading and comparison of
 financial metrics. This function enables you to specify which data to
 include in the table and customize its appearance.
 
-.. _parameters-2:
-
-Parameters
-^^^^^^^^^^
+Parameters of ``model.render_table()``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The function accepts a dictionary containing the following keys:
 
@@ -211,10 +204,8 @@ The function accepts a dictionary containing the following keys:
 -  **properties**: A dictionary of settings that customize the table’s
    appearance and behavior.
 
-.. _example-12:
-
-Example:
-^^^^^^^^
+Example of using ``model.render_table()``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -229,15 +220,13 @@ Example:
        "properties": {
            "title": "Financial Metrics Over Time",
            "number_format": "M",  # Display figures in millions
-           "column_order": "descending",  # Show the most recent figures first
+           "order": "descending",  # Show the most recent figures first
            "display_averages": True  # Include averages in the table
        }
    })
 
-.. _available-properties-1:
-
-Available Properties:
-^^^^^^^^^^^^^^^^^^^^^
+Properties of ``model.render_table()``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 **title**:
 
@@ -257,7 +246,7 @@ Available Properties:
 
 -  **Example**: ``"number_format": "M"``
 
-**column_order**:
+**order**:
 
 -  **Description**: A string that defines the order of the columns in
    the table. Possible values include:
@@ -267,7 +256,7 @@ Available Properties:
    -  ``"descending"``: Columns will be ordered from the latest to the
       earliest.
 
--  **Example**: ``"column_order": "descending"``
+-  **Example**: ``"order": "descending"``
 
 **display_averages**:
 
@@ -299,10 +288,8 @@ output.
 Set ``"units"`` to: - ``$`` for currency - ``%`` for percentages -
 ``None`` for standalone units
 
-.. _example-13:
-
-Example:
-^^^^^^^^
+Example of using ``model.set_final_value()``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -321,10 +308,8 @@ text to the model, providing context or details about its purpose,
 assumptions, calculations, or any other relevant information that
 enhances understanding for users.
 
-.. _parameters-3:
-
-Parameters
-^^^^^^^^^^
+Parameters of ``model.render_description()``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The function accepts a single parameter:
 
@@ -332,10 +317,8 @@ The function accepts a single parameter:
    that contains the descriptive text. This text can include markdown
    formatting for better presentation.
 
-.. _example-14:
-
-Example:
-^^^^^^^^
+Example of using ``model.render_description()``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Here’s a basic example of how to use ``model.render_description()``:
 
@@ -375,8 +358,8 @@ readability and presentation. Here are some common formatting options:
 -  **Links**: Create hyperlinks using the format ``[text](URL)``. For
    example, ``[Learn more](https://example.com)``.
 
-Additional Example with Formulas:
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Additional Example with Formulas
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 You can also include mathematical formulas in the description using
 LaTeX-style syntax. Here’s how you might do that:

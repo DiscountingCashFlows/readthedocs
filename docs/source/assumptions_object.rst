@@ -1,4 +1,3 @@
-
 The ``assumptions`` object
 --------------------------
 
@@ -8,8 +7,8 @@ The ``assumptions`` object
 Initializes assumptions for your model. You can set a hierarchy of
 assumptions for structured relationships.
 
-Example (Without Hierarchies):
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Example (Without Hierarchies)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -18,8 +17,8 @@ Example (Without Hierarchies):
        "historical_years": 10
    })
 
-Example (With Hierarchies):
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Example (With Hierarchies)
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -50,10 +49,8 @@ specified either through a string like ``"5%"`` or the value directly
 
 Fetches the value of a specified assumption. Raises an error if None.
 
-.. _example-8:
-
-Example:
-^^^^^^^^
+Example of using ``assumptions.get()``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -66,10 +63,8 @@ Example:
 
 This function sets the value of a specific assumption.
 
-.. _example-9:
-
-Example:
-^^^^^^^^
+Example of using ``assumptions.set()``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -82,10 +77,8 @@ Example:
 
 Sets a description for assumptions, providing context or explanations.
 
-.. _example-10:
-
-Example:
-^^^^^^^^
+Example of using ``assumptions.set_description()``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 

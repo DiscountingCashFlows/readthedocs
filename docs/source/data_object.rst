@@ -1,4 +1,3 @@
-
 The ``data`` object
 -------------------
 
@@ -18,8 +17,7 @@ Calculates values based on specified formulas and stores them in the
 reported data or user data, and can include mathematical operations and
 specialized functions. Let’s take an example.
 
-Example:
-^^^^^^^^
+**Example**
 
 .. code:: python
 
@@ -31,8 +29,8 @@ Example:
        "%revenueGrowthRate": "function:growth:income:revenue",
    })
 
-Breaking down the example:
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Breaking down the example
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Formulas are evaluated **from top to bottom** and starting from the
 earliest year available all the way until the end. For the sake of this
@@ -84,7 +82,7 @@ The fourth and last evaluated key is ``%revenueGrowthRate``, which uses
 another function called ``function:growth``
 
 Key Types
-^^^^^^^^^
+~~~~~~~~~
 
 Notice that there are multiple types of keys, this is to keep the model
 organized and the framework can format the values in millions or
@@ -97,8 +95,8 @@ thousands depending on the key type.
 3. Keys that start with **anything else**, will be considered
    formattable to millions or thousands.
 
-Examples:
-^^^^^^^^^
+Examples
+^^^^^^^^
 
 1. Price to Earnings ratio can be named something like
    **“#priceToEarnings”**
@@ -147,7 +145,7 @@ on a annual growth rate of 10%.
 **Note:** Feel free to make the revenue growth an assumption as well.
 
 Example of Forecasting
-~~~~~~~~~~~~~~~~~~~~~~
+''''''''''''''''''''''
 
 Here’s a complete example that initializes assumptions, computes
 projected revenue, and displays the results in a table:
@@ -175,15 +173,76 @@ projected revenue, and displays the results in a table:
        "properties": {
            "title": "Projected Revenues",
            "number_format": "M",  # Display figures in millions
-           "column_order": "ascending",  # Show projected years in order
+           "order": "ascending",  # Show projected years in order
        },
    })
 
-Available Functions
-~~~~~~~~~~~~~~~~~~~
+The LTM Period and the ``ltm_as_year`` Property
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+| The **LTM** period (Last Twelve Months) consists of the four most
+  recent quarters.
+| Although it provides a more current snapshot of financial performance,
+  it is **not** used in forecasting by default.
+
+| Consider this scenario:
+| You’re projecting revenue with a 5% growth rate and the current year
+  is 2025.
+| You have two revenue figures:
+
+-  One for the **LTM period**
+-  One from the **2024 annual report**
+
+By default, the LTM figure is ignored, and forecasting starts from the
+2024 value.
+
+| This is where the ``ltm_as_year`` property becomes useful.
+| It lets you choose whether to treat the LTM period as the base year
+  for forecasting:
+
+-  If ``"ltm_as_year": True``, forecasting begins from the LTM value
+   (e.g., LTM revenue grows by 5%).
+-  If not specified, or set to ``"ltm_as_year": False``, forecasting
+   uses the most recent full-year figure (e.g., 2024 revenue).
+
+Working Example of ``ltm_as_year``
+''''''''''''''''''''''''''''''''''
+
+.. code:: python
+
+   # Initialize assumptions
+   assumptions.init({
+       "projection_years": 5,  # Number of years to forecast
+       "%revenue_growth_rate": "10%"
+   })
+
+   # Compute projected revenues using the LTM value as the base
+   data.compute({
+           "income:revenue": f"income:revenue:-1 * (1 + {assumptions.get('%revenue_growth_rate')})",
+       },
+       forecast=assumptions.get("projection_years"),
+       properties={"ltm_as_year": True}
+   )
+
+   # Render a table to display the projected revenues
+   model.render_table({
+       "data": {
+           "income:revenue": "Projected Revenue",
+       },
+       "start": 1,  # Start from next year
+       "end": assumptions.get("projection_years"),  # End at the last forecast year
+       "properties": {
+           "title": "Projected Revenues",
+           "number_format": "M",  # Format numbers in millions
+           "order": "ascending",  # Show years in forward order
+       },
+   })
+
+Available Functions in ``data.compute()``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ``function:growth``
-~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^
 
 | Calculates the year-over-year growth rate of the specified data key.
 | Returns ``(current - previous) / previous``.
@@ -193,7 +252,7 @@ Available Functions
 **Note:** The ``growth`` function only accepts keys, not values.
 
 ``function:discount``
-~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^
 
 Discounts a key or value using compound interest to adjust a future
 value to its present value.
@@ -233,7 +292,7 @@ until the fiscal year ends.
 ``discount rate = ((1 + rate) ** days difference / 365)``
 
 ``function:compound``
-~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^
 
 Compounds a key or value using compound interest.
 
@@ -258,7 +317,7 @@ Compounds a key or value using compound interest.
       ``continuous:true``
 
 ``function:linear_regression``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 | Performs linear regression over historical values of the specified
   data key.
@@ -279,13 +338,8 @@ Compounds a key or value using compound interest.
    -  Sets the regression end relative to LTM. The default ending period
       is the last available period.
 
--  ``except_ltm:[true, false]``
-
-   -  To account for the Last Twelve Months (LTM) period in the linear
-      regression, set ``except_ltm:false``, by default it is ``true``.
-
 Range Functions
-~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^
 
 The following functions support range selection and share the same
 optional parameters:
@@ -340,7 +394,7 @@ optional parameters:
       last available period.
 
 ``function:sqrt``
-~~~~~~~~~~~~~~~~~
+'''''''''''''''''
 
 | Returns the square root of the specified value.
 | Only defined for non-negative values.
@@ -348,7 +402,7 @@ optional parameters:
 **Example:** ``"function:sqrt:16"`` returns ``4.0``
 
 ``function:pow``
-~~~~~~~~~~~~~~~~
+''''''''''''''''
 
 Raises the value to the power specified in ``raised_to`` parameter.
 
@@ -362,7 +416,7 @@ Raises the value to the power specified in ``raised_to`` parameter.
       present value.
 
 ``function:log``
-~~~~~~~~~~~~~~~~
+''''''''''''''''
 
 | Returns the logarithm of a number using a given base (default is
   natural log, base *e*).
@@ -378,15 +432,15 @@ Raises the value to the power specified in ``raised_to`` parameter.
       present value.
 
 ``function:exp``
-~~~~~~~~~~~~~~~~
+''''''''''''''''
 
 | Returns *e* raised to the power of the given value.
 | Useful for reversing logarithmic values.
 
 **Example:** ``"function:exp:1"`` returns approximately ``2.718``
 
-Available operations
-~~~~~~~~~~~~~~~~~~~~
+Available Operations in ``data.compute()``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here are all the available operations allowed within ``data.compute()``
 
@@ -465,10 +519,8 @@ Grouping
 The ``data.set()`` function allows you to set values in the stored data.
 You can set a single key-value pair or multiple pairs at once.
 
-.. _example-1:
-
-Example:
-~~~~~~~~
+Example of using ``data.set()``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -486,18 +538,16 @@ Example:
 Retrieves a value from the stored data. You can specify a key and
 optionally define a default value if the key is not found.
 
-.. _example-2:
-
-Example:
-~~~~~~~~
+Example of using ``data.get()``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
    ltm_eps = data.get("income:eps")  # Retrieves the last twelve months EPS from the income statement
    previous_year_eps = data.get("income:eps:-1")  # Retrieves the previous year's EPS
 
-Range Selection:
-^^^^^^^^^^^^^^^^
+Range selection using ``data.get()``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 You can also select a range of values. For instance, to get the EPS
 values over the last 5 years plus LTM, you would use:
@@ -513,10 +563,8 @@ values over the last 5 years plus LTM, you would use:
 
 Calculates the minimum value for a given key, ignoring None values.
 
-.. _example-3:
-
-Example:
-^^^^^^^^
+Example of using ``data.min()``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -530,10 +578,8 @@ Example:
 Calculates the maximum value for a given key, similar to the ``min()``
 function.
 
-.. _example-4:
-
-Example:
-^^^^^^^^
+Example of using ``data.max()``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -546,10 +592,8 @@ Example:
 
 Calculates the average of values for a given key, ignoring None.
 
-.. _example-5:
-
-Example:
-^^^^^^^^
+Example of using ``data.average()``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -562,10 +606,8 @@ Example:
 
 Calculates the sum of values for a specified key.
 
-.. _example-6:
-
-Example:
-^^^^^^^^
+Example of using ``data.sum()``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -579,10 +621,8 @@ Example:
 This function counts the number of entries for the specified key,
 excluding specified values if needed.
 
-.. _example-7:
-
-Example:
-^^^^^^^^
+Example of using ``data.count()``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
