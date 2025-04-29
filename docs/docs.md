@@ -346,7 +346,7 @@ data.compute({
 
 **Note:** Feel free to make the revenue growth an assumption as well.
 
-### Example of Forecasting
+#### Example of Forecasting
 
 Here's a complete example that initializes assumptions, computes projected revenue, and displays the results in a table:
 
@@ -372,7 +372,60 @@ model.render_table({
     "properties": {
         "title": "Projected Revenues",
         "number_format": "M",  # Display figures in millions
-        "column_order": "ascending",  # Show projected years in order
+        "order": "ascending",  # Show projected years in order
+    },
+})
+```
+
+### The LTM Period in `data.compute()` and the `ltm_as_year` Property
+
+The **LTM** period (Last Twelve Months) consists of the four most recent quarters.  
+Although it provides a more current snapshot of financial performance, it is **not** used in forecasting by default.
+
+Consider this scenario:  
+You're projecting revenue with a 5% growth rate and the current year is 2025.  
+You have two revenue figures:
+
+- One for the **LTM period**
+- One from the **2024 annual report**
+
+By default, the LTM figure is ignored, and forecasting starts from the 2024 value.
+
+This is where the `ltm_as_year` property becomes useful.  
+It lets you choose whether to treat the LTM period as the base year for forecasting:
+
+- If `"ltm_as_year": True`, forecasting begins from the LTM value (e.g., LTM revenue grows by 5%).
+- If not specified, or set to `"ltm_as_year": False`, forecasting uses the most recent full-year figure (e.g., 2024 revenue).
+
+
+#### Full Working Example
+
+```python
+# Initialize assumptions
+assumptions.init({
+    "projection_years": 5,  # Number of years to forecast
+    "%revenue_growth_rate": "10%"
+})
+
+# Compute projected revenues using the LTM value as the base
+data.compute({
+        "income:revenue": f"income:revenue:-1 * (1 + {assumptions.get('%revenue_growth_rate')})",
+    }, 
+    forecast=assumptions.get("projection_years"), 
+    properties={"ltm_as_year": True}
+)
+
+# Render a table to display the projected revenues
+model.render_table({
+    "data": {
+        "income:revenue": "Projected Revenue",
+    },
+    "start": 1,  # Start from next year
+    "end": assumptions.get("projection_years"),  # End at the last forecast year
+    "properties": {
+        "title": "Projected Revenues",
+        "number_format": "M",  # Format numbers in millions
+        "order": "ascending",  # Show years in forward order
     },
 })
 ```
@@ -448,8 +501,6 @@ Stores the predicted values across historical and forecast dates.
 	- Sets the regression start relative to LTM. The default starting period is the first available historical period.
 - `end:[..., 0, 1, ...]`
 	- Sets the regression end relative to LTM. The default ending period is the last available period.
-- `except_ltm:[true, false]`
-	-  To account for the Last Twelve Months (LTM) period in the linear regression, set `except_ltm:false`, by default it is `true`.
 
 ### Range Functions
 
@@ -901,7 +952,7 @@ model.render_table({
     "properties": {
         "title": "Financial Metrics Over Time",
         "number_format": "M",  # Display figures in millions
-        "column_order": "descending",  # Show the most recent figures first
+        "order": "descending",  # Show the most recent figures first
         "display_averages": True  # Include averages in the table
     }
 })
@@ -922,12 +973,12 @@ model.render_table({
      - `"1"`: Displays numbers as is, without any formatting.
    - **Example**: `"number_format": "M"`
 
-**column_order**: 
+**order**: 
 
    - **Description**: A string that defines the order of the columns in the table. Possible values include:
      - `"ascending"`: Columns will be ordered from the earliest to the latest.
      - `"descending"`: Columns will be ordered from the latest to the earliest.
-   - **Example**: `"column_order": "descending"`
+   - **Example**: `"order": "descending"`
 
 **display_averages**: 
 
