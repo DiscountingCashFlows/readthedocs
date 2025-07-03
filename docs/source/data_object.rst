@@ -697,7 +697,7 @@ Example of using ``data.sum()``
 ``data.cagr()``
 ~~~~~~~~~~~~~~~
 
-Calculates the sum of values for a specified key.
+Calculates the compounded annual growth rate (CAGR) over the specified key range.
 
 Definition:
 
@@ -715,7 +715,7 @@ Example
 
 .. code:: python
 
-   total_revenue = data.sum("income:revenue:-5->-1", 0)  # Total revenue over the last 5 years, excluding LTM or defaulting to 0
+   cagr = data.cagr("income:revenue:-5->0")  # Revenue CAGR over the last 5 years including LTM or defaulting to 0
 
 --------------
 
