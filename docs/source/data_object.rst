@@ -12,6 +12,18 @@ both are stored in the ``data`` object.
 ``data.compute()``
 ~~~~~~~~~~~~~~~~~~
 
+Definition:
+
+.. code:: python
+
+    def compute(
+        self,
+        formulas: dict[str, Any],
+        forecast: Optional[int] = None,
+        properties: Optional[dict[str, Any]] = None,
+        overwrite: bool = False
+    ) -> None:
+
 Calculates values based on specified formulas and stores them in the
 ``data`` object. The formulas can reference other keys, either for
 reported data or user data, and can include mathematical operations and
@@ -519,6 +531,18 @@ Grouping
 The ``data.set()`` function allows you to set values in the stored data.
 You can set a single key-value pair or multiple pairs at once.
 
+Definition
+
+.. code:: python
+
+    def set(
+        self,
+        key_or_dict: Union[str, dict[str, Any]],
+        value: Any = None,
+        overwrite: bool = False
+    ) -> None:
+
+
 Example of using ``data.set()``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -537,6 +561,17 @@ Example of using ``data.set()``
 
 Retrieves a value from the stored data. You can specify a key and
 optionally define a default value if the key is not found.
+
+Definition:
+
+.. code:: python
+
+    def get(
+        self,
+        key: str,
+        default: Any
+    ):
+
 
 Example of using ``data.get()``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -563,12 +598,23 @@ values over the last 5 years plus LTM, you would use:
 
 Calculates the minimum value for a given key, ignoring None values.
 
+Definition:
+
+.. code:: python
+
+    def min(
+        self,
+        key: str,
+        default_value: Any
+    ) -> Optional[float]:
+
+
 Example of using ``data.min()``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
-   min_eps = data.min("income:eps:-10->0")  # Minimum EPS over the last 10 years including LTM
+   min_eps = data.min("income:eps:-10->0", 0)  # Minimum EPS over the last 10 years including LTM or defaulting to 0
 
 --------------
 
@@ -578,12 +624,23 @@ Example of using ``data.min()``
 Calculates the maximum value for a given key, similar to the ``min()``
 function.
 
+Definition:
+
+.. code:: python
+
+    def max(
+        self,
+        key: str,
+        default_value: Any
+    ) -> Optional[float]:
+
+
 Example of using ``data.max()``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
-   max_revenue = data.max("income:revenue:-5->-1")  # Maximum revenue over the last 5 years, excluding LTM
+   max_revenue = data.max("income:revenue:-5->-1", 0)  # Maximum revenue over the last 5 years, excluding LTM or defaulting to 0
 
 --------------
 
@@ -592,12 +649,23 @@ Example of using ``data.max()``
 
 Calculates the average of values for a given key, ignoring None.
 
+Definition:
+
+.. code:: python
+
+    def average(
+        self,
+        key: str,
+        default_value: Any
+    ) -> Optional[float]:
+
+
 Example of using ``data.average()``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
-   average_eps = data.average("income:eps:-10->0")  # Average EPS over the last 10 years, including LTM
+   average_eps = data.average("income:eps:-10->0", 0)  # Average EPS over the last 10 years, including LTM or defaulting to 0
 
 --------------
 
@@ -606,12 +674,48 @@ Example of using ``data.average()``
 
 Calculates the sum of values for a specified key.
 
+Definition:
+
+.. code:: python
+
+    def sum(
+        self,
+        key: str,
+        default_value: Any
+    ) -> Optional[float]:
+
+
 Example of using ``data.sum()``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
-   total_revenue = data.sum("income:revenue:-5->-1")  # Total revenue over the last 5 years, excluding LTM
+   total_revenue = data.sum("income:revenue:-5->-1", 0)  # Total revenue over the last 5 years, excluding LTM or defaulting to 0
+
+--------------
+
+``data.cagr()``
+~~~~~~~~~~~~~~~
+
+Calculates the sum of values for a specified key.
+
+Definition:
+
+.. code:: python
+
+    def cagr(
+        self,
+        key: str,
+        default_value: Any
+    ) -> Optional[float]:
+
+
+Example
+^^^^^^^
+
+.. code:: python
+
+   total_revenue = data.sum("income:revenue:-5->-1", 0)  # Total revenue over the last 5 years, excluding LTM or defaulting to 0
 
 --------------
 
@@ -620,6 +724,17 @@ Example of using ``data.sum()``
 
 This function counts the number of entries for the specified key,
 excluding specified values if needed.
+
+Definition:
+
+.. code:: python
+
+    def count(
+        self,
+        key: str,
+        except_values: list[Optional[int]]
+    ) -> Optional[int]:
+
 
 Example of using ``data.count()``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -104,7 +104,9 @@ Example of using ``model.render_chart()``
        "start": -5,  # Last 5 years
        "properties": {
            "title": "Revenue and Net Income Over Time",
-           "number_format": "M",  # Display figures in millions
+           "bar_keys": [
+               "income:revenue"
+           ]
            "set_editable": [
                "income:revenue",
                "income:netIncome"
@@ -126,16 +128,12 @@ Available Properties:
    is being displayed.
 -  **Example**: ``"title": "Revenue and Net Income Over Time"``
 
-**number_format**:
+**bar_keys**:
 
--  **Description**: A string that specifies how the numbers should be
-   formatted in the chart. Common formats include:
+-  **Description**: Choose which series should be displayed as bars instead of lines.
 
-   -  ``"M"``: Displays numbers in millions.
-   -  ``"K"``: Displays numbers in thousands.
-   -  ``"1"``: Displays numbers as is, without any formatting.
-
--  **Example**: ``"number_format": "M"``
+   -  ``"*"``: All keys are displayed as bars.
+   -  ``["key1", "key2", ... ]``: Specify which keys are displayed as bars.
 
 **set_editable**:
 
@@ -170,15 +168,6 @@ Available Properties:
    ``True`` includes it, while ``False`` excludes it.
 -  **Example**: ``"include_ltm": True``
 
-**Coming Soon - chart_type**:
-
-**Description**: A string that defines the type of chart to render.
-
--  ``"line"``: A line chart.
--  ``"bar"``: A bar chart.
--  ``"pie"``: A pie chart.
-
-**Example**: ``"chart_type": "line"``
 
 --------------
 
@@ -358,30 +347,3 @@ readability and presentation. Here are some common formatting options:
 -  **Links**: Create hyperlinks using the format ``[text](URL)``. For
    example, ``[Learn more](https://example.com)``.
 
-Additional Example with Formulas
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-You can also include mathematical formulas in the description using
-LaTeX-style syntax. Here’s how you might do that:
-
-.. code:: python
-
-   model.render_description(r"""
-   ## Discounted Cash Flow Model
-
-   This model calculates the present value of future cash flow using the Discounted Cash Flow (DCF) method.
-
-   The formula used for calculating the present value is:
-
-   $$
-   PV = \frac{CF}{(1 + r)^n}
-   $$
-
-   Where:
-   - \(PV\) = Present Value
-   - \(CF\) = Cash Flow
-   - \(r\) = Discount Rate
-   - \(n\) = Number of periods
-
-   This framework allows for robust financial projections.
-   """)

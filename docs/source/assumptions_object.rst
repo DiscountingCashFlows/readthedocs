@@ -72,6 +72,25 @@ Example of using ``assumptions.set()``
 
 --------------
 
+``assumptions.set_bounds()``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This function sets the bounds or limits of a specified assumption.
+
+Example of using ``assumptions.set_bounds()``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    assumptions.set_bounds(
+        "%growth_rate", low="5%", high="25%"  # Limits growth rate between 5% and 25%
+    )
+    assumptions.set_bounds(
+        "eps", low=1, high=5
+    )
+
+--------------
+
 ``assumptions.set_description()``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
