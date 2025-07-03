@@ -697,7 +697,7 @@ Example of using ``data.sum()``
 ``data.cagr()``
 ~~~~~~~~~~~~~~~
 
-Calculates the sum of values for a specified key.
+Calculates the compounded annual growth rate (CAGR) over the specified key range.
 
 Definition:
 
@@ -715,7 +715,84 @@ Example
 
 .. code:: python
 
-   total_revenue = data.sum("income:revenue:-5->-1", 0)  # Total revenue over the last 5 years, excluding LTM or defaulting to 0
+   cagr = data.cagr("income:revenue:-5->0", 0)  # Revenue CAGR over the last 5 years including LTM or defaulting to 0
+
+--------------
+
+``data.total_return()``
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Calculates the total % return over the specified key range.
+
+Definition:
+
+.. code:: python
+
+    def total_return(
+        self,
+        key: str,
+        default_value: Any
+    ) -> Optional[float]:
+
+
+Example
+^^^^^^^
+
+.. code:: python
+
+   total_return = data.total_return("income:revenue:-5->0", 0)  # Total % return of revenue over the last 5 years including LTM or defaulting to 0
+
+
+--------------
+
+``data.standard_deviation()``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Calculates the standard deviation for the specified key range.
+
+Definition:
+
+.. code:: python
+
+    def standard_deviation(
+        self,
+        key: str,
+        default_value: Any
+    ) -> Optional[float]:
+
+
+Example
+^^^^^^^
+
+.. code:: python
+
+   standard_deviation = data.standard_deviation("income:revenue:-5->0")  # Standard deviation of revenue over the last 5 years excluding LTM
+
+
+--------------
+
+``data.variance()``
+~~~~~~~~~~~~~~~~~~~
+
+Calculates the variance for the specified key range.
+
+Definition:
+
+.. code:: python
+
+    def variance(
+        self,
+        key: str,
+        default_value: Any
+    ) -> Optional[float]:
+
+
+Example
+^^^^^^^
+
+.. code:: python
+
+   variance = data.variance("income:eps:-5->0")  # Variance of eps over the last 5 years including LTM
 
 --------------
 
